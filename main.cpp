@@ -96,7 +96,7 @@ void exit() {
 
 /// @brief Prints a message when the command is not found
 void commandNotFound() {
-	cout << "Command not found. Type 'help' to see the list of commands\n";
+	cout << "Command not found.\n";
 }
 
 /// @brief Gets the command from the user
