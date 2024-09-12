@@ -1,25 +1,16 @@
 #include <iostream>
-#include <windows.h>
-
-#include "include/color.hpp"
 
 using namespace std;
-
-
-
-
 
 /*
 	Variables
 */
 
 
-
-
-
 /*
 	Functions
 */
+
 
 /// @brief Prints the banner of the program
 void printHeader() {
@@ -59,37 +50,37 @@ void printHeader() {
 	cout << "Y88b  d88P Y88b  d88P          Y88b. .d88P Y88b. .d88P 888        Y88b  d88P    888    \n";
 	cout << "\"Y8888P\"    \"Y8888P\"            \"Y88888P\"   \"Y88888P\"  888         \"Y8888P\"     888    \n";
 
-	cout << dye::green("\nHello, Welcome to CSOPESY commandline!\n");
-	cout << dye::yellow("Type 'exit' to quit, 'clear' to clear the screen', and 'help' to see the list of commands\n");
+	cout << "\033[1;32m" << "Hello, Welcome to CSOPESY commandline!\n";
+	cout << "\033[1;33m" << "Type 'exit' to quit, 'clear' to clear the screen\n";
 }
 
 void initialize() {
-	cout << "initialize command recognized. Do something\n";
+	cout << "initialize command recognized. Do something.\n";
 }
 void screen() {
-	cout << "screen command recognized. Do something\n";
+	cout << "screen command recognized. Do something.\n";
 }
 void schedulerTest() {
-	cout << "scheduler-test command recognized. Do something\n";
+	cout << "scheduler-test command recognized. Do something.\n";
 }
 void schedulerStop() {
-	cout << "scheduler-stop command recognized. Do something\n";
+	cout << "scheduler-stop command recognized. Do something.\n";
 }
 void reportUtil() {
-	cout << "report-util command recognized. Do something\n";
+	cout << "report-util command recognized. Do something.\n";
 }
 
-/// @brief Prints the list of commands
-void help() {
-	cout << "List of commands:\n";
-	cout << "initialize - Initializes the program\n";
-	cout << "screen - Displays the screen\n";
-	cout << "scheduler-test - Tests the scheduler\n";
-	cout << "scheduler-stop - Stops the scheduler\n";
-	cout << "report-util - Generates a report\n";
-	cout << "clear - Clears the screen\n";
-	cout << "exit - Exits the program\n";
-}
+// /// @brief Prints the list of commands
+// void help() {
+// 	cout << "List of commands:\n";
+// 	cout << "initialize - Initializes the program\n";
+// 	cout << "screen - Displays the screen\n";
+// 	cout << "scheduler-test - Tests the scheduler\n";
+// 	cout << "scheduler-stop - Stops the scheduler\n";
+// 	cout << "report-util - Generates a report\n";
+// 	cout << "clear - Clears the screen\n";
+// 	cout << "exit - Exits the program\n";
+// }
 
 /// @brief Clears the screen and reprints header text
 void clear() {
@@ -111,7 +102,7 @@ void commandNotFound() {
 /// @brief Gets the command from the user
 void getCommand() {
 	string command;
-	cout << "\nEnter command: ";
+	cout << "\033[1;0m" << "Enter a command: ";
 	cin >> command;
 
 	if (command == "initialize") {
@@ -129,9 +120,9 @@ void getCommand() {
 	else if (command == "report-util") {
 		reportUtil();
 	}
-	else if (command == "help") {
-		help();
-	}
+	// else if (command == "help") {
+	// 	help();
+	// }
 	else if (command == "clear") {
 		clear();
 	}
@@ -143,10 +134,7 @@ void getCommand() {
 	}
 }
 
-
-
-
-
+/// @brief  Main function
 int main() {
 
 	printHeader();
