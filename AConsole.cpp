@@ -1,5 +1,4 @@
-// Create abstract class AConsole
-
+// Abstract class of a Console
 class AConsole
 {
     public:

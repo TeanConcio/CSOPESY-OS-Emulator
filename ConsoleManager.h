@@ -5,16 +5,17 @@
 #include <unordered_map>
 #include <Windows.h>
 #include "TypedefRepo.h"
+#include "BaseScreen.h"
 
-const String MAIN_CONSOLE = "MAIN_CONSOLE";
-const String MARQUEE_CONSOLE = "MARQUEE_CONSOLE";
-const String SCHEDULING_CONSOLE = "SCHEDULING_CONSOLE" ;
-const String MEMORY_CONSOLE = "MEMORY_CONSOLE";
+const std::string MAIN_CONSOLE = "MAIN_CONSOLE";
+const std::string MARQUEE_CONSOLE = "MARQUEE_CONSOLE";
+const std::string SCHEDULING_CONSOLE = "SCHEDULING_CONSOLE" ;
+const std::string MEMORY_CONSOLE = "MEMORY_CONSOLE";
 
 class ConsoleManager
 {
 public:
-	typedef std::unordered_map<String, std::shared_ptr<AConsole>> ConsoleTable;
+	typedef std::unordered_map<std::string, std::shared_ptr<AConsole>> ConsoleTable;
 	
 	static ConsoleManager* getInstance();
 	static void initialize();
@@ -22,7 +23,12 @@ public:
 	
 	void drawConsole() const;
 	void process() const;
-	void switchConsole(String consoleName);
+	void switchConsole(std::string consoleName);
+
+	void registerScreen(std::shared_ptr<BaseScreen> screenRef);
+	void switchToScreen(std::string screenName);
+	void unregisterScreen(std::string screenName);
+
 	void returnToPreviousConsole();
 	void exitApplication() ;
 	bool isRunning() const;
@@ -40,47 +46,8 @@ private:
 	
 	ConsoleTable consoleTable;
 	std::shared_ptr<AConsole> currentConsole ;
-	std::previousConsole;
+	std::shared_ptr<AConsole> previousConsole;
 	
 	HANDLE consoleHandle;
-	boot running = true;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ConsoleManager::ConsoleManager()
-{
-	this->running = true;
-	
-	//initialize consoles
-	this->consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	
-	const std::shared_ptr<MainConsole> mainConsole = std::make_shared<MainConsole>();
-	const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
-	const std::shared_ptr<SchedulingConsole> schedulingConsole = std::make_shared<SchedulingConsole>();
-	const std::shared_ptr<MemorySimulationConsole> memoryConsole = std::make_shared<MemorySimulationConsole>();
-	
-	this->consoleTable[MAIN_CONSOLE] = mainConsole;
-	this->consoleTable[MARQUEE_CONSOLE] = marqueeConsole;
-	this->consoleTable[SCHEDULING_CONSOLE] = schedulingConsole;
-	this->consoleTable[MEMORY_CONSOLE] = memoryConsole;
-	
-	this->switchConsole(MAIN_CONSOLE);
-    
+	bool running = true;
 }

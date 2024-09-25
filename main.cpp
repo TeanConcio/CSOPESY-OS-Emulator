@@ -1,4 +1,5 @@
 #include <iostream>
+#include "ConsoleManager.h"
 
 using namespace std;
 
@@ -107,13 +108,21 @@ void getCommand() {
 /// @brief  Main function
 int main() {
 
-	
+	ConsoleManager::initialize();
 
 
 	printHeader();
 
-	while (true) {
-		getCommand();
+	bool running = true;
+	while (running) 
+	{
+	
+		ConsoleManager::getInstance()->process();
+		ConsoleManager::getInstance()->drawConsole();
+	
+		/*getCommand();*/
+
+		running = ConsoleManager::getInstance()->isRunning();
 	}
 
 	return 0;
