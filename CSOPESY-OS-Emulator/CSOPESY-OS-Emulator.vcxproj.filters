@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Console Files">
+      <UniqueIdentifier>{d0e227ff-2f9e-42a5-9419-98ea0efe937c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Files">
+      <UniqueIdentifier>{6423e173-cf04-4927-8e1c-45afef18bbc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Includes">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Consoles\AConsole.cpp">
+      <Filter>Console Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Consoles\BaseScreen.cpp">
+      <Filter>Console Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Consoles\MainConsole.cpp">
+      <Filter>Console Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConsoleManager.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSOPESY-OS-Emulator.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Process.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\color.hpp">
+      <Filter>External Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consoles\AConsole.h">
+      <Filter>Console Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consoles\MainConsole.h">
+      <Filter>Console Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consoles\BaseScreen.h">
+      <Filter>Console Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConsoleManager.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Process.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TypedefRepo.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
