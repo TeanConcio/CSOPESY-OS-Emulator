@@ -107,6 +107,9 @@ void getCommand() {
 /// @brief  Main function
 int main() {
 
+	
+
+
 	printHeader();
 
 	while (true) {
