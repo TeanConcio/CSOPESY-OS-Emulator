@@ -11,7 +11,7 @@ void MainConsole::onEnabled() {
 void MainConsole::process() {
     String command;
 	std::cout << "\033[1;0m" << "Enter a command: ";
-	std::cin >> command;
+	std::getline(std::cin, command);
 
     std::vector<String> commandParts = Common::commandExtractor(command);
 
@@ -19,7 +19,11 @@ void MainConsole::process() {
 		this->initialize();
 	}
 	else if (commandParts[0] == "screen") {
-        if (commandParts[1] == "-s") {
+		if (commandParts.size() < 2) {
+			this->commandNotFound(command);
+			return;
+		}
+        else if (commandParts[1] == "-s") {
             ConsoleManager::getInstance()->switchConsole(commandParts[2]);
         }
         else if (commandParts[1] == "-r") {

@@ -66,7 +66,6 @@ void BaseScreen::printProcessInfo() const
 	localtime_s(&timeInfo, &this->attachedProcess->currentTime);
 	asctime_s(buffer, sizeof(buffer), &timeInfo);
 	std::cout << "Created: " << buffer << std::endl;
-	std::cout << std::endl;
 }
 
 void BaseScreen::printHeader() const

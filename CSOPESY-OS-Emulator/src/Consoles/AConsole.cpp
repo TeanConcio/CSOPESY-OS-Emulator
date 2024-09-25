@@ -2,6 +2,11 @@
 
 #include "./../ConsoleManager.h"
 
+AConsole::AConsole(String name)
+{
+	this->name = name;
+}
+
 void AConsole::printHeader() const
 {
     std::cout << "Console: " << this->name << std::endl;
@@ -28,6 +33,6 @@ void AConsole::help() const
 
 void AConsole::commandNotFound(const String command) const
 {
-    std::cout << "Unknown command:" << command << std::endl;
+    std::cout << "Unknown command: " << command << std::endl;
     //std::cout << "Type 'help' for a list of commands" << std::endl;
 }

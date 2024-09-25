@@ -112,8 +112,10 @@ void ConsoleManager::returnToPreviousConsole()
 {
 	if (this->previousConsole != nullptr)
 	{
+		system("cls");
 		this->currentConsole = this->previousConsole;
 		this->previousConsole = nullptr;
+		this->currentConsole->onEnabled();
 	}
 	else
 	{
