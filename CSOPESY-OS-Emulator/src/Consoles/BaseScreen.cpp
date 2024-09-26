@@ -55,15 +55,14 @@ void BaseScreen::display()
 void BaseScreen::printProcessInfo() const
 {
 	std::cout << "Process: " << this->attachedProcess->name << std::endl;
-	std::cout << "ID: " << this->attachedProcess->id << std::endl;
 	std::cout << std::endl;
-	std::cout << "Current Instruction Line: " << this->attachedProcess->currInstructionLine << std::endl;
-	std::cout << "Lines of Code: " << this->attachedProcess->totalCodeLines << std::endl;
+	std::cout << "Current instruction line: " << this->attachedProcess->currInstructionLine << std::endl;
+	std::cout << "Lines of code: " << this->attachedProcess->totalCodeLines << std::endl;
 	std::cout << std::endl;
 
 	char buffer[26];
 	std::tm timeInfo;
-	localtime_s(&timeInfo, &this->attachedProcess->currentTime);
+	localtime_s(&timeInfo, &this->attachedProcess->createdTime);
 	asctime_s(buffer, sizeof(buffer), &timeInfo);
 	std::cout << "Created: " << buffer << std::endl;
 }

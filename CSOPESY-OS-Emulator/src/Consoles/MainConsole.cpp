@@ -19,17 +19,36 @@ void MainConsole::process() {
 		this->initialize();
 	}
 	else if (commandParts[0] == "screen") {
-		if (commandParts.size() < 2) {
+		if (commandParts.size() <= 2) {
 			this->commandNotFound(command);
 			return;
 		}
         else if (commandParts[1] == "-s") {
+			for (const auto& process : this->processTable) {
+				if (process->name == commandParts[2]) {
+					std::cout << "Process " << commandParts[2] << " already exists." << std::endl;
+					return;
+				}
+			}
+
+			auto process = std::make_shared<Process>(commandParts[2], 100);
+			this->addProcess(process);
+			auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
+
+			ConsoleManager::getInstance()->registerScreen(screen);
             ConsoleManager::getInstance()->switchConsole(commandParts[2]);
         }
         else if (commandParts[1] == "-r") {
-			const std::shared_ptr<Process> process = std::make_shared<Process>(commandParts[2], ConsoleManager::getInstance()->screenID, std::stoi(commandParts[3]), std::stoi(commandParts[4]));
-            const std::shared_ptr<BaseScreen> screen = std::make_shared<BaseScreen>(process, commandParts[2]);
-            ConsoleManager::getInstance()->registerScreen(screen);
+			for (const auto& process : this->processTable) {
+				if (process->name == commandParts[2]) {
+					auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
+					ConsoleManager::getInstance()->registerScreen(screen);
+					ConsoleManager::getInstance()->switchConsole(commandParts[2]);
+					return;
+				}	
+			}
+			std::cerr << "Unable to unregister " << commandParts[2] << ". Was it registered?" << std::endl;
+			return;
         }
         else {
             this->commandNotFound(command);
@@ -106,3 +125,6 @@ void MainConsole::reportUtil() const {
 	std::cout << "report-util command recognized. Doing something.\n";
 }
 
+void MainConsole::addProcess(std::shared_ptr <Process> process) {
+	this->processTable.push_back(process);
+}

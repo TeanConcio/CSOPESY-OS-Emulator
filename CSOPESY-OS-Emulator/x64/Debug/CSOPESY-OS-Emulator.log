@@ -1,2 +1,9 @@
-﻿  BaseScreen.cpp
-  CSOPESY-OS-Emulator.vcxproj -> C:\Users\Tean Concio\Documents\Test_Applications\C++\CSOPESY-OS-Emulator\x64\Debug\CSOPESY-OS-Emulator.exe
+﻿  CSOPESY-OS-Emulator.cpp
+  ConsoleManager.cpp
+  AConsole.cpp
+  BaseScreen.cpp
+  MainConsole.cpp
+  Process.cpp
+  Generating Code...
+x64\Debug\MarqueeConsole.obj : warning LNK4042: object specified more than once; extras ignored
+  CSOPESY-OS-Emulator.vcxproj -> C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\x64\Debug\CSOPESY-OS-Emulator.exe

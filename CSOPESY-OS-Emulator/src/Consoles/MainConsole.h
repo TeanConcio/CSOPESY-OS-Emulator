@@ -1,4 +1,7 @@
 #include "AConsole.h"
+#include "./../Process.h"
+#include "./../TypedefRepo.h"
+#include <memory>
 
 class MainConsole : public AConsole
 {
@@ -19,4 +22,7 @@ private:
     void schedulerTest() const;
     void schedulerStop() const;
     void reportUtil() const;
+    void addProcess(std::shared_ptr <Process> process);
+
+    std::vector<std::shared_ptr<Process>> processTable;
 };

@@ -141,7 +141,7 @@ ConsoleManager::ConsoleManager()
 	this->consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	this->initializeConsoles();
-	this->initializeScreens();
+	//this->initializeScreens();
 
 	this->switchConsole(MAIN_CONSOLE);
 }
@@ -166,20 +166,20 @@ void ConsoleManager::initializeConsoles()
 	//this->consoleTable[MEMORY_CONSOLE] = memoryConsole;
 }
 
-void ConsoleManager::initializeScreens()
-{
-	const std::shared_ptr<Process> process1 = std::make_shared<Process>("Process1", this->screenID, 69, 420);
-	const std::shared_ptr<BaseScreen> screen1 = std::make_shared<BaseScreen>(process1, process1->name);
-	this->registerScreen(screen1);
-
-	const std::shared_ptr<Process> process2 = std::make_shared<Process>("Process2", this->screenID, 70, 421);
-	const std::shared_ptr<BaseScreen> screen2 = std::make_shared<BaseScreen>(process2, process2->name);
-	this->registerScreen(screen2);
-
-	const std::shared_ptr<Process> process3 = std::make_shared<Process>("Process3", this->screenID, 71, 422);
-	const std::shared_ptr<BaseScreen> screen3 = std::make_shared<BaseScreen>(process3, process3->name);
-	this->registerScreen(screen3);
-}
+//void ConsoleManager::initializeScreens()
+//{
+//	const std::shared_ptr<Process> process1 = std::make_shared<Process>("Process1", this->screenID, 69, 420);
+//	const std::shared_ptr<BaseScreen> screen1 = std::make_shared<BaseScreen>(process1, process1->name);
+//	this->registerScreen(screen1);
+//
+//	const std::shared_ptr<Process> process2 = std::make_shared<Process>("Process2", this->screenID, 70, 421);
+//	const std::shared_ptr<BaseScreen> screen2 = std::make_shared<BaseScreen>(process2, process2->name);
+//	this->registerScreen(screen2);
+//
+//	const std::shared_ptr<Process> process3 = std::make_shared<Process>("Process3", this->screenID, 71, 422);
+//	const std::shared_ptr<BaseScreen> screen3 = std::make_shared<BaseScreen>(process3, process3->name);
+//	this->registerScreen(screen3);
+//}
 
 bool ConsoleManager::hasConsole(const String consoleName) const {
     return consoleTable.find(consoleName) != consoleTable.end();
