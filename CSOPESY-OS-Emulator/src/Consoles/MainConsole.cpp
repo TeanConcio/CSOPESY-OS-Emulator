@@ -47,7 +47,7 @@ void MainConsole::process() {
 					return;
 				}	
 			}
-			std::cerr << "Unable to unregister " << commandParts[2] << ". Was it registered?" << std::endl;
+			std::cerr << "Unable to redraw " << commandParts[2] << ". Was it registered?" << std::endl;
 			return;
         }
         else {
