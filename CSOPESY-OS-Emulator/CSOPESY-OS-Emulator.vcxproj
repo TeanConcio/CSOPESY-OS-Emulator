@@ -133,7 +133,6 @@
     <ClCompile Include="src\Consoles\AConsole.cpp" />
     <ClCompile Include="src\Consoles\BaseScreen.cpp" />
     <ClCompile Include="src\Consoles\MainConsole.cpp" />
-	<ClCompile Include="src\Consoles\MarqueeConsole.cpp" />
     <ClCompile Include="src\Process.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +142,6 @@
     <ClInclude Include="src\Consoles\AConsole.h" />
     <ClInclude Include="src\Consoles\BaseScreen.h" />
     <ClInclude Include="src\Consoles\MainConsole.h" />
-	<ClCompile Include="src\Consoles\MarqueeConsole.h" />
     <ClInclude Include="src\Process.h" />
     <ClInclude Include="src\TypedefRepo.h" />
   </ItemGroup>

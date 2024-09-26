@@ -31,7 +31,7 @@ void MainConsole::process() {
 				}
 			}
 
-			auto process = std::make_shared<Process>(commandParts[2], 100);
+			auto process = std::make_shared<Process>(commandParts[2], 100, ConsoleManager::getInstance()->prcoessID);
 			this->addProcess(process);
 			auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
 

@@ -92,7 +92,7 @@ void ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
 	}
 
 	this->consoleTable[screenRef->name] = screenRef;
-	this->screenID++;
+	this->prcoessID++;
 }
 
 void ConsoleManager::unregisterScreen(String screenName)
@@ -100,7 +100,6 @@ void ConsoleManager::unregisterScreen(String screenName)
 	if (hasConsole(screenName))
 	{
 		this->consoleTable.erase(screenName);
-		this->screenID--;
 	}
 	else
 	{
@@ -168,15 +167,15 @@ void ConsoleManager::initializeConsoles()
 
 //void ConsoleManager::initializeScreens()
 //{
-//	const std::shared_ptr<Process> process1 = std::make_shared<Process>("Process1", this->screenID, 69, 420);
+//	const std::shared_ptr<Process> process1 = std::make_shared<Process>("Process1", this->prcoessID, 69, 420);
 //	const std::shared_ptr<BaseScreen> screen1 = std::make_shared<BaseScreen>(process1, process1->name);
 //	this->registerScreen(screen1);
 //
-//	const std::shared_ptr<Process> process2 = std::make_shared<Process>("Process2", this->screenID, 70, 421);
+//	const std::shared_ptr<Process> process2 = std::make_shared<Process>("Process2", this->prcoessID, 70, 421);
 //	const std::shared_ptr<BaseScreen> screen2 = std::make_shared<BaseScreen>(process2, process2->name);
 //	this->registerScreen(screen2);
 //
-//	const std::shared_ptr<Process> process3 = std::make_shared<Process>("Process3", this->screenID, 71, 422);
+//	const std::shared_ptr<Process> process3 = std::make_shared<Process>("Process3", this->prcoessID, 71, 422);
 //	const std::shared_ptr<BaseScreen> screen3 = std::make_shared<BaseScreen>(process3, process3->name);
 //	this->registerScreen(screen3);
 //}

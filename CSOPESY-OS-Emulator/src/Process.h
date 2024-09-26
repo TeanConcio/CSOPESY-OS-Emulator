@@ -5,8 +5,9 @@
 class Process
 {
 public:
-    Process(String name, int totalCodeLines);
+    Process(String name, int totalCodeLines, int id);
 
+    int id;
     String name;
     int currInstructionLine;
     int totalCodeLines;

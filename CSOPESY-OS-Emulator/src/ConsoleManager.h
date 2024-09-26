@@ -19,7 +19,7 @@ public:
     static void destroy();
 
     typedef std::unordered_map<String, std::shared_ptr<AConsole>> ConsoleTable;
-    int screenID = 1;
+    int prcoessID = 1;
 
     void drawConsole() const;
     void process() const;

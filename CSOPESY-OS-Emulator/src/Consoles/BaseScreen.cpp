@@ -55,6 +55,7 @@ void BaseScreen::display()
 void BaseScreen::printProcessInfo() const
 {
 	std::cout << "Process: " << this->attachedProcess->name << std::endl;
+	std::cout << "ID: " << this->attachedProcess->id << std::endl;
 	std::cout << std::endl;
 	std::cout << "Current instruction line: " << this->attachedProcess->currInstructionLine << std::endl;
 	std::cout << "Lines of code: " << this->attachedProcess->totalCodeLines << std::endl;
