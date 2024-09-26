@@ -2,28 +2,47 @@
 
 #include "../ConsoleManager.h"
 
+/**
+ * @brief Constructs a new MainConsole object.
+ * 
+ * @param name The name of the console.
+ */
 MainConsole::MainConsole(String name) : AConsole(name) {}
 
+/**
+ * @brief Called when the console is enabled.
+ * 
+ * Prints the header information.
+ */
 void MainConsole::onEnabled() {
     this->printHeader();
 }
 
+/**
+ * @brief Processes the input commands.
+ * 
+ * Waits for user input and processes the command.
+ */
 void MainConsole::process() {
     String command;
 	std::cout << "\033[1;0m" << "Enter a command: ";
 	std::getline(std::cin, command);
 
+	// Extract command parts
     std::vector<String> commandParts = Common::commandExtractor(command);
 
+	// Check if command is empty
 	if (commandParts[0] == "initialize") {
 		this->initialize();
 	}
 	else if (commandParts[0] == "screen") {
+		// Check if enough arguments
 		if (commandParts.size() <= 2) {
 			this->commandNotFound(command);
 			return;
 		}
         else if (commandParts[1] == "-s") {
+			// Check if process exists
 			for (const auto& process : this->processTable) {
 				if (process->name == commandParts[2]) {
 					std::cout << "Process " << commandParts[2] << " already exists." << std::endl;
@@ -31,10 +50,12 @@ void MainConsole::process() {
 				}
 			}
 
+			// TODO: Make lines not a placeholder
 			auto process = std::make_shared<Process>(commandParts[2], 100, ConsoleManager::getInstance()->prcoessID);
-			this->addProcess(process);
-			auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
+			this->addProcess(process); // Push to vector
+			auto screen = std::make_shared<BaseScreen>(process, commandParts[2]); // Initialize screen with name and process
 
+			// Go to screen itself
 			ConsoleManager::getInstance()->registerScreen(screen);
             ConsoleManager::getInstance()->switchConsole(commandParts[2]);
         }
@@ -81,6 +102,11 @@ void MainConsole::display() {
 
 }
 
+/**
+ * @brief Prints the header information.
+ * 
+ * Prints a welcome message and instructions for using the console.
+ */
 void MainConsole::printHeader() const {
     std::cout << "  ____ ____   ___  ____  _____ ______   __\n";
     std::cout << " / ___/ ___| / _ \\|  _ \\| ____/ ___\\ \\ / /\n";
@@ -91,15 +117,24 @@ void MainConsole::printHeader() const {
     std::cout << "\033[1;33m" << "Type 'exit' to quit, 'clear' to clear the screen\n";
 }
 
-/// @brief Exits the program
+/**
+ * @brief Exits the program.
+ * 
+ * Calls the exitApplication method of the ConsoleManager.
+ */
 void MainConsole::exit() const {
 	//std::cout << "exit command recognized. Doing something.\n";
     ConsoleManager::getInstance()->exitApplication();
 }
 
-/// @brief Prints the list of commands
+/**
+ * @brief Prints the list of available commands.
+ * 
+ * Calls the help method from AConsole and adds additional commands.
+ */
 void MainConsole::help() const {
     
+	// Call help from AConsole then add on to it
     AConsole::help();
 
 	std::cout << "\tscreen -s <console_name / screen_name> : Displays the screen\n";

@@ -2,27 +2,42 @@
 
 #include "./../ConsoleManager.h"
 
+/**
+ * @brief Constructor for AConsole.
+ * 
+ * @param name The name of the console.
+ */
 AConsole::AConsole(String name)
 {
 	this->name = name;
 }
 
+// TEMP: Print the name
 void AConsole::printHeader() const
 {
     std::cout << "Console: " << this->name << std::endl;
 }
 
+/**
+ * @brief Clears the console screen and prints the header.
+ */
 void AConsole::clear() const
 {
     system("cls");
     printHeader();
 }
 
+/**
+ * @brief Returns to the previous console.
+ */
 void AConsole::exit() const
 {
     ConsoleManager::getInstance()->returnToPreviousConsole();
 }
 
+/**
+ * @brief Displays a list of available commands.
+ */
 void AConsole::help() const
 {
     std::cout << "List of commands: " << std::endl;
@@ -31,6 +46,11 @@ void AConsole::help() const
     std::cout << "\texit : Exits the console" << std::endl;
 }
 
+/**
+ * @brief Displays a message for an unknown command.
+ * 
+ * @param command The command that was not found.
+ */
 void AConsole::commandNotFound(const String command) const
 {
     std::cout << "Unknown command: " << command << std::endl;

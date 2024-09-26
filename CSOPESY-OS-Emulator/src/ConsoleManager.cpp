@@ -10,6 +10,12 @@
 
 
 ConsoleManager* ConsoleManager::sharedInstance = nullptr;
+
+/**
+ * @brief Gets the singleton instance of the ConsoleManager.
+ * 
+ * @return ConsoleManager* The singleton instance of the ConsoleManager.
+ */
 ConsoleManager* ConsoleManager::getInstance()
 {
 	if (sharedInstance == nullptr) {
@@ -18,17 +24,29 @@ ConsoleManager* ConsoleManager::getInstance()
     return sharedInstance;
 }
 
+/**
+ * @brief Initializes the ConsoleManager singleton instance.
+ */
 void ConsoleManager::initialize()
 {
 	sharedInstance = new ConsoleManager();
 }
 
+/**
+ * @brief Destroys the ConsoleManager singleton instance.
+ */
 void ConsoleManager::destroy()
 {
 	delete sharedInstance;
 	sharedInstance = nullptr;
 }
 
+/**
+ * @brief Draws the current console.
+ * 
+ * If there is a current console, it calls the display method of the current console.
+ * Otherwise, it prints an error message.
+ */
 void ConsoleManager::drawConsole() const
 {
 	if (this->currentConsole != nullptr)
@@ -41,6 +59,12 @@ void ConsoleManager::drawConsole() const
 	}
 }
 
+/**
+ * @brief Processes the current console.
+ * 
+ * If there is a current console, it calls the process method of the current console.
+ * Otherwise, it prints an error message.
+ */
 void ConsoleManager::process() const
 {
 	if (this->currentConsole != nullptr)
@@ -53,6 +77,13 @@ void ConsoleManager::process() const
 	}
 }
 
+/**
+ * @brief Switches to a different console.
+ * 
+ * Clears the screen, sets the current console to the specified console, and calls the onEnabled method of the new console.
+ * 
+ * @param consoleName The name of the console to switch to.
+ */
 void ConsoleManager::switchConsole(String consoleName)
 {
 	if (hasConsole(consoleName))
@@ -68,6 +99,13 @@ void ConsoleManager::switchConsole(String consoleName)
 	}
 }
 
+/**
+ * @brief Switches to a different screen.
+ * 
+ * Clears the screen, sets the current console to the specified screen, and calls the onEnabled method of the new screen.
+ * 
+ * @param screenName The name of the screen to switch to.
+ */
 void ConsoleManager::switchToScreen(String screenName)
 {
 	if (hasConsole(screenName))
@@ -83,6 +121,13 @@ void ConsoleManager::switchToScreen(String screenName)
 	}
 }
 
+/**
+ * @brief Registers a screen.
+ * 
+ * Adds the screen to the console table if it does not already exist.
+ * 
+ * @param screenRef A shared pointer to the screen to be registered.
+ */
 void ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
 {
 	if (hasConsole(screenRef->name))
@@ -95,6 +140,13 @@ void ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
 	this->prcoessID++;
 }
 
+/**
+ * @brief Unregisters a screen.
+ * 
+ * Removes the screen from the console table if it exists.
+ * 
+ * @param screenName The name of the screen to be unregistered.
+ */
 void ConsoleManager::unregisterScreen(String screenName)
 {
 	if (hasConsole(screenName))
@@ -107,6 +159,11 @@ void ConsoleManager::unregisterScreen(String screenName)
 	}
 }
 
+/**
+ * @brief Returns to the previous console.
+ * 
+ * Clears the screen, sets the current console to the previous console, and calls the onEnabled method of the previous console.
+ */
 void ConsoleManager::returnToPreviousConsole()
 {
 	if (this->previousConsole != nullptr)
@@ -132,6 +189,11 @@ bool ConsoleManager::isRunning() const
 	return this->running;
 }
 
+/**
+ * @brief Constructs a new ConsoleManager object.
+ * 
+ * Initializes the consoles and sets the current console to the main console.
+ */
 ConsoleManager::ConsoleManager()
 {
 	this->running = true;
@@ -180,6 +242,14 @@ void ConsoleManager::initializeConsoles()
 //	this->registerScreen(screen3);
 //}
 
+
+/**
+ * @brief Checks if a console exists in the console table.
+ * 
+ * @param consoleName The name of the console to check.
+ * @return true If the console exists in the console table.
+ * @return false If the console does not exist in the console table.
+ */
 bool ConsoleManager::hasConsole(const String consoleName) const {
     return consoleTable.find(consoleName) != consoleTable.end();
 }
