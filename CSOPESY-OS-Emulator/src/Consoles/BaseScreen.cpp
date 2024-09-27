@@ -45,6 +45,7 @@ void BaseScreen::process()
 
 	String command;
 	std::getline(std::cin, command);
+	this->history += command + "\n";
 
 	std::vector<String> commandParts = Common::commandExtractor(command);
 

@@ -12,6 +12,7 @@ public:
 	~AConsole() = default;
 
 	String name;
+	String history;
 
 	// Main Methods
 	virtual void onEnabled() = 0; // Called when the console is enabled
@@ -26,7 +27,7 @@ public:
 protected:
 	// Display and Commands
 	virtual void printHeader() const;
-	virtual void clear() const;
+	virtual void clear();
 	virtual void exit() const;
 	virtual void help() const;
 	virtual void commandNotFound(const String command) const;

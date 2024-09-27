@@ -10,6 +10,7 @@
 AConsole::AConsole(String name)
 {
 	this->name = name;
+    this->history = "";
 }
 
 // TEMP: Print the name
@@ -21,9 +22,10 @@ void AConsole::printHeader() const
 /**
  * @brief Clears the console screen and prints the header.
  */
-void AConsole::clear() const
+void AConsole::clear()
 {
     system("cls");
+    this->history = "";
     printHeader();
 }
 

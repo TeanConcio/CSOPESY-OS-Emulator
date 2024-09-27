@@ -27,6 +27,7 @@ void MainConsole::process() {
     String command;
 	std::cout << "\033[1;0m" << "Enter a command: ";
 	std::getline(std::cin, command);
+	this->history += ("\033[1;0mEnter a command: " + command + "\n");
 
 	// Extract command parts
     std::vector<String> commandParts = Common::commandExtractor(command);
