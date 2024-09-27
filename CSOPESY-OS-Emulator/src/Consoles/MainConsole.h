@@ -8,7 +8,7 @@ class MainConsole : public AConsole
 public:
 	MainConsole(String name);
 
-	void onEnabled() override;
+    // Override everything because main
 	void process() override;
 	void display() override;
 
@@ -22,7 +22,8 @@ private:
     void schedulerTest() const;
     void schedulerStop() const;
     void reportUtil() const;
-    void addProcess(std::shared_ptr <Process> process);
+    void addProcess(std::shared_ptr <Process> process); // Add process to process table
 
+    // List of all the processes
     std::vector<std::shared_ptr<Process>> processTable;
 };
