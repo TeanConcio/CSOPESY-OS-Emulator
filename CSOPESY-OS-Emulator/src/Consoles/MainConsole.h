@@ -9,7 +9,6 @@ public:
 	MainConsole(String name);
 
     // Override everything because main
-	void onEnabled() override;
 	void process() override;
 	void display() override;
 

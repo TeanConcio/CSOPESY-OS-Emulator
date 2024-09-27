@@ -1,6 +1,8 @@
 #include "ConsoleManager.h"
+#include "./Consoles/AConsole.h"
 
 #include <iostream>
+#include <sstream> // Include this header for std::ostringstream
 
 #include "./Consoles/MainConsole.h"
 //#include "MarqueeConsole.h"
@@ -84,14 +86,20 @@ void ConsoleManager::process() const
  * 
  * @param consoleName The name of the console to switch to.
  */
-void ConsoleManager::switchConsole(String consoleName)
+void ConsoleManager::switchConsole(std::string consoleName)
 {
-	if (hasConsole(consoleName))
+	if (consoleTable.find(consoleName) != consoleTable.end())
 	{
+		if (currentConsole != nullptr)
+		{
+			previousConsole = currentConsole;
+			previousConsole->onDisabled();
+		}
+
 		system("cls");
-		this->previousConsole = this->currentConsole;
-		this->currentConsole = this->consoleTable[consoleName];
-		this->currentConsole->onEnabled();
+
+		currentConsole = consoleTable[consoleName];
+		currentConsole->onEnabled();
 	}
 	else
 	{
@@ -110,8 +118,14 @@ void ConsoleManager::switchToScreen(String screenName)
 {
 	if (hasConsole(screenName))
 	{
+		if (currentConsole != nullptr)
+		{
+			previousConsole = currentConsole;
+			previousConsole->onDisabled();
+		}
+
 		system("cls");
-		this->previousConsole = this->currentConsole;
+
 		this->currentConsole = this->consoleTable[screenName];
 		this->currentConsole->onEnabled();
 	}
@@ -166,12 +180,16 @@ void ConsoleManager::unregisterScreen(String screenName)
  */
 void ConsoleManager::returnToPreviousConsole()
 {
-	if (this->previousConsole != nullptr)
+	if (previousConsole)
 	{
+		currentConsole->onDisabled();
+		currentConsole = previousConsole;
+
 		system("cls");
-		this->currentConsole = this->previousConsole;
-		this->previousConsole = nullptr;
-		this->currentConsole->onEnabled();
+
+		previousConsole = nullptr;
+		// currentConsole->printHeader();
+		currentConsole->onEnabled();
 	}
 	else
 	{

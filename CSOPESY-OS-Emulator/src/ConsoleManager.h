@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <memory>
 #include <unordered_map>
+#include <string>
+#include "./Consoles/AConsole.h"
 
 #include "./Consoles/BaseScreen.h"
 
@@ -11,6 +13,9 @@ const String MAIN_CONSOLE = "MAIN_CONSOLE";
 const String MARQUEE_CONSOLE = "MARQUEE_CONSOLE";
 const String SCHEDULING_CONSOLE = "SCHEDULING_CONSOLE";
 const String MEMORY_CONSOLE = "MEMORY_CONSOLE";
+
+class AConsole;
+class BaseScreen;
 
 class ConsoleManager
 {
@@ -28,10 +33,10 @@ public:
     void drawConsole() const;
     void process() const;
 
-    void switchConsole(String consoleName);
-    void switchToScreen(String screenName);
+    void switchConsole(std::string consoleName);
+    void switchToScreen(std::string screenName);
     void registerScreen(std::shared_ptr<BaseScreen> screenRef);
-    void unregisterScreen(String screenName);
+    void unregisterScreen(std::string screenName);
 
     void returnToPreviousConsole();
     void exitApplication();
@@ -54,6 +59,7 @@ private:
     ConsoleTable consoleTable; // Actual definition, private
     std::shared_ptr<AConsole> currentConsole;
     std::shared_ptr<AConsole> previousConsole;
+    std::string initialScreenBuffer; // Buffer to store initial screen content
 
     HANDLE consoleHandle;
     bool running = true;

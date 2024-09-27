@@ -1,7 +1,6 @@
 #pragma once
 
 #include "./../TypedefRepo.h"
-#include <sstream>
 
 // Abstract class of Console (Screen)
 class AConsole
@@ -13,14 +12,19 @@ public:
 	~AConsole() = default;
 
 	String name;
-	std::ostringstream buffer;
-	std::streambuf* originalCoutBuffer;
-	String history;
 
 	// Main Methods
-	virtual void onEnabled() = 0; // Called when the console is enabled
+	virtual void onEnabled(); // Called when the console is enabled
+	virtual void onDisabled(); // Called when the console is disabled
 	virtual void display() = 0; // Called when the console is displayed and runs per frame
 	virtual void process() = 0;	// Called when the console is processing input, commands, or algorithms
+
+	void captureScreenContent();
+	void restoreScreenContent() const;
+	//void printBufferContent() const;
+
+	std::string screenBuffer; // Buffer to store screen content
+	std::string getCurrentScreenContent() const;
 
 	//Friend can access anything in console manager
 	friend class ConsoleManager;
@@ -30,10 +34,8 @@ public:
 protected:
 	// Display and Commands
 	virtual void printHeader() const;
-	virtual void clear();
-	virtual void beginSavingHistory();
-	virtual void stopSavingHistory();
+	virtual void clear() const;
 	virtual void exit() const;
 	virtual void help() const;
-	virtual void commandNotFound(const String command);
+	virtual void commandNotFound(const String command) const;
 };

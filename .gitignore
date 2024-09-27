@@ -33,4 +33,5 @@
 
 # Visual Studio Folders
 /.vs
-/x64
+x64/
+bin/

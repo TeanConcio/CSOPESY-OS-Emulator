@@ -24,6 +24,7 @@ BaseScreen::BaseScreen(std::shared_ptr<Process> process, String processName) : A
  */
 void BaseScreen::onEnabled()
 {
+	AConsole::onEnabled();
 	this->refreshed = false;
 }
 
@@ -38,14 +39,13 @@ void BaseScreen::process()
 	if (this->refreshed == false)
 	{
 		this->refreshed = true;
-		this->printProcessInfo();
+		//this->printProcessInfo();
 	}
 
 	std::cout << "root:\\>";
 
 	String command;
 	std::getline(std::cin, command);
-	this->history += command + "\n";
 
 	std::vector<String> commandParts = Common::commandExtractor(command);
 
@@ -61,7 +61,7 @@ void BaseScreen::process()
 	else if (commandParts[0] == "exit")
 	{
 		this->exit();
-		ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the process
+		//ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the process
 	}
 	else {
 		this->commandNotFound(command);
