@@ -1,5 +1,4 @@
 // Include standard libraries
-// Inherited by AConsole and everything that uses AConsole
 #include <iostream>
 #include <string>
 #include <vector>

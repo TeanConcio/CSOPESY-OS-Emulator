@@ -9,9 +9,6 @@ int main() {
 
 
 	// Main loop
-	// Any process that happens in between every frame
-	// Every frame draw console
-	// Process waits for now because no marquee
 	bool running = true;
 	while (running)
 	{

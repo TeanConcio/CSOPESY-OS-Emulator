@@ -8,7 +8,6 @@
 
 #include "./Consoles/BaseScreen.h"
 
-// Default names
 const String MAIN_CONSOLE = "MAIN_CONSOLE";
 const String MARQUEE_CONSOLE = "MARQUEE_CONSOLE";
 const String SCHEDULING_CONSOLE = "SCHEDULING_CONSOLE";
@@ -20,16 +19,13 @@ class BaseScreen;
 class ConsoleManager
 {
 public:
-    // Singleton
     static ConsoleManager* getInstance();
     static void initialize();
     static void destroy();
 
-    // Console table key value pair (name and pointer)
-    typedef std::unordered_map<String, std::shared_ptr<AConsole>> ConsoleTable; // Typedef for console table
+    typedef std::unordered_map<String, std::shared_ptr<AConsole>> ConsoleTable;
     int prcoessID = 1;
 
-    // Calls current active console and uses their display and process
     void drawConsole() const;
     void process() const;
 
@@ -47,7 +43,6 @@ public:
     void setCursorPosition(int posX, int posY) const;
 
 private:
-    // Singleton
     // Private constructor so that no objects can be created.
     ConsoleManager();
     ~ConsoleManager() = default;
@@ -56,7 +51,7 @@ private:
     static ConsoleManager* sharedInstance;
 
     // Console Management
-    ConsoleTable consoleTable; // Actual definition, private
+    ConsoleTable consoleTable;
     std::shared_ptr<AConsole> currentConsole;
     std::shared_ptr<AConsole> previousConsole;
     std::string initialScreenBuffer; // Buffer to store initial screen content
