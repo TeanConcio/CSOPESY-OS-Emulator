@@ -16,6 +16,7 @@ MainConsole::MainConsole(String name) : AConsole(name) {}
  */
 void MainConsole::onEnabled() {
     this->printHeader();
+	std::cout << "\033[1;0m" << this->history;
 }
 
 /**
@@ -27,10 +28,11 @@ void MainConsole::process() {
     String command;
 	std::cout << "\033[1;0m" << "Enter a command: ";
 	std::getline(std::cin, command);
-	this->history += ("\033[1;0mEnter a command: " + command + "\n");
+    this->history += "\033[1;0mEnter a command: " + command + "\n";
 
 	// Extract command parts
     std::vector<String> commandParts = Common::commandExtractor(command);
+	// this->beginSavingHistory();
 
 	// Check if command is empty
 	if (commandParts[0] == "initialize") {
@@ -40,6 +42,7 @@ void MainConsole::process() {
 		// Check if enough arguments
 		if (commandParts.size() <= 2) {
 			this->commandNotFound(command);
+			// this->stopSavingHistory();
 			return;
 		}
         else if (commandParts[1] == "-s") {
@@ -47,6 +50,8 @@ void MainConsole::process() {
 			for (const auto& process : this->processTable) {
 				if (process->name == commandParts[2]) {
 					std::cout << "Process " << commandParts[2] << " already exists." << std::endl;
+					this->history += "Process " + commandParts[2] + " already exists.\n";
+					// this->stopSavingHistory();
 					return;
 				}
 			}
@@ -64,12 +69,15 @@ void MainConsole::process() {
 			for (const auto& process : this->processTable) {
 				if (process->name == commandParts[2]) {
 					auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
-					ConsoleManager::getInstance()->registerScreen(screen);
+					ConsoleManager::getInstance()->registerScreen(screen);					
 					ConsoleManager::getInstance()->switchConsole(commandParts[2]);
+					// this->stopSavingHistory();
 					return;
 				}	
 			}
-			std::cerr << "Unable to redraw " << commandParts[2] << ". Was it registered?" << std::endl;
+			std::cout << "Unable to redraw " << commandParts[2] << ". Was it registered?" << std::endl;
+			this->history += "Unable to redraw " + commandParts[2] + ". Was it registered?\n";
+			// this->stopSavingHistory();
 			return;
         }
         else {
@@ -97,6 +105,8 @@ void MainConsole::process() {
 	else {
 		this->commandNotFound(command);
 	}
+
+	// this->stopSavingHistory();
 }
 
 void MainConsole::display() {

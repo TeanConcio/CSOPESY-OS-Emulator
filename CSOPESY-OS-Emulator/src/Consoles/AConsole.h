@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./../TypedefRepo.h"
+#include <sstream>
 
 // Abstract class of Console (Screen)
 class AConsole
@@ -12,6 +13,8 @@ public:
 	~AConsole() = default;
 
 	String name;
+	std::ostringstream buffer;
+	std::streambuf* originalCoutBuffer;
 	String history;
 
 	// Main Methods
@@ -28,7 +31,9 @@ protected:
 	// Display and Commands
 	virtual void printHeader() const;
 	virtual void clear();
+	virtual void beginSavingHistory();
+	virtual void stopSavingHistory();
 	virtual void exit() const;
 	virtual void help() const;
-	virtual void commandNotFound(const String command) const;
+	virtual void commandNotFound(const String command);
 };

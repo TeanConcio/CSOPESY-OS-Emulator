@@ -53,8 +53,23 @@ void AConsole::help() const
  * 
  * @param command The command that was not found.
  */
-void AConsole::commandNotFound(const String command) const
+void AConsole::commandNotFound(const String command) 
 {
     std::cout << "Unknown command: " << command << std::endl;
+	this->history += "Unknown command: " + command + "\n";
     //std::cout << "Type 'help' for a list of commands" << std::endl;
+}
+
+void AConsole::beginSavingHistory()
+{
+    this->originalCoutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(this->buffer.rdbuf());
+}
+
+void AConsole::stopSavingHistory()
+{
+    std::cout.rdbuf(this->originalCoutBuffer);
+    this->history += this->buffer.str() + "\n";
+    this->buffer.str("");
+    this->buffer.clear();
 }
