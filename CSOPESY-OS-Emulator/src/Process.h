@@ -1,7 +1,7 @@
 #pragma once
 #include <ctime>
 #include "TypedefRepo.h"
-#include "../ICommand.h"
+#include "Commands/ICommand.h"
 
 class Process
 {

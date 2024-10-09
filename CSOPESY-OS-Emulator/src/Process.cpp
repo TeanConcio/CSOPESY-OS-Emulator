@@ -25,7 +25,7 @@ void Process::addCommand(ICommand::CommandType commandType)
 	}
 }
 
-void Process::executeNextCommand()
+void Process::executeCurrentCommand() const
 {
 	this->commandList[this->commandCounter]->execute();
 }
@@ -35,7 +35,7 @@ void Process::moveToNextLine()
 	this->commandCounter++;
 }
 
-void Process::isFinished() const
+bool Process::isFinished() const
 {
 	return this->commandCounter == this->commandList.size();
 }
