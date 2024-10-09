@@ -1,30 +1,32 @@
-#include "AConsole.h"
-#include "./../Process.h"
-#include "./../TypedefRepo.h"
+#pragma once
+
+#include "../ConsoleManager.h"
+
 #include <memory>
+
 
 class MainConsole : public AConsole
 {
 public:
-	MainConsole(String name);
+	MainConsole(const String& name);
 
-    // Override everything because main
-	void onEnabled() override;
+	// Override everything because main
 	void process() override;
 	void display() override;
 
 private:
-    void printHeader() const override;
-    void exit() const override;
-    void help() const override;
+	void decideCommand(const String& command) override;
+	void printHeader() override;
+	void exit() const;
+	void help() override;
 
-    // Additional Commands
-    void initialize() const;
-    void schedulerTest() const;
-    void schedulerStop() const;
-    void reportUtil() const;
-    void addProcess(std::shared_ptr <Process> process); // Add process to process table
+	// Additional Commands
+	void initialize();
+	void schedulerTest();
+	void schedulerStop();
+	void reportUtil();
+	void addProcess(std::shared_ptr <Process> process); // Add process to process table
 
-    // List of all the processes
-    std::vector<std::shared_ptr<Process>> processTable;
+	// List of all the processes
+	std::vector<std::shared_ptr<Process>> processTable;
 };

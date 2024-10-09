@@ -2,74 +2,116 @@
 
 #include "./../ConsoleManager.h"
 
-/**
- * @brief Constructor for AConsole.
- * 
- * @param name The name of the console.
- */
-AConsole::AConsole(String name)
+
+AConsole::AConsole(const String& name)
 {
 	this->name = name;
-    this->history = "";
+	this->history = std::vector<String>();
 }
 
-// TEMP: Print the name
-void AConsole::printHeader() const
+
+void AConsole::onEnabled()
 {
-    std::cout << "Console: " << this->name << std::endl;
+	// If history is empty, print the header
+	if (this->history.empty()) {
+		this->printHeader();
+	}
+	else {
+		this->printHistory();
+	}
 }
+
+void AConsole::onDisabled()
+{
+}
+
+
+void AConsole::writeToConsoleHistory(const String& input, const bool onlySaveToHistory)
+{
+	// If last item of history doesn't have a newline, continue on the same line
+	if (!this->history.empty() && this->history.back().back() != '\n')
+		this->history.back() += input;
+	else
+		this->history.push_back(input);
+
+	if (onlySaveToHistory == false)
+		std::cout << input;
+}
+
+
+String AConsole::getConsoleInputToHistory()
+{
+	// Get input
+	String input;
+	std::getline(std::cin, input);
+
+	// If last item of history doesn't have a newline, continue on the same line
+	if (!this->history.empty() && this->history.back().back() != '\n')
+		this->history.back() += input + '\n';
+	else
+		this->history.push_back(input + '\n');
+
+	return input;
+}
+
+
+void AConsole::printHistory() const
+{
+	for (const auto& line : this->history)
+	{
+		std::cout << line;
+	}
+}
+
+
+// TEMP: Print the name
+void AConsole::printHeader()
+{
+	this->writeToConsoleHistory("Console: " + this->name + "\n");
+}
+
 
 /**
  * @brief Clears the console screen and prints the header.
  */
 void AConsole::clear()
 {
-    system("cls");
-    this->history = "";
-    printHeader();
+	// Clear the console
+	system("cls");
+	this->history.clear();
+	this->printHeader();
 }
+
 
 /**
  * @brief Returns to the previous console.
  */
-void AConsole::exit() const
+void AConsole::exit()
 {
-    ConsoleManager::getInstance()->returnToPreviousConsole();
+	this->writeToConsoleHistory("Exiting console: " + this->name + "\n");
+	ConsoleManager::getInstance()->returnToPreviousConsole();
 }
+
 
 /**
  * @brief Displays a list of available commands.
  */
-void AConsole::help() const
+void AConsole::help()
 {
-    std::cout << "List of commands: " << std::endl;
-    std::cout << "\thelp : Displays this help message" << std::endl;
-    std::cout << "\tclear : Clears the console screen" << std::endl;
-    std::cout << "\texit : Exits the console" << std::endl;
+	this->writeToConsoleHistory("List of commands: \n");
+	this->writeToConsoleHistory("\thelp : Displays this help message\n");
+	this->writeToConsoleHistory("\tclear : Clears the console screen\n");
+	this->writeToConsoleHistory("\texit : Exits the console\n");
 }
+
 
 /**
  * @brief Displays a message for an unknown command.
  * 
  * @param command The command that was not found.
  */
-void AConsole::commandNotFound(const String command) 
+void AConsole::commandNotFound(const String& command) 
 {
-    std::cout << "Unknown command: " << command << std::endl;
-	this->history += "Unknown command: " + command + "\n";
-    //std::cout << "Type 'help' for a list of commands" << std::endl;
-}
-
-void AConsole::beginSavingHistory()
-{
-    this->originalCoutBuffer = std::cout.rdbuf();
-    std::cout.rdbuf(this->buffer.rdbuf());
-}
-
-void AConsole::stopSavingHistory()
-{
-    std::cout.rdbuf(this->originalCoutBuffer);
-    this->history += this->buffer.str() + "\n";
-    this->buffer.str("");
-    this->buffer.clear();
+	this->writeToConsoleHistory("Unknown command: " + command + "\n");
+	//writeToConsoleHistory("Type 'help' for a list of commands\n");
 }

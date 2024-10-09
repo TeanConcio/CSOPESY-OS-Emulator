@@ -38,34 +38,23 @@ void BaseScreen::process()
 	if (this->refreshed == false)
 	{
 		this->refreshed = true;
-		this->printProcessInfo();
+		
+		if (this->history.empty())
+		{
+			this->printHeader();
+		}
+		else
+		{
+			this->printHistory();
+		}
 	}
 
-	std::cout << "root:\\>";
+	this->writeToConsoleHistory("root:\\>");
 
 	String command;
-	std::getline(std::cin, command);
-	this->history += command + "\n";
+	command = this->getConsoleInputToHistory();
 
-	std::vector<String> commandParts = Common::commandExtractor(command);
-
-	// Inherited commands
-	if (commandParts[0] == "clear" || command == "cls") 
-	{
-		this->clear();
-	}
-	else if (commandParts[0] == "process-smi")
-	{
-		this->printProcessInfo();
-	}
-	else if (commandParts[0] == "exit")
-	{
-		this->exit();
-		ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the process
-	}
-	else {
-		this->commandNotFound(command);
-	}
+	this->decideCommand(command);
 }
 
 void BaseScreen::display()
@@ -77,28 +66,53 @@ void BaseScreen::display()
  * 
  * Prints the name, ID, current instruction line, total lines of code, and creation time of the process.
  */
-void BaseScreen::printProcessInfo() const
+void BaseScreen::printProcessInfo()
 {
-	std::cout << "Process: " << this->attachedProcess->name << std::endl;
-	std::cout << "ID: " << this->attachedProcess->id << std::endl;
-	std::cout << std::endl;
-	std::cout << "Current instruction line: " << this->attachedProcess->currInstructionLine << std::endl;
-	std::cout << "Lines of code: " << this->attachedProcess->totalCodeLines << std::endl;
-	std::cout << std::endl;
+	/*this->writeToConsoleHistory("Process: " + this->attachedProcess->getName() + "\n");
+	this->writeToConsoleHistory("ID: " + std::to_string(this->attachedProcess->getPID()) + "\n");
+	this->writeToConsoleHistory("\n");
+	this->writeToConsoleHistory("Current instruction line: " + std::to_string(this->attachedProcess->getCommandCounter()) + "\n");
+	this->writeToConsoleHistory("Lines of code: " + std::to_string(this->attachedProcess->getLinesOfCode()) + "\n");
+	this->writeToConsoleHistory("\n");*/
 
-	char buffer[26];
+	/*char buffer[26];
 	std::tm timeInfo;
 	localtime_s(&timeInfo, &this->attachedProcess->createdTime);
 	asctime_s(buffer, sizeof(buffer), &timeInfo);
-	std::cout << "Created: " << buffer << std::endl;
+	this->writeToConsoleHistory("Created: " + String(buffer) + "\n");*/
 }
+
+
+void BaseScreen::decideCommand(const String& command)
+{
+	std::vector<String> commandParts = Common::commandExtractor(command);
+
+	// Inherited commands
+	if (commandParts[0] == "clear" || command == "cls")
+	{
+		this->clear();
+	}
+	else if (commandParts[0] == "process-smi")
+	{
+		this->printProcessInfo();
+	}
+	else if (commandParts[0] == "exit")
+	{
+		this->exit();
+		//ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the process
+	}
+	else {
+		this->commandNotFound(command);
+	}
+}
+
 
 /**
  * @brief Prints the header information.
  * 
  * This function calls printProcessInfo to print the process information.
  */
-void BaseScreen::printHeader() const
+void BaseScreen::printHeader()
 {
 	this->printProcessInfo();
 }

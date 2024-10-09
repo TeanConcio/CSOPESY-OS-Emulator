@@ -5,7 +5,7 @@
 #include <vector>
 
 // Typedefs
-typedef std::string String;
+using String = std::string;
 
 // Using namespace
 //using namespace std;

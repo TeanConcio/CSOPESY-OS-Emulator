@@ -1,36 +1,57 @@
-#include "AConsole.h"
-#include "./../TypedefRepo.h"
+#pragma once
+
+#include "../ConsoleManager.h"
+
+#include <Windows.h>
 #include <thread>
-#include <atomic>
-#include <mutex>
+#include <conio.h>
+
 
 class MarqueeConsole : public AConsole
 {
 public:
-	MarqueeConsole(String name);
-	~MarqueeConsole();
+	MarqueeConsole(const String& name);
+
+	String name;
+	bool running = false;
 
 	void onEnabled() override;
-	void process() override;
-	void display() override;
+	void onDisabled() override;
+
+	void process();
+	void display();
+
+
 
 private:
-	void printHeader() const override;
-	void clearConsoleArea(int endY);
-	void incrementPosition(int& row, int& col, int rowDirection, int colDirection);
-	void checkBoundaries(int& row, int& col, int& rowDirection, int& colDirection, int consoleWidth, int consoleHeight, const String& text);
-	void printMarqueeTextAtPosition(const String& text, int row, int col);
-	void printMarqueeText();
-	void printCommandInputField(int consoleHeight);
+	static const int REFRESH_DELAY = 50;
+	static const int POLLING_DELAY = 50;
 
-	String text;
-	int refreshRateMs;
-	int pollRateMs;
-	int consoleWidth;
-	int consoleHeight;
-	std::atomic<bool> running;
-	std::thread marqueeThread;
-	std::thread commandThread;
-	std::mutex consoleMutex;
+	int marqueeWidth = 100;
+	int marqueeHeight = 20;
+	int marqueeXSpd = 1;
+	int marqueeYSpd = 1;
+
+	String marqueeText = "Hello world in marquee!";
+	int marqueeTextSize = marqueeText.length();
+	int marqueeX = 0;
+	int marqueeY = 0;
+
+	String commandPrompt = "Enter a command for MARQUEE_CONSOLE: ";
+	int commandPromptSize = static_cast<int>(marqueeText.length());
+	int currentCommandCursorPosition = 0;
+	std::vector<char> currentCommand;
+
+	std::thread keyboardThread;
+	void pollKeyboard(bool threading);
+
+	bool cursorVisible = true;
+	std::thread cursorThread;
+
+	void decideCommand(const String& command) override;
+	void printHeader() const;
+	void printMarquee() const;
+	void printCurrentCommand();
+	void toggleCursorVisibility();
+	void printHistory() const override;
 };
-
