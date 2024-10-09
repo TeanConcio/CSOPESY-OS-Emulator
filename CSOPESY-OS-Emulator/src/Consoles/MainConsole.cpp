@@ -26,9 +26,9 @@ void MainConsole::onEnabled() {
  */
 void MainConsole::process() {
     String command;
-	std::cout << "\033[1;0m" << "Enter a command: ";
+	std::cout << "root:\\>";
 	std::getline(std::cin, command);
-    this->history += "\033[1;0mEnter a command: " + command + "\n";
+    this->history += "root:\\>:" + command + "\n";
 
 	// Extract command parts
     std::vector<String> commandParts = Common::commandExtractor(command);
@@ -102,6 +102,10 @@ void MainConsole::process() {
     else if (commandParts[0] == "help") {
 		this->help();
 	}
+	else if (commandParts[0] == "marquee") {
+		// Switch to marquee screen
+		ConsoleManager::getInstance()->switchConsole("MARQUEE_CONSOLE");
+	}
 	else {
 		this->commandNotFound(command);
 	}
@@ -124,8 +128,17 @@ void MainConsole::printHeader() const {
     std::cout << "| |   \\___ \\| | | | |_) |  _| \\___ \\\\ V / \n";
     std::cout << "| |___ ___) | |_| |  __/| |___ ___) || |  \n";
     std::cout << "\\____|_____/ \\___/|_|   |_____|____/ |_|  \n";
-    std::cout << "\033[1;32m" << "Hello, Welcome to CSOPESY commandline!\n";
-    std::cout << "\033[1;33m" << "Type 'exit' to quit, 'clear' to clear the screen\n";
+	std::cout << "-------------------------------------------\n";
+    // std::cout << "\033[1;32m" << "Hello, Welcome to CSOPESY commandline!\n";
+    // std::cout << "\033[1;33m" << "Type 'exit' to quit, 'clear' to clear the screen\n";
+	std::cout << "Welcome to the CSOPESY Emulator!\n\n";
+	std::cout << "Developers:\n";
+	std::cout << "Concio, Tean Jeremy\n";
+	std::cout << "Ong, Nicole Daphne\n";
+	std::cout << "Teves, Hannah Juliet\n";
+	std::cout << "Yu, Marco Jalen\n\n";
+	std::cout << "Last updated: 10-08-2024\n";
+	std::cout << "-------------------------------------------\n\n";
 }
 
 /**
@@ -153,6 +166,7 @@ void MainConsole::help() const {
 	std::cout << "\tscheduler-test : Tests the scheduler\n";
 	std::cout << "\tscheduler-stop : Stops the scheduler\n";
 	std::cout << "\treport-util : Generates a report\n";
+	std::cout << "\tmarquee: Open a threaded marquee console\n";
 }
 
 void MainConsole::initialize() const {

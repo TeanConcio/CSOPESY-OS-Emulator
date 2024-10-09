@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "./Consoles/MainConsole.h"
-//#include "MarqueeConsole.h"
+#include "./Consoles/MarqueeConsole.h"
 //#include "SchedulingConsole.h"
 //#include "MemorySimulationConsole.h"
 #include "./Consoles/BaseScreen.h"
@@ -217,12 +217,12 @@ ConsoleManager::ConsoleManager()
 void ConsoleManager::initializeConsoles()
 {
 	const std::shared_ptr<MainConsole> mainConsole = std::make_shared<MainConsole>(MAIN_CONSOLE);
-	//const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
+	const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>(MARQUEE_CONSOLE);
 	//const std::shared_ptr<SchedulingConsole> schedulingConsole = std::make_shared<SchedulingConsole>();
 	//const std::shared_ptr<MemorySimulationConsole> memoryConsole = std::make_shared<MemorySimulationConsole>();
 
 	this->consoleTable[MAIN_CONSOLE] = mainConsole;
-	//this->consoleTable[MARQUEE_CONSOLE] = marqueeConsole;
+	this->consoleTable[MARQUEE_CONSOLE] = marqueeConsole;
 	//this->consoleTable[SCHEDULING_CONSOLE] = schedulingConsole;
 	//this->consoleTable[MEMORY_CONSOLE] = memoryConsole;
 }

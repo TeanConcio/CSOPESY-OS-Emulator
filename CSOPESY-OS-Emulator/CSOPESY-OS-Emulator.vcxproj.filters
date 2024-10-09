@@ -38,6 +38,12 @@
     <ClCompile Include="src\Process.cpp">
       <Filter>Common Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Consoles\MarqueeConsole.cpp">
+      <Filter>Console Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Consoles\MarqueeConsole.h">
+      <Filter>Console Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp">
