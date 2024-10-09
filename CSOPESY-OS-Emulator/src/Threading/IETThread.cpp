@@ -1,5 +1,9 @@
 #include "IETThread.h"
 
+IETThread::IETThread()
+{
+}
+
 void IETThread::start()
 {
 	// Detach the thread so it can run independently
