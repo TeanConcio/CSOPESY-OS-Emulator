@@ -18,6 +18,22 @@ void GlobalScheduler::tick() const
 	this->scheduler->execute();
 }
 
-std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name) {
-	return std::make_shared<Process>(0, name, RequirementFlags::NONE);
+std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name) 
+{
+    std::shared_ptr<Process> existingProcess = this->findProcess(name);
+	if (existingProcess != nullptr)
+	{
+		return existingProcess;
+	}
+	else
+	{
+
+		std::shared_ptr<Process> newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
+		newProcess->test_generateRandomCommands(50);
+
+		this->scheduler->addProcess(newProcess);
+		this->pidCounter++;
+
+		return newProcess;
+	}
 }

@@ -11,4 +11,6 @@ public:
 	std::shared_ptr<Process> createUniqueProcess(String name);
 private:
 	AScheduler* scheduler;
+	static GlobalScheduler* sharedInstance;
+	int pidCounter = 0;
 };
