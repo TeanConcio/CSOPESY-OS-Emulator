@@ -7,7 +7,7 @@
 class Process
 {
 public:
-	struct RequirementFlags 
+	struct RequirementFlags // TODO: Change to actual flags
 	{
 		bool requireFiles;
 		int numFiles;
@@ -39,7 +39,7 @@ public:
 	ProcessState getState() const;
 	String getName() const;
 
-	void test_generateRandomCommands(int limit);
+	void test_generateRandomCommands(int limit); // TEMP: make random in the future
 
 private: 
 	int pid;
@@ -47,9 +47,9 @@ private:
 	typedef std::vector<std::shared_ptr<ICommand>> CommandList;
 	CommandList commandList;
 
-	int commandCounter;
-	int cpuCoreID = -1;
-	RequirementFlags requirementFlags;
+	int commandCounter; // determines index of what command you are in
+	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
+	RequirementFlags requirementFlags; 
 	ProcessState currentState;
 
 	// friend class ResourceEmulator;

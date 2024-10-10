@@ -2,6 +2,7 @@
 #include "ICommand.h"
 #include "../TypedefRepo.h"
 
+// implements the ICommand interface
 class PrintCommand :
     public ICommand
 {

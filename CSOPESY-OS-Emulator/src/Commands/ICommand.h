@@ -1,6 +1,7 @@
 #pragma once
 #include "../Threading//IETThread.h"
 
+// interface blueprint for all commands
 class ICommand
 {
 public:
@@ -15,8 +16,8 @@ public:
 	virtual void execute();
 
 protected:
-	int pid;
-	CommandType commandType;
+	int pid; // process id to which the command belongs
+	CommandType commandType; // type of command
 };
 
 inline ICommand::CommandType ICommand::getCommandType()

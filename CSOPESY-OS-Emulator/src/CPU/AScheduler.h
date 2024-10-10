@@ -11,7 +11,8 @@ static const String FCFS_SCHEDULER_NAME = "FCFSScheduler";
 static const String SJF_NOPREEMPT_SCHEDULER_NAME = "SJF-NoPreempt-Scheduler";
 static const String SJF_PREEMPT_SCHEDULER_NAME = "SJF-Preempt-Scheduler";
 
-class AScheduler : public IETThread
+// Abstract class for all schedulers
+class AScheduler : public IETThread // have a thread for each scheduler
 {
 public:
 	enum SchedulingAlgorithm
@@ -25,7 +26,7 @@ public:
 
 	AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, String processName);
 
-	void addProcess(std::shared_ptr<Process> process);
+	void addProcess(std::shared_ptr<Process> process); // adds a process to the scheduler
 	std::shared_ptr<Process> findProcess(String processName);
 	void run() override;
 	void stop();

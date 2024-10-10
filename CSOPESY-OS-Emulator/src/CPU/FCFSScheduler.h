@@ -4,6 +4,7 @@
 #include "GlobalScheduler.h"
 #include "../TypedefRepo.h"
 
+// First-Come-First-Serve Scheduler
 class FCFSScheduler : public AScheduler
 {
 public:

@@ -48,7 +48,7 @@ std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name)
 			name = this->generateProcessName();
 		}
 		std::shared_ptr<Process> newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
-		newProcess->test_generateRandomCommands(50);
+		newProcess->test_generateRandomCommands(100);
 
 		this->scheduler->addProcess(newProcess);
 		this->pidCounter++;

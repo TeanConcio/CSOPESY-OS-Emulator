@@ -7,6 +7,7 @@ PrintCommand::PrintCommand(int pid, String& toPrint)
 	this->toPrint = toPrint;
 }
 
+// prints the message to the console
 void PrintCommand::execute()
 {
 	std::cout << "PID " << this->pid << ": " << this->toPrint << std::endl;

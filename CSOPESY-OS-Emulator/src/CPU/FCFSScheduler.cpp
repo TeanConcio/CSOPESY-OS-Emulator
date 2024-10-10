@@ -2,10 +2,10 @@
 #include <algorithm>
 
 FCFSScheduler::FCFSScheduler(int cores) 
-	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS")
+	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS") //TEMP
 {
 	this->numCores = cores;
-	this->processQueues = std::vector<std::unordered_map<String, std::shared_ptr<Process>>>(cores);
+	this->processQueues = std::vector<std::unordered_map<String, std::shared_ptr<Process>>>(cores); // Hashmap of the processes per core to queue?
 }
 
 // Add a process to the scheduler
@@ -50,6 +50,7 @@ void FCFSScheduler::runScheduler()
 				std::shared_ptr<Process> currentProcess = it->second;
 				this->processQueues[core].erase(it);
 
+				// Run every possible process in the scheduler
 				while (!currentProcess->isFinished())
 				{
 					currentProcess->executeCurrentCommand();

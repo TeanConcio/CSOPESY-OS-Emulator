@@ -2,6 +2,7 @@
 #include "AScheduler.h"
 #include "../Process.h"
 
+// Manages throughout the OS, singleton
 class GlobalScheduler : public AScheduler {
 public:
 	GlobalScheduler();
@@ -17,5 +18,5 @@ public:
 private:
 	AScheduler* scheduler;
 	static GlobalScheduler* sharedInstance;
-	int pidCounter;
+	int pidCounter; // How many processes its created
 };

@@ -2,6 +2,7 @@
 
 #include <thread>
 
+// Interface
 class IETThread
 {
 public:
