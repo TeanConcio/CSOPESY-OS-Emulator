@@ -1,4 +1,5 @@
 #include "FCFSScheduler.h"
+#include <algorithm>
 
 FCFSScheduler::FCFSScheduler(int cores)
 {

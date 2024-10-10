@@ -1,9 +1,10 @@
+#pragma once
 #include <sstream>
 #include <unordered_map>
 
-#include "IETThread.h"
-#include "Process.h"
-#include "TypedefRepo.h"
+#include "../Threading/IETThread.h"
+#include "../Process.h"
+#include "../Common.h"
 
 static const String DEBUG_SCHEDULER_NAME = "DebugScheduler";
 static const String FCFS_SCHEDULER_NAME = "FCFSScheduler";
@@ -41,4 +42,8 @@ public:
 		int liensOfCode;
 		int remainingTime;
 	};
-}
+private:
+	SchedulingAlgorithm schedulingAlgo;
+	int pid;
+	String processName;
+};

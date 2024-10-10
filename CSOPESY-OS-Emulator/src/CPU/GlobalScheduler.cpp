@@ -1,8 +1,6 @@
 #include "GlobalScheduler.h"
-#include "AScheduler.h"
-#include "Process.h"
 
-GlobalScheduler::GlobalScheduler(Scheduler* scheduler)
+GlobalScheduler::GlobalScheduler(AScheduler* scheduler)
     : AScheduler(SchedulingAlgorithm::ROUND_ROBIN, 0, "GlobalScheduler"), scheduler(scheduler) {}
 
 void GlobalScheduler::initialize() 

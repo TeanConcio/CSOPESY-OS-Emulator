@@ -1,6 +1,6 @@
 #include "SchedulerWorker.h"
 
-#include "GlobalScheduler.h"
+#include "../CPU/GlobalScheduler.h"
 
 void SchedulerWorker::update(bool isRunning)
 {

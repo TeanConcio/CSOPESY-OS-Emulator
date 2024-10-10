@@ -1,3 +1,79 @@
-﻿  MarqueeConsole.cpp
-x64\Debug\MarqueeConsole.obj : warning LNK4042: object specified more than once; extras ignored
-  CSOPESY-OS-Emulator.vcxproj -> C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\x64\Debug\CSOPESY-OS-Emulator.exe
+﻿  AScheduler.cpp
+  FCFSScheduler.cpp
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(5,1): error C2512: 'AScheduler': no appropriate default constructor available
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(14,7):
+      see declaration of 'AScheduler'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(29,13): error C2039: 'getRemainingTime': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(29,36): error C2039: 'getRemainingTime': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(46,28): error C2039: 'hasFinished': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(48,21): error C2039: 'executeCurrentCommand': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(49,21): error C2039: 'moveToNextLine': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\FCFSScheduler.cpp(52,47): error C2039: 'getRemainingTime': is not a member of 'Process'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.h(72,7):
+      see declaration of 'Process'
+  
+  GlobalScheduler.cpp
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,5): error C2065: 'sharedInstance': undeclared identifier
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,26): error C2259: 'GlobalScheduler': cannot instantiate abstract class
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.h(4,7):
+      see declaration of 'GlobalScheduler'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,26):
+      due to following members:
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,26):
+      'void AScheduler::init(void)': is abstract
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(33,15):
+      see declaration of 'AScheduler::init'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,26):
+      'void AScheduler::execute(void)': is abstract
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(34,15):
+      see declaration of 'AScheduler::execute'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41): error C2259: 'GlobalScheduler': cannot instantiate abstract class
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.h(4,7):
+      see declaration of 'GlobalScheduler'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41):
+      due to following members:
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41):
+      'void AScheduler::init(void)': is abstract
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(33,15):
+      see declaration of 'AScheduler::init'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41):
+      'void AScheduler::execute(void)': is abstract
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(34,15):
+      see declaration of 'AScheduler::execute'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41): error C2512: 'GlobalScheduler::GlobalScheduler': no appropriate default constructor available
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(8,41):
+      while trying to match the argument list '()'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(13,12): error C2065: 'sharedInstance': undeclared identifier
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(13,5): error C2541: 'delete': cannot delete objects that are not pointers
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(22,44): error C2653: 'RequirementFlags': is not a class or namespace name
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(22,62): error C2065: 'NONE': undeclared identifier
+  IOCommand.cpp
+  PrintCommand.cpp
+  IETThread.cpp
+  SchedulerWorker.cpp
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Threading\SchedulerWorker.cpp(14,20): error C2039: 'getInstance': is not a member of 'GlobalScheduler'
+      C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.h(4,7):
+      see declaration of 'GlobalScheduler'
+  
+C:\Users\Marco\source\repos\TeanConcio\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Threading\SchedulerWorker.cpp(14,20): error C3861: 'getInstance': identifier not found
+  ICommand.h
+  Generating Code...

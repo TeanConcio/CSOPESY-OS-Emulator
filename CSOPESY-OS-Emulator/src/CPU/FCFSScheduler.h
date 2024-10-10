@@ -1,7 +1,8 @@
+#pragma once
+
 #include "AScheduler.h"
 #include "GlobalScheduler.h"
-#include "TypedefRepo.h"
-#include "Process.h"
+#include "../TypedefRepo.h"
 
 class FCFSScheduler : public AScheduler
 {

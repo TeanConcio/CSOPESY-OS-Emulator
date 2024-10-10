@@ -1,7 +1,7 @@
 #pragma once
-#include "IEThread.h"
+#include "IETThread.h"
 
-class SchedulerWorker : public IEThread
+class SchedulerWorker : public IETThread
 { 
 public:
 	SchedulerWorker() = default;

@@ -1,6 +1,5 @@
-#pragma once
 #include "AScheduler.h"
-#include "Process.h"
+#include "../Process.h"
 
 class GlobalScheduler : AScheduler {
 public:
