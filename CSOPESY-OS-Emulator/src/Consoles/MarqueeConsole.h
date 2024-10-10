@@ -54,4 +54,6 @@ private:
 	void printCurrentCommand();
 	void toggleCursorVisibility();
 	void printHistory() const override;
+
+	void clear() override;
 };

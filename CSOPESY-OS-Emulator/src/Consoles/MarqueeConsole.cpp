@@ -271,3 +271,8 @@ void MarqueeConsole::printHistory() const {
 			std::cout << command;
 	}
 }
+
+
+void MarqueeConsole::clear() {
+	this->history.clear();
+}
