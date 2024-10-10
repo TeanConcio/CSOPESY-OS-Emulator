@@ -39,11 +39,12 @@ public:
 		String name;
 		int cpuID;
 		int lineCounter;
-		int liensOfCode;
+		int linesOfCode;
 		int remainingTime;
 	};
+
 private:
 	SchedulingAlgorithm schedulingAlgo;
-	int pid;
-	String processName;
+	std::unordered_map<String, std::shared_ptr<Process>> processMap;
+	ProcessInfo currentProcessInfo;
 };

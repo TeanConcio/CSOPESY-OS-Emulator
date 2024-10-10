@@ -1,4 +1,6 @@
 #pragma once
+#include "../Threading//IETThread.h"
+
 class ICommand
 {
 public:
@@ -20,4 +22,15 @@ protected:
 inline ICommand::CommandType ICommand::getCommandType()
 {
 	return this->commandType;
+}
+
+inline ICommand::ICommand(int pid, CommandType commandType)
+{
+	this->pid = pid;
+	this->commandType = commandType;
+}
+
+inline void ICommand::execute()
+{
+	// Do nothing
 }

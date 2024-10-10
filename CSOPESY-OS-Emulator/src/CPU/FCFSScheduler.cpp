@@ -1,10 +1,11 @@
 #include "FCFSScheduler.h"
 #include <algorithm>
 
-FCFSScheduler::FCFSScheduler(int cores)
+FCFSScheduler::FCFSScheduler(int cores) 
+	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS")
 {
 	this->numCores = cores;
-	this->processQueues = std::vector<std::vector<Process>>(cores);
+	this->processQueues = std::vector<std::unordered_map<String, std::shared_ptr<Process>>>(cores);
 }
 
 // Add a process to the scheduler
@@ -12,7 +13,7 @@ void FCFSScheduler::addProcess(const Process& process, int core)
 {
 	if (core >= 0 && core < this->numCores)
 	{
-		this->processQueues[core].push_back(process);
+		this->processQueues[core][process.getName()] = std::make_shared<Process>(process);
 	}
 	else 
 	{
@@ -25,8 +26,13 @@ void FCFSScheduler::sortProcessQueues()
 {
 	for (auto& queue : this->processQueues)
 	{
-		std::sort(queue.begin(), queue.end(), [](const Process& a, const Process& b) {
-			return a.getRemainingTime() > b.getRemainingTime();
+		std::vector<std::shared_ptr<Process>> processList;
+		for (auto& entry : queue) {
+			processList.push_back(entry.second);
+		}
+
+		std::sort(processList.begin(), processList.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
+			return a->getRemainingTime() > b->getRemainingTime();
 		});
 	}
 }
@@ -40,16 +46,17 @@ void FCFSScheduler::runScheduler()
 		{
 			if (!this->processQueues[core].empty())
 			{
-				Process currentProcess = this->processQueues[core].back();
-				processQueues[core].pop_back();
+				auto it = this->processQueues[core].begin();
+				std::shared_ptr<Process> currentProcess = it->second;
+				this->processQueues[core].erase(it);
 
-				while (!currentProcess.hasFinished())
+				while (!currentProcess->isFinished())
 				{
-					currentProcess.executeCurrentCommand();
-					currentProcess.moveToNextLine();
+					currentProcess->executeCurrentCommand();
+					currentProcess->moveToNextLine();
 				}
 
-				std::cout << "Process " << currentProcess.getRemainingTime() << " completed on Core " << core + 1 << ".\n";
+				std::cout << "Process " << currentProcess->getRemainingTime() << " completed on Core " << core + 1 << ".\n";
 			}
 		}
 	}

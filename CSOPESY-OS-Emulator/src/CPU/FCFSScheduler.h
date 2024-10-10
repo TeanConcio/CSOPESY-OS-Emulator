@@ -16,5 +16,5 @@ public:
 
 private:
 	int numCores;
-	std::vector<std::vector<Process>> processQueues; // One queue per core
+	std::vector<std::unordered_map<String, std::shared_ptr<Process>>> processQueues; // One queue per core
 };
