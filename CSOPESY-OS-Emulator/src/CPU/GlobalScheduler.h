@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<Process> findProcess(String name) const;
 	String generateProcessName() const;
 	static GlobalScheduler* getInstance();
+	void createTestProcesses();
 
 private:
 	AScheduler* scheduler;

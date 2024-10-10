@@ -177,6 +177,15 @@ void MarqueeConsole::decideCommand(const String& command) {
 	if (commandParts.empty()) {
 		this->writeToConsoleHistory("No command entered.\n");
 	}
+	else if (commandParts[0] == "clear" || commandParts[0] == "cls") {
+		this->clear();
+	}
+	else if (commandParts[0] == "help") {
+		this->writeToConsoleHistory("Commands available:\n");
+		this->writeToConsoleHistory("clear, cls - Clear the console.\n");
+		this->writeToConsoleHistory("exit - Exit the console.\n");
+		this->writeToConsoleHistory("help - Display this help message.\n");
+	}
 	else if (commandParts[0] == "exit") {
 		this->running = false;
 	}

@@ -32,7 +32,7 @@ void FCFSScheduler::sortProcessQueues()
 		}
 
 		std::sort(processList.begin(), processList.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
-			return a->getRemainingTime() > b->getRemainingTime();
+			return a->getLastCommandTime() > b->getLastCommandTime();
 		});
 	}
 }
@@ -57,7 +57,7 @@ void FCFSScheduler::runScheduler()
 					currentProcess->moveToNextLine();
 				}
 
-				std::cout << "Process " << currentProcess->getRemainingTime() << " completed on Core " << core + 1 << ".\n";
+				std::cout << "Process " << currentProcess->getLastCommandTime() << " completed on Core " << core + 1 << ".\n";
 			}
 		}
 	}

@@ -27,11 +27,12 @@ public:
 	// Process(String name, int totalCodeLines, int id);
 	Process(int pid, String name, RequirementFlags requirementFlags);
 	void addCommand(ICommand::CommandType commandType);
-	void executeCurrentCommand() const;
+	void executeCurrentCommand();
 	void moveToNextLine();
+	void updateLastCommandTime();
 
 	bool isFinished() const;
-	int getRemainingTime() const;
+	int getLastCommandTime() const;
 	int getCommandCounter() const;
 	int getLinesOfCode() const;
 	int getPID() const;
@@ -51,6 +52,7 @@ private:
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
 	RequirementFlags requirementFlags; 
 	ProcessState currentState;
+	std::time_t lastCommandTime;
 
 	// friend class ResourceEmulator;
 };

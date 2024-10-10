@@ -73,3 +73,17 @@ GlobalScheduler* GlobalScheduler::getInstance()
 {
 	return sharedInstance;
 }
+
+void GlobalScheduler::createTestProcesses()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		String processName = "screen_" + (i < 9 ? std::string("0") : "") + std::to_string(i + 1);
+		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+
+		for (int j = 0; j < 100; ++j)
+		{
+			process->addCommand(ICommand::PRINT);
+		}
+	}
+}
