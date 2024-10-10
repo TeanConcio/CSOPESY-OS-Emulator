@@ -30,7 +30,8 @@ ConsoleManager* ConsoleManager::getInstance()
  */
 void ConsoleManager::initialize()
 {
-	sharedInstance = new ConsoleManager();
+	if (sharedInstance == nullptr)
+		sharedInstance = new ConsoleManager();
 }
 
 

@@ -1,6 +1,7 @@
 #include "AScheduler.h"
 
-AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, String processName) 
+
+AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName) 
 {
 	this->schedulingAlgo = schedulingAlgo;
 	this->currentProcessInfo.pid = pid;
@@ -11,12 +12,14 @@ AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, String proce
 	this->currentProcessInfo.remainingTime = 0;
 }
 
+
 void AScheduler::addProcess(std::shared_ptr<Process> process)
 {
 	this->processMap[process->getName()] = process;
 }
 
-std::shared_ptr<Process> AScheduler::findProcess(String processName)
+
+std::shared_ptr<Process> AScheduler::findProcess(const String& processName)
 {
 	auto it = this->processMap.find(processName);
 	if (it != this->processMap.end())
@@ -27,9 +30,4 @@ std::shared_ptr<Process> AScheduler::findProcess(String processName)
 	{
 		return nullptr;
 	}
-}
-
-void AScheduler::run()
-{
-	this->start();
 }

@@ -2,22 +2,33 @@
 #include "AScheduler.h"
 #include "../Process.h"
 
+
 // Manages throughout the OS, singleton
-class GlobalScheduler : public AScheduler {
+class GlobalScheduler : public AScheduler 
+{
 public:
-	GlobalScheduler();
-	void init() override;
-	void execute() override;
-	void destroy();
-	void tick() const;
-	std::shared_ptr<Process> createUniqueProcess(String name);
-	std::shared_ptr<Process> findProcess(String name) const;
-	String generateProcessName() const;
 	static GlobalScheduler* getInstance();
-	void createTestProcesses();
+	static void initialize();
+	static void destroy();
+
+	void run() override;
+	void stop();
+
+	std::shared_ptr<Process> createUniqueProcess(String& name);
+	String generateProcessName() const;
+
+	void createTestProcesses(const int limit);
+	
 
 private:
-	AScheduler* scheduler;
+	// Singleton
+	// Private constructor so that no objects can be created.
+	GlobalScheduler();
+	~GlobalScheduler() = default;
+	GlobalScheduler& operator=(GlobalScheduler const&) {}; // assignment operator is private*
+
 	static GlobalScheduler* sharedInstance;
-	int pidCounter; // How many processes its created
+	AScheduler* scheduler;
+
+	int pidCounter = 0; // How many processes its created
 };

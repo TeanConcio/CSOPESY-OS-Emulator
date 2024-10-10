@@ -11,6 +11,6 @@ void SchedulerWorker::run()
 {
 	while (this->isRunning)
 	{
-		GlobalScheduler::getInstance()->tick();
+		GlobalScheduler::getInstance()->run();
 	}
 }

@@ -1,20 +1,13 @@
-﻿  CSOPESY-OS-Emulator.cpp
-  ConsoleManager.cpp
-C:\Users\admin\source\repos\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Consoles\MarqueeConsole.h(36,42): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'src/ConsoleManager.cpp')
-  
-  AConsole.cpp
-  BaseScreen.cpp
-  MainConsole.cpp
-  Process.cpp
-C:\Users\admin\source\repos\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Process.cpp(60,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  MarqueeConsole.cpp
-C:\Users\admin\source\repos\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\Consoles\MarqueeConsole.h(36,42): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'src/Consoles/MarqueeConsole.cpp')
-  
-  AScheduler.cpp
+﻿  AScheduler.cpp
   FCFSScheduler.cpp
   GlobalScheduler.cpp
+C:\Users\Tean Concio\Documents\Test_Applications\C++\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\GlobalScheduler.cpp(39,19): error C2248: 'AScheduler::run': cannot access protected member declared in class 'AScheduler'
+      C:\Users\Tean Concio\Documents\Test_Applications\C++\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(50,15):
+      see declaration of 'AScheduler::run'
+      C:\Users\Tean Concio\Documents\Test_Applications\C++\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\src\CPU\AScheduler.h(17,7):
+      see declaration of 'AScheduler'
+  
+  IOCommand.cpp
   SchedulerWorker.cpp
+  ICommand.h
   Generating Code...
-  CSOPESY-OS-Emulator.vcxproj -> C:\Users\admin\source\repos\CSOPESY-OS-Emulator\CSOPESY-OS-Emulator\x64\Debug\CSOPESY-OS-Emulator.exe

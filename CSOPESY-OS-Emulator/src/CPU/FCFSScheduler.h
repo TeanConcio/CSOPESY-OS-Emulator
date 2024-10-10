@@ -13,7 +13,9 @@ public:
 
 	void addProcess(const Process& process, int core = 0);
 	void sortProcessQueues();
-	void runScheduler();
+
+protected:
+	void run() override;
 
 private:
 	int numCores;

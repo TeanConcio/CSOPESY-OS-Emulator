@@ -1,38 +1,51 @@
 #include "GlobalScheduler.h"
 #include "FCFSScheduler.h"
 
+
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
 
-GlobalScheduler::GlobalScheduler() 
-	: AScheduler(SchedulingAlgorithm::FCFS, 0, "global")
-{
 
-	
+GlobalScheduler::GlobalScheduler() : AScheduler(SchedulingAlgorithm::FCFS, 0, "global") {}
+
+
+GlobalScheduler* GlobalScheduler::getInstance()
+{
+	if (sharedInstance == nullptr) {
+		initialize();
+	}
+	return GlobalScheduler::sharedInstance;
 }
 
-void GlobalScheduler::init()
+
+void GlobalScheduler::initialize()
 {
-    sharedInstance = new GlobalScheduler();
+	if (sharedInstance == nullptr) {
+		sharedInstance = new GlobalScheduler();
+		sharedInstance->scheduler = new FCFSScheduler(4);
+		sharedInstance->createTestProcesses(10);
+	}
 }
 
-void GlobalScheduler::execute()
+
+void GlobalScheduler::destroy() 
+{
+	delete sharedInstance;
+	sharedInstance = nullptr;
+}
+
+
+void GlobalScheduler::run() 
 {
 	this->scheduler->run();
 }
 
-void GlobalScheduler::destroy() 
-{
-    delete sharedInstance;
-}
 
-void GlobalScheduler::tick() const 
-{
-	this->scheduler->execute();
-}
+void GlobalScheduler::stop() {}
 
-std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name) 
+
+std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name) 
 {
-    std::shared_ptr<Process> existingProcess = this->findProcess(name);
+	std::shared_ptr<Process> existingProcess = this->findProcess(name);
 	if (existingProcess != nullptr)
 	{
 		return existingProcess;
@@ -47,7 +60,7 @@ std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name)
 		{
 			name = this->generateProcessName();
 		}
-		std::shared_ptr<Process> newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
+		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
 		newProcess->test_generateRandomCommands(100);
 
 		this->scheduler->addProcess(newProcess);
@@ -57,10 +70,6 @@ std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String name)
 	}
 }
 
-std::shared_ptr<Process> GlobalScheduler::findProcess(String name) const
-{
-	return this->scheduler->findProcess(name);
-}
 
 String GlobalScheduler::generateProcessName() const
 {
@@ -69,21 +78,12 @@ String GlobalScheduler::generateProcessName() const
 	return ss.str();
 }
 
-GlobalScheduler* GlobalScheduler::getInstance()
-{
-	return sharedInstance;
-}
 
-void GlobalScheduler::createTestProcesses()
+void GlobalScheduler::createTestProcesses(const int limit)
 {
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < limit; ++i)
 	{
 		String processName = "screen_" + (i < 9 ? std::string("0") : "") + std::to_string(i + 1);
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
-
-		for (int j = 0; j < 100; ++j)
-		{
-			process->addCommand(ICommand::PRINT);
-		}
 	}
 }

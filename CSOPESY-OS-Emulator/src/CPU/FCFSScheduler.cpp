@@ -1,12 +1,14 @@
 #include "FCFSScheduler.h"
 #include <algorithm>
 
+
 FCFSScheduler::FCFSScheduler(int cores) 
 	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS") //TEMP
 {
 	this->numCores = cores;
 	this->processQueues = std::vector<std::unordered_map<String, std::shared_ptr<Process>>>(cores); // Hashmap of the processes per core to queue?
 }
+
 
 // Add a process to the scheduler
 void FCFSScheduler::addProcess(const Process& process, int core)
@@ -20,6 +22,7 @@ void FCFSScheduler::addProcess(const Process& process, int core)
 		std::cerr << "Invalid core specified for process addition.\n";
 	}
 }
+
 
 // Sort the process queues based on the remaining instructions (FCFS)
 void FCFSScheduler::sortProcessQueues()
@@ -37,8 +40,9 @@ void FCFSScheduler::sortProcessQueues()
 	}
 }
 
+
 // Run the scheduler
-void FCFSScheduler::runScheduler()
+void FCFSScheduler::run()
 {
 	while (!this->processQueues[0].empty())
 	{
