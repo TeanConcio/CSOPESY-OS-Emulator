@@ -24,7 +24,7 @@ public:
 	using ConsoleTable = std::unordered_map<String, std::shared_ptr<AConsole>>; // Typedef for console table
 	int processID = 1;
 
-	// Calls current active console and uses their display and process
+	// Calls current active console and uses their display and currentProcess
 	void drawConsole() const;
 	void process() const;
 

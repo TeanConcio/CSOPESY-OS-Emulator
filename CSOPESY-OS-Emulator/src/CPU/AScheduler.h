@@ -27,8 +27,9 @@ public:
 	};
 
 	AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName);
+	virtual ~AScheduler() = default;
 
-	void addProcess(std::shared_ptr<Process> process); // adds a process to the scheduler
+	virtual void addProcess(std::shared_ptr<Process> process); // adds a currentProcess to the scheduler
 	std::shared_ptr<Process> findProcess(const String& processName);
 
 	struct ProcessInfo

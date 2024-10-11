@@ -67,7 +67,7 @@ void ConsoleManager::drawConsole() const
 /**
  * @brief Processes the current console.
  * 
- * If there is a current console, it calls the process method of the current console.
+ * If there is a current console, it calls the currentProcess method of the current console.
  * Otherwise, it prints an error message.
  */
 void ConsoleManager::process() const

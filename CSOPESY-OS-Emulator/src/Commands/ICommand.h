@@ -16,7 +16,7 @@ public:
 	virtual void execute();
 
 protected:
-	int pid; // process id to which the command belongs
+	int pid; // currentProcess id to which the command belongs
 	CommandType commandType; // type of command
 };
 

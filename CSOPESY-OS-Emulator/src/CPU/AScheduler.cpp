@@ -10,6 +10,8 @@ AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String
 	this->currentProcessInfo.lineCounter = 0;
 	this->currentProcessInfo.linesOfCode = 0;
 	this->currentProcessInfo.remainingTime = 0;
+
+	this->processMap = std::unordered_map<String, std::shared_ptr<Process>>();
 }
 
 

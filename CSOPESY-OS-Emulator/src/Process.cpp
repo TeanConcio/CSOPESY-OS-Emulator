@@ -30,19 +30,31 @@ void Process::addCommand(ICommand::CommandType commandType)
 
 void Process::executeCurrentCommand()
 {
+	if (this->commandCounter >= this->commandList.size())
+		return;
+
+	this->currentState = ProcessState::RUNNING;
+
 	this->commandList[this->commandCounter]->execute();
 	this->updateLastCommandTime();
+
+
+	if (this->commandCounter >= this->commandList.size())
+		this->currentState = ProcessState::FINISHED;
+	else {
+		this->currentState = ProcessState::READY;
+		this->commandCounter++;
+	}
 }
 
-void Process::moveToNextLine()
-{
-	this->commandCounter++;
+
+
+
+
+void Process::updateLastCommandTime() {
+	this->lastCommandTime = std::time(nullptr);
 }
 
-bool Process::isFinished() const
-{
-	return this->commandCounter == this->commandList.size();
-}
 
 int Process::getLastCommandTime() const {
 
@@ -86,10 +98,6 @@ void Process::test_generateRandomCommands(int limit)
 	{
 		this->addCommand(ICommand::PRINT);
 	}
-}
-
-void Process::updateLastCommandTime() {
-	this->lastCommandTime = std::time(nullptr);
 }
 
 

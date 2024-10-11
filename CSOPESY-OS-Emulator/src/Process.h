@@ -28,10 +28,8 @@ public:
 	Process(int pid, String name, RequirementFlags requirementFlags);
 	void addCommand(ICommand::CommandType commandType);
 	void executeCurrentCommand();
-	void moveToNextLine();
-	void updateLastCommandTime();
 
-	bool isFinished() const;
+	void updateLastCommandTime();
 	int getLastCommandTime() const;
 	int getCommandCounter() const;
 	int getLinesOfCode() const;

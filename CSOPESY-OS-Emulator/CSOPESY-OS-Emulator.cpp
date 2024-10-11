@@ -13,7 +13,7 @@ int main() {
 
 
 	// Main loop
-	// Any process that happens in between every frame
+	// Any currentProcess that happens in between every frame
 	// Every frame draw console
 	// Process waits for now because no marquee
 	bool running = true;
@@ -25,6 +25,7 @@ int main() {
 		/*getCommand();*/
 
 		running = ConsoleManager::getInstance()->isRunning();
+		GlobalScheduler::setRunning(running);
 	}
 
 

@@ -1,18 +1,21 @@
 #pragma once
+
 #include "AScheduler.h"
 #include "../Process.h"
 
 
 // Manages throughout the OS, singleton
-class GlobalScheduler : public AScheduler 
+class GlobalScheduler : public IETThread 
 {
 public:
 	static GlobalScheduler* getInstance();
 	static void initialize();
 	static void destroy();
 
+	void start() override;
 	void run() override;
-	void stop();
+	
+	static void setRunning(const bool isRunning);
 
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
@@ -23,7 +26,7 @@ public:
 private:
 	// Singleton
 	// Private constructor so that no objects can be created.
-	GlobalScheduler();
+	GlobalScheduler() = default;
 	~GlobalScheduler() = default;
 	GlobalScheduler& operator=(GlobalScheduler const&) {}; // assignment operator is private*
 
@@ -31,4 +34,5 @@ private:
 	AScheduler* scheduler;
 
 	int pidCounter = 0; // How many processes its created
+	int running = true;
 };

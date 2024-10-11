@@ -5,9 +5,6 @@
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
 
 
-GlobalScheduler::GlobalScheduler() : AScheduler(SchedulingAlgorithm::FCFS, 0, "global") {}
-
-
 GlobalScheduler* GlobalScheduler::getInstance()
 {
 	if (sharedInstance == nullptr) {
@@ -34,18 +31,27 @@ void GlobalScheduler::destroy()
 }
 
 
+void GlobalScheduler::start()
+{
+	this->scheduler->start();
+}
+
+
 void GlobalScheduler::run() 
 {
 	this->scheduler->run();
 }
 
 
-void GlobalScheduler::stop() {}
+void GlobalScheduler::setRunning(const bool isRunning)
+{
+	getInstance()->running = isRunning;
+}
 
 
 std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name) 
 {
-	std::shared_ptr<Process> existingProcess = this->findProcess(name);
+	std::shared_ptr<Process> existingProcess = scheduler->findProcess(name);
 	if (existingProcess != nullptr)
 	{
 		return existingProcess;
@@ -85,5 +91,7 @@ void GlobalScheduler::createTestProcesses(const int limit)
 	{
 		String processName = "screen_" + (i < 9 ? std::string("0") : "") + std::to_string(i + 1);
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+
+		sharedInstance->scheduler->addProcess(process);
 	}
 }

@@ -5,12 +5,12 @@
 
 #include "./../ConsoleManager.h"
 
-// Default screen for the process
+// Default screen for the currentProcess
 /**
  * @brief Constructs a new BaseScreen object.
  * 
- * @param process A shared pointer to the process.
- * @param processName The name of the process.
+ * @param currentProcess A shared pointer to the currentProcess.
+ * @param processName The name of the currentProcess.
  */
 BaseScreen::BaseScreen(std::shared_ptr<Process> process, String processName) : AConsole(processName)
 {
@@ -30,7 +30,7 @@ void BaseScreen::onEnabled()
 /**
  * @brief Processes the input commands.
  * 
- * If the screen is not refreshed, it prints the process info.
+ * If the screen is not refreshed, it prints the currentProcess info.
  * Then it waits for user input and processes the command.
  */
 void BaseScreen::process()
@@ -62,9 +62,9 @@ void BaseScreen::display()
 }
 
 /**
- * @brief Prints the process information.
+ * @brief Prints the currentProcess information.
  * 
- * Prints the name, ID, current instruction line, total lines of code, and creation time of the process.
+ * Prints the name, ID, current instruction line, total lines of code, and creation time of the currentProcess.
  */
 void BaseScreen::printProcessInfo()
 {
@@ -99,7 +99,7 @@ void BaseScreen::decideCommand(const String& command)
 	else if (commandParts[0] == "exit")
 	{
 		this->exit();
-		//ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the process
+		//ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the currentProcess
 	}
 	else {
 		this->commandNotFound(command);
@@ -110,7 +110,7 @@ void BaseScreen::decideCommand(const String& command)
 /**
  * @brief Prints the header information.
  * 
- * This function calls printProcessInfo to print the process information.
+ * This function calls printProcessInfo to print the currentProcess information.
  */
 void BaseScreen::printHeader()
 {

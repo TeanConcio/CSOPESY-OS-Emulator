@@ -65,14 +65,14 @@
     <ClCompile Include="src\Commands\PrintCommand.cpp">
       <Filter>Command Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Threading\SchedulerWorker.cpp">
-      <Filter>Thread Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Commands\ICommand.h">
       <Filter>Command Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CPU\GlobalScheduler.cpp">
       <Filter>Scheduler Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Threading\CPUCoreThread.cpp">
+      <Filter>Thread Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +100,6 @@
     <ClInclude Include="src\TypedefRepo.h">
       <Filter>Common Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Threading\SchedulerWorker.h">
-      <Filter>Thread Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Commands\PrintCommand.h">
       <Filter>Command Files</Filter>
     </ClInclude>
@@ -123,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="src\CPU\AScheduler.h">
       <Filter>Scheduler Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Threading\CPUCoreThread.h">
+      <Filter>Thread Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

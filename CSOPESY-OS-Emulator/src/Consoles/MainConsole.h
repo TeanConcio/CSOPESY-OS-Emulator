@@ -25,7 +25,7 @@ private:
 	void schedulerTest();
 	void schedulerStop();
 	void reportUtil();
-	void addProcess(std::shared_ptr <Process> process); // Add process to process table
+	void addProcess(std::shared_ptr <Process> process); // Add currentProcess to currentProcess table
 
 	// List of all the processes
 	std::vector<std::shared_ptr<Process>> processTable;

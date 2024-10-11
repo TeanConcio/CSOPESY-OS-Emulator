@@ -47,27 +47,27 @@ void MainConsole::decideCommand(const String& command) {
 		//	return;
 		//}
 		//else if (commandParts[1] == "-s") {
-		//	// Check if process exists
-		//	for (const auto& process : this->processTable) {
-		//		if (process->getName() == commandParts[2]) {
+		//	// Check if currentProcess exists
+		//	for (const auto& currentProcess : this->processTable) {
+		//		if (currentProcess->getName() == commandParts[2]) {
 		//			this->writeToConsoleHistory("Process " + commandParts[2] + " already exists.\n");
 		//			return;
 		//		}
 		//	}
 
 		//	// TODO: Make lines not a placeholder
-		//	auto process = std::make_shared<Process>(commandParts[2], 100, ConsoleManager::getInstance()->processID);
-		//	this->addProcess(process); // Push to vector
-		//	auto screen = std::make_shared<BaseScreen>(process, commandParts[2]); // Initialize screen with name and process
+		//	auto currentProcess = std::make_shared<Process>(commandParts[2], 100, ConsoleManager::getInstance()->processID);
+		//	this->addProcess(currentProcess); // Push to vector
+		//	auto screen = std::make_shared<BaseScreen>(currentProcess, commandParts[2]); // Initialize screen with name and currentProcess
 
 		//	// Go to screen itself
 		//	ConsoleManager::getInstance()->registerScreen(screen);
 		//	ConsoleManager::getInstance()->switchConsole(commandParts[2]);
 		//}
 		//else if (commandParts[1] == "-r") {
-		//	for (const auto& process : this->processTable) {
-		//		if (process->getName() == commandParts[2]) {
-		//			auto screen = std::make_shared<BaseScreen>(process, commandParts[2]);
+		//	for (const auto& currentProcess : this->processTable) {
+		//		if (currentProcess->getName() == commandParts[2]) {
+		//			auto screen = std::make_shared<BaseScreen>(currentProcess, commandParts[2]);
 		//			ConsoleManager::getInstance()->registerScreen(screen);
 		//			ConsoleManager::getInstance()->switchConsole(commandParts[2]);
 		//			return;

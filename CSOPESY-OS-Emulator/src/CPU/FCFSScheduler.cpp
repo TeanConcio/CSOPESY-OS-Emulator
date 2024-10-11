@@ -6,62 +6,106 @@ FCFSScheduler::FCFSScheduler(int cores)
 	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS") //TEMP
 {
 	this->numCores = cores;
-	this->processQueues = std::vector<std::unordered_map<String, std::shared_ptr<Process>>>(cores); // Hashmap of the processes per core to queue?
+	
+	// Initialize the Core Threads
+	for (int i = 0; i < cores; ++i)
+	{
+		this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i));
+	}
 }
 
 
-// Add a process to the scheduler
-void FCFSScheduler::addProcess(const Process& process, int core)
+void FCFSScheduler::addProcess(std::shared_ptr<Process> process)
 {
-	if (core >= 0 && core < this->numCores)
+	if (this->findProcess(process->getName()) == nullptr)
 	{
-		this->processQueues[core][process.getName()] = std::make_shared<Process>(process);
+		AScheduler::addProcess(process);
+		this->queuedProcesses.push_back(process);
 	}
-	else 
+	else
 	{
-		std::cerr << "Invalid core specified for process addition.\n";
+		std::cerr << "Process " << process->getName() << " already exists in the scheduler.\n";
 	}
 }
 
 
-// Sort the process queues based on the remaining instructions (FCFS)
-void FCFSScheduler::sortProcessQueues()
+//// Add a currentProcess to the scheduler
+//void FCFSScheduler::addProcessToCPUQueue(const Process& process, int core)
+//{
+//	if (core >= 0 && core < this->numCores)
+//	{
+//		this->processCPUQueues[core][process.getName()] = std::make_shared<Process>(process);
+//	}
+//	else 
+//	{
+//		std::cerr << "Invalid core specified for process addition.\n";
+//	}
+//}
+
+
+//// Sort the currentProcess queues based on the remaining instructions (FCFS)
+//void FCFSScheduler::sortProcessQueues()
+//{
+//	for (auto& queue : this->processCPUQueues)
+//	{
+//		std::vector<std::shared_ptr<Process>> processMap;
+//		for (auto& entry : queue) {
+//			processMap.push_back(entry.second);
+//		}
+//
+//		std::sort(processMap.begin(), processMap.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
+//			return a->getLastCommandTime() > b->getLastCommandTime();
+//		});
+//	}
+//}
+//
+//
+//// Run the scheduler
+//void FCFSScheduler::run()
+//{
+//	while (!this->processCPUQueues[0].empty())
+//	{
+//		for (int core = 0; core < this->numCores; ++core)
+//		{
+//			if (!this->processCPUQueues[core].empty())
+//			{
+//				auto it = this->processCPUQueues[core].begin();
+//				std::shared_ptr<Process> currentProcess = it->second;
+//				this->processCPUQueues[core].erase(it);
+//
+//				// Run every possible currentProcess in the scheduler
+//				while (!currentProcess->isFinished())
+//				{
+//					currentProcess->executeCurrentCommand();
+//					currentProcess->moveToNextLine();
+//				}
+//
+//				std::cout << "Process " << currentProcess->getLastCommandTime() << " completed on Core " << core + 1 << ".\n";
+//			}
+//		}
+//	}
+//}
+
+
+
+void FCFSScheduler::startCoreThreads()
 {
-	for (auto& queue : this->processQueues)
+	for (int i = 0; i < this->numCores; ++i)
 	{
-		std::vector<std::shared_ptr<Process>> processList;
-		for (auto& entry : queue) {
-			processList.push_back(entry.second);
-		}
-
-		std::sort(processList.begin(), processList.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
-			return a->getLastCommandTime() > b->getLastCommandTime();
-		});
+		this->coreThreads[i]->start();
 	}
 }
 
 
-// Run the scheduler
 void FCFSScheduler::run()
 {
-	while (!this->processQueues[0].empty())
+	while (!this->queuedProcesses.empty())
 	{
 		for (int core = 0; core < this->numCores; ++core)
 		{
-			if (!this->processQueues[core].empty())
-			{
-				auto it = this->processQueues[core].begin();
-				std::shared_ptr<Process> currentProcess = it->second;
-				this->processQueues[core].erase(it);
-
-				// Run every possible process in the scheduler
-				while (!currentProcess->isFinished())
-				{
-					currentProcess->executeCurrentCommand();
-					currentProcess->moveToNextLine();
-				}
-
-				std::cout << "Process " << currentProcess->getLastCommandTime() << " completed on Core " << core + 1 << ".\n";
+			if (this->coreThreads[core]->getCurrentProcess()->getState() == Process::ProcessState::FINISHED) {
+				this->coreThreads[core]->setCurrentProcess(this->queuedProcesses.front());
+				this->queuedProcesses.erase(this->queuedProcesses.begin());
 			}
 		}
 	}
