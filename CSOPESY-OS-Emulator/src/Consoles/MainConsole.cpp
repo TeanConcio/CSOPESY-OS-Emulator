@@ -186,7 +186,6 @@ void MainConsole::listProcesses()	{
 	GlobalScheduler* globalScheduler = GlobalScheduler::getInstance();
 	this->writeToConsoleHistory("--------------------------------------\n");
 	this->writeToConsoleHistory("Running processes :\n");
-	
 	// Loop the processes in the scheduler
 	globalScheduler->printQueuedProcesses();
 	this->writeToConsoleHistory("--------------------------------------\n");

@@ -17,6 +17,8 @@ public:
 
 	void startCoreThreads();
 
+	void start();
+
 protected:
 	void run() override;
 

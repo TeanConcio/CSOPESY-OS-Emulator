@@ -81,8 +81,15 @@ void FCFSScheduler::startCoreThreads()
 {
 	for (int i = 0; i < this->numCores; ++i)
 	{
+		std::cout << "core " << i << " started" << std::endl;
 		this->coreThreads[i]->start();
 	}
+}
+
+void FCFSScheduler::start()
+{
+	this->startCoreThreads();
+	this->run();
 }
 
 
@@ -92,7 +99,7 @@ void FCFSScheduler::run()
 	{
 		for (int core = 0; core < this->numCores; ++core)
 		{
-			if (this->coreThreads[core]->getCurrentProcess()->getState() == Process::ProcessState::FINISHED) {
+			if (!this->coreThreads[core]->getCurrentProcess() && this->coreThreads[core]->getCurrentProcess()->getState() == Process::ProcessState::FINISHED) {
 				this->coreThreads[core]->setCurrentProcess(this->queuedProcesses.front());
 				this->queuedProcesses.erase(this->queuedProcesses.begin());
 			}

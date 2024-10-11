@@ -5,23 +5,24 @@ CPUCoreThread::CPUCoreThread(const int coreNo)
 {
 	this->coreNo = coreNo;
 	this->currentProcess = nullptr;
+	this->start();
 }
 
 
 void CPUCoreThread::run()
 {
-	while (currentProcess->getState() == Process::ProcessState::READY)
-		currentProcess->executeCurrentCommand();
+	while (this->currentProcess->getState() == Process::ProcessState::READY)
+		this->currentProcess->executeCurrentCommand();
 }
 
 
 std::shared_ptr<Process> CPUCoreThread::getCurrentProcess() const
 {
-	return currentProcess;
+	return this->currentProcess;
 }
 
 
 void CPUCoreThread::setCurrentProcess(std::shared_ptr<Process> process)
 {
-	currentProcess = process;
+	this->currentProcess = process;
 }

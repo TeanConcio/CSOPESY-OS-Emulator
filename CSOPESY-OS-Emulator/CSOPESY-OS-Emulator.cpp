@@ -10,7 +10,8 @@ int main() {
 	//InputManager::initialize();
 	ConsoleManager::initialize();
 	GlobalScheduler::initialize();
-
+	GlobalScheduler::getInstance()->start();
+	GlobalScheduler::getInstance()->run();
 
 	// Main loop
 	// Any currentProcess that happens in between every frame
