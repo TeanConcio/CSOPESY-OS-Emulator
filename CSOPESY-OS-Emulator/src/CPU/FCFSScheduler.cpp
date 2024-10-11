@@ -2,28 +2,14 @@
 #include <algorithm>
 
 
-FCFSScheduler::FCFSScheduler(int cores)  
+FCFSScheduler::FCFSScheduler(int cores) : AScheduler(FCFS)
 {
 	this->numCores = cores;
-	this->schedulingAlgo = FCFS;
 	
 	// Initialize the Core Threads
 	for (int i = 0; i < cores; ++i)
 	{
 		this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i));
-	}
-}
-
-
-void FCFSScheduler::addProcess(std::shared_ptr<Process> process)
-{
-	if (this->findProcess(process->getName()) == nullptr)
-	{
-		this->queuedProcesses.push_back(process);
-	}
-	else
-	{
-		std::cerr << "Process " << process->getName() << " already exists in the scheduler.\n";
 	}
 }
 
@@ -43,11 +29,11 @@ void FCFSScheduler::addProcess(std::shared_ptr<Process> process)
 
 
 // Sort the currentProcess queues based on the remaining instructions (FCFS)
-void FCFSScheduler::sortProcessQueues() {
-	std::sort(this->queuedProcesses.begin(), this->queuedProcesses.end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
-		return p1->getLinesOfCode()-p1->getCommandCounter() < p2->getLinesOfCode() - p2->getCommandCounter();
-	});
-}
+//void FCFSScheduler::sortProcessQueues() {
+//	std::sort(this->queuedProcesses.begin(), this->queuedProcesses.end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
+//		return p1->getLinesOfCode()-p1->getCommandCounter() < p2->getLinesOfCode() - p2->getCommandCounter();
+//	});
+//}
 
 //// Run the scheduler
 //void FCFSScheduler::run()
@@ -88,8 +74,8 @@ void FCFSScheduler::startCoreThreads()
 
 void FCFSScheduler::start()
 {
+	AScheduler::start();
 	this->startCoreThreads();
-	this->run();
 }
 
 
@@ -97,10 +83,17 @@ void FCFSScheduler::run()
 {
 	while (!this->queuedProcesses.empty())
 	{
+		std::cout << "Are you empty" << std::endl;
 		for (int core = 0; core < this->numCores; ++core)
 		{
-			if (!this->coreThreads[core]->getCurrentProcess() && this->coreThreads[core]->getCurrentProcess()->getState() == Process::ProcessState::FINISHED) {
+			if (this->coreThreads[core]->getCurrentProcess() == nullptr) {
 				this->coreThreads[core]->setCurrentProcess(this->queuedProcesses.front());
+				this->queuedProcesses.erase(this->queuedProcesses.begin());
+				std::cout << "Hello" << std::endl;
+			}
+			else if (this->coreThreads[core]->getCurrentProcessState() == Process::ProcessState::FINISHED) {
+				this->coreThreads[core]->setCurrentProcess(this->queuedProcesses.front());
+				this->finishedProcesses.assign(this->queuedProcesses.begin(), this->queuedProcesses.end());
 				this->queuedProcesses.erase(this->queuedProcesses.begin());
 			}
 		}

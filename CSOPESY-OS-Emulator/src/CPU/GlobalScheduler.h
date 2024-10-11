@@ -12,10 +12,7 @@ public:
 	static void initialize();
 	static void destroy();
 
-	void start();
-	void run();
-	
-	static void setRunning(const bool isRunning);
+	static void start();
 
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
@@ -34,5 +31,4 @@ private:
 	AScheduler* scheduler;
 
 	int pidCounter = 0; // How many processes its created
-	int running = true;
 };

@@ -10,14 +10,13 @@ int main() {
 	//InputManager::initialize();
 	ConsoleManager::initialize();
 	GlobalScheduler::initialize();
-	GlobalScheduler::getInstance()->start();
-	GlobalScheduler::getInstance()->run();
 
 	// Main loop
 	// Any currentProcess that happens in between every frame
 	// Every frame draw console
 	// Process waits for now because no marquee
 	bool running = true;
+	GlobalScheduler::start();
 	while (running)
 	{
 		ConsoleManager::getInstance()->process();
@@ -26,7 +25,6 @@ int main() {
 		/*getCommand();*/
 
 		running = ConsoleManager::getInstance()->isRunning();
-		GlobalScheduler::setRunning(running);
 	}
 
 

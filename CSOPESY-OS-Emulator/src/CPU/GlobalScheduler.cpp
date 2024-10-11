@@ -33,19 +33,7 @@ void GlobalScheduler::destroy()
 
 void GlobalScheduler::start()
 {
-	this->scheduler->start();
-}
-
-
-void GlobalScheduler::run() 
-{
-	this->scheduler->run();
-}
-
-
-void GlobalScheduler::setRunning(const bool isRunning)
-{
-	getInstance()->running = isRunning;
+	GlobalScheduler::getInstance()->scheduler->start();
 }
 
 
@@ -68,8 +56,6 @@ std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name)
 		}
 		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
 		newProcess->test_generateRandomCommands(100);
-		
-		this->scheduler->addProcess(newProcess);
 		this->pidCounter++;
 
 		return newProcess;
@@ -91,6 +77,7 @@ void GlobalScheduler::createTestProcesses(const int limit)
 	{
 		String processName = "screen_" + (i < 9 ? std::string("0") : "") + std::to_string(i + 1);
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+		this->scheduler->addProcess(process);
 	}
 }
 

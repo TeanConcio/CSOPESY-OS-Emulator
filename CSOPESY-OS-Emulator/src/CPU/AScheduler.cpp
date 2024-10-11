@@ -1,29 +1,25 @@
 #include "AScheduler.h"
 
 
-AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName) 
+AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo) 
 {
-
+	this->schedulingAlgo = schedulingAlgo;
 }
 
 
 void AScheduler::addProcess(std::shared_ptr<Process> process)
 {
+	this->processMap[process->getName()] = process;
 	this->queuedProcesses.push_back(process);
 }
 
 
 std::shared_ptr<Process> AScheduler::findProcess(const String& processName)
 {
-	// Find the process in the queuedProcesses & finishedProcesses
-	auto it = std::find_if(this->queuedProcesses.begin(), this->queuedProcesses.end(), [&processName](const std::shared_ptr<Process>& process) {
-		return process->getName() == processName;
-		});
-	if (it == this->queuedProcesses.end())
+	// Find the process in the process map
+	if (this->processMap.find(processName) != this->processMap.end())
 	{
-		it = std::find_if(this->finishedProcesses.begin(), this->finishedProcesses.end(), [&processName](const std::shared_ptr<Process>& process) {
-			return process->getName() == processName;
-			});
+		return this->processMap[processName];
 	}
 
 	return nullptr;

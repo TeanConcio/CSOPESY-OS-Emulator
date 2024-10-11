@@ -31,18 +31,11 @@ void Process::addCommand(ICommand::CommandType commandType)
 void Process::executeCurrentCommand()
 {
 	if (this->commandCounter >= this->commandList.size())
-		return;
-
-	this->currentState = ProcessState::RUNNING;
-
-	this->commandList[this->commandCounter]->execute();
-	this->updateLastCommandTime();
-
-
-	if (this->commandCounter >= this->commandList.size())
 		this->currentState = ProcessState::FINISHED;
 	else {
-		this->currentState = ProcessState::READY;
+		this->currentState = ProcessState::RUNNING;
+		this->commandList[this->commandCounter]->execute();
+		this->updateLastCommandTime();
 		this->commandCounter++;
 	}
 }

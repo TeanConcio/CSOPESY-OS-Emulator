@@ -11,13 +11,12 @@ public:
 
 	FCFSScheduler(int cores);
 
-	void addProcess(std::shared_ptr<Process> process) override;
 	//void addProcessToCPUQueue(const Process& process, int core = 0);
-	void sortProcessQueues();
+	//void sortProcessQueues();
 
 	void startCoreThreads();
 
-	void start();
+	void start() override;
 
 protected:
 	void run() override;

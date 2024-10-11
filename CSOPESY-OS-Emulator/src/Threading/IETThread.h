@@ -8,7 +8,7 @@ class IETThread
 public:
 	IETThread();
 
-	void start();
+	virtual void start();
 	static void sleep(int ms = 1000);
 
 protected:

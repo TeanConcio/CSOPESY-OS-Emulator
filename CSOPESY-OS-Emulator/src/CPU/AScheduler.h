@@ -27,8 +27,7 @@ public:
 		ROUND_ROBIN
 	};
 
-	AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName);
-	AScheduler() = default;
+	AScheduler(SchedulingAlgorithm schedulingAlgo);
 	virtual ~AScheduler() = default;
 
 	virtual void addProcess(std::shared_ptr<Process> process); // adds a currentProcess to the scheduler
@@ -51,6 +50,7 @@ protected:
 	int numCores;
 	SchedulingAlgorithm schedulingAlgo;
 	std::vector<std::shared_ptr<CPUCoreThread>> coreThreads;
+	std::unordered_map<String, std::shared_ptr<Process>> processMap;
 	std::vector<std::shared_ptr<Process>> queuedProcesses;
 	std::vector<std::shared_ptr<Process>> finishedProcesses;
 };
