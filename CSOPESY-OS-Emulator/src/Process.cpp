@@ -120,6 +120,11 @@ int Process::getCPUCoreID() const
 	return this->cpuCoreID;
 }
 
+void Process::setCPUCoreID(int coreID)
+{
+	this->cpuCoreID = coreID;
+}
+
 Process::ProcessState Process::getState() const
 {
 	return this->currentState;

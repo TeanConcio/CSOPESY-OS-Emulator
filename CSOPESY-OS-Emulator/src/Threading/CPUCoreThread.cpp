@@ -27,7 +27,11 @@ std::shared_ptr<Process> CPUCoreThread::getCurrentProcess() const
 
 void CPUCoreThread::setCurrentProcess(std::shared_ptr<Process> process)
 {
+	if (this->currentProcess != nullptr) {
+		this->currentProcess->setCPUCoreID(-1);
+	}
 	this->currentProcess = process;
+	this->currentProcess->setCPUCoreID(this->coreNo);
 }
 
 Process::ProcessState CPUCoreThread::getCurrentProcessState() const

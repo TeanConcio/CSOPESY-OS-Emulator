@@ -37,6 +37,7 @@ public:
 	int getLinesOfCode() const;
 	int getPID() const;
 	int getCPUCoreID() const;
+	void setCPUCoreID(int coreID);
 	ProcessState getState() const;
 	String getName() const;
 
