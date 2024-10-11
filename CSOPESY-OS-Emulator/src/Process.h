@@ -36,6 +36,7 @@ public:
 	int getPID() const;
 	int getCPUCoreID() const;
 	ProcessState getState() const;
+	void setState(ProcessState state) { currentState = state; }
 	String getName() const;
 
 	void test_generateRandomCommands(int limit); // TEMP: make random in the future

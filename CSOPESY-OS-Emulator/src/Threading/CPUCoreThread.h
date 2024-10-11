@@ -12,10 +12,10 @@ public:
 
 	void run() override;
 
-	std::shared_ptr<Process> getCurrentProcess() const;
-	void setCurrentProcess(std::shared_ptr<Process> process);
-
+	std::shared_ptr<Process> getCurrentProcess() const { return this->currentProcess; }
+	void setCurrentProcess(std::shared_ptr<Process> process) { this->currentProcess = process; }
 	Process::ProcessState getCurrentProcessState() const;
+	int getCoreNo() const { return this->coreNo; }
 
 private:
 	int coreNo;

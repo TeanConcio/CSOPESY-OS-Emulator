@@ -138,6 +138,7 @@ void MainConsole::printHeader() {
 	this->writeToConsoleHistory("-------------------------------------------\n\n");
 }
 
+
 /**
  * @brief Exits the program.
  * 
@@ -146,6 +147,7 @@ void MainConsole::printHeader() {
 void MainConsole::exit() const {
 	ConsoleManager::getInstance()->exitApplication();
 }
+
 
 /**
  * @brief Prints the list of available commands.
@@ -166,6 +168,7 @@ void MainConsole::help() {
 
 }
 
+
 void MainConsole::initialize() {
 	this->writeToConsoleHistory("initialize command recognized. Doing something.\n");
 }
@@ -182,11 +185,16 @@ void MainConsole::reportUtil() {
 	this->writeToConsoleHistory("report-util command recognized. Doing something.\n");
 }
 
+
 void MainConsole::listProcesses()	{
-	GlobalScheduler* globalScheduler = GlobalScheduler::getInstance();
 	this->writeToConsoleHistory("--------------------------------------\n");
 	this->writeToConsoleHistory("Running processes :\n");
-	// Loop the processes in the scheduler
-	globalScheduler->printQueuedProcesses();
+	this->writeToConsoleHistory(GlobalScheduler::makeRunningProcessesString());
+	this->writeToConsoleHistory("\n");
+	this->writeToConsoleHistory("Finished processes :\n");
+	this->writeToConsoleHistory(GlobalScheduler::makeFinishedProcessesString());
+	this->writeToConsoleHistory("\n");
+	this->writeToConsoleHistory("Queued processes :\n");
+	this->writeToConsoleHistory(GlobalScheduler::makeQueuedProcessesString());
 	this->writeToConsoleHistory("--------------------------------------\n");
 }

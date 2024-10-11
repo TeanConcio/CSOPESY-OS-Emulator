@@ -1,7 +1,7 @@
 #include "PrintCommand.h"
 #include "../Threading/IETThread.h"
 
-PrintCommand::PrintCommand(int pid, String& toPrint) 
+PrintCommand::PrintCommand(const int pid, const String& toPrint) 
 	: ICommand(pid, PRINT)
 {
 	this->toPrint = toPrint;
@@ -10,7 +10,10 @@ PrintCommand::PrintCommand(int pid, String& toPrint)
 // prints the message to the console
 void PrintCommand::execute()
 {
-	std::cout << "PID " << this->pid << ": " << this->toPrint << std::endl;
+	// Put delay
+	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+	//std::cout << "PID " << this->pid << ": " << this->toPrint << std::endl;
 	// std::stringstream msg; msg << "PID " << this->pid << ": " << this->toPrint;
 	// MessageBuffer::log(msg.str());
 }

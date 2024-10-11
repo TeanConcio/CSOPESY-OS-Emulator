@@ -25,10 +25,3 @@ std::shared_ptr<Process> AScheduler::findProcess(const String& processName)
 	return nullptr;
 }
 
-void AScheduler::printQueuedProcesses()
-{
-	for (const auto& process : this->queuedProcesses)
-	{
-		std::cout << process->getName() << "\n";
-	}
-}

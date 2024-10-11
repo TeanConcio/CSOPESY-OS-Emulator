@@ -14,13 +14,12 @@ public:
 	void startCoreThreads();
 	void start() override;
 
-	String 
+	String makeQueuedProcessesString() override;
+	String makeRunningProcessesString() override;
+	String makeFinishedProcessesString() override;
 
 	//void sortProcessQueues();
 
-	void startCoreThreads();
-
-	void start() override;
 
 protected:
 	void run() override;

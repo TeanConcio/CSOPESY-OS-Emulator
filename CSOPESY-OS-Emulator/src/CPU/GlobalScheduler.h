@@ -12,13 +12,15 @@ public:
 	static void initialize();
 	static void destroy();
 
-	static void start();
+	static void start() { GlobalScheduler::getInstance()->scheduler->start(); }
 
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
-
 	void createTestProcesses(const int limit);
-	void printQueuedProcesses();
+
+	static String makeQueuedProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeQueuedProcessesString(); }
+	static String makeRunningProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeRunningProcessesString(); }
+	static String makeFinishedProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeFinishedProcessesString(); }
 
 private:
 	// Singleton
