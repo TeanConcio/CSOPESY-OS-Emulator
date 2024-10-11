@@ -31,12 +31,6 @@ void GlobalScheduler::destroy()
 }
 
 
-void GlobalScheduler::start()
-{
-	GlobalScheduler::getInstance()->scheduler->start();
-}
-
-
 std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name) 
 {
 	std::shared_ptr<Process> existingProcess = scheduler->findProcess(name);
@@ -79,9 +73,4 @@ void GlobalScheduler::createTestProcesses(const int limit)
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
 		this->scheduler->addProcess(process);
 	}
-}
-
-void GlobalScheduler::printQueuedProcesses()
-{
-	this->scheduler->printQueuedProcesses();
 }

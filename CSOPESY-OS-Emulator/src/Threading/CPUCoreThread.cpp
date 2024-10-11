@@ -15,6 +15,8 @@ void CPUCoreThread::run()
 			(this->currentProcess->getState() == Process::ProcessState::READY ||
 				this->currentProcess->getState() == Process::ProcessState::RUNNING))
 			this->currentProcess->executeCurrentCommand();
+
+		this->sleep(100);
 	}
 }
 
@@ -31,7 +33,11 @@ void CPUCoreThread::setCurrentProcess(std::shared_ptr<Process> process)
 		this->currentProcess->setCPUCoreID(-1);
 	}
 	this->currentProcess = process;
-	this->currentProcess->setCPUCoreID(this->coreNo);
+	
+	if (process != nullptr) {
+		this->currentProcess->setCPUCoreID(this->coreNo);
+		this->currentProcess->setState(Process::ProcessState::RUNNING);
+	}
 }
 
 Process::ProcessState CPUCoreThread::getCurrentProcessState() const

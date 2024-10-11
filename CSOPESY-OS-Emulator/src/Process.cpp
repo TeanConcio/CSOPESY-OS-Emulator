@@ -127,6 +127,8 @@ void Process::setCPUCoreID(int coreID)
 
 Process::ProcessState Process::getState() const
 {
+	if (this == nullptr || !this->currentState)
+		return ProcessState::FINISHED; // or some default state
 	return this->currentState;
 }
 

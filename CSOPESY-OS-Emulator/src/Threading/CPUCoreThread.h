@@ -14,8 +14,8 @@ public:
 
 	std::shared_ptr<Process> getCurrentProcess() const;
 	void setCurrentProcess(std::shared_ptr<Process> process);
-
 	Process::ProcessState getCurrentProcessState() const;
+	int getCoreNo() const { return this->coreNo; }
 
 private:
 	int coreNo;

@@ -32,7 +32,10 @@ public:
 
 	virtual void addProcess(std::shared_ptr<Process> process); // adds a currentProcess to the scheduler
 	std::shared_ptr<Process> findProcess(const String& processName);
-	void printQueuedProcesses();
+
+	virtual String makeQueuedProcessesString() = 0;
+	virtual String makeRunningProcessesString() = 0;
+	virtual String makeFinishedProcessesString() = 0;
 
 	//struct ProcessInfo
 	//{
