@@ -4,10 +4,10 @@
 
 // implements the ICommand interface
 class PrintCommand :
-    public ICommand
+	public ICommand
 {
 public:
-	PrintCommand(int pid, String& toPrint);
+	PrintCommand(const int pid, const String& toPrint);
 	void execute() override;
 
 	String getPrintMessage() const;

@@ -26,7 +26,7 @@ private:
 	void schedulerTest();
 	void schedulerStop();
 	void reportUtil();
-	void addProcess(std::shared_ptr <Process> process); // Add currentProcess to currentProcess table
+
 	void listProcesses();
 
 };
