@@ -11,7 +11,11 @@ public:
 
 	FCFSScheduler(int cores);
 
-	//void addProcessToCPUQueue(const Process& process, int core = 0);
+	void startCoreThreads();
+	void start() override;
+
+	String 
+
 	//void sortProcessQueues();
 
 	void startCoreThreads();
