@@ -45,6 +45,9 @@ String AConsole::getConsoleInputToHistory()
 	String input;
 	std::getline(std::cin, input);
 
+	if (input == "")
+		input = "\n";
+
 	// If last item of history doesn't have a newline, continue on the same line
 	if (!this->history.empty() && this->history.back().back() != '\n')
 		this->history.back() += input + '\n';

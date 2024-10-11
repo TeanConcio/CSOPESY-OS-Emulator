@@ -46,13 +46,16 @@ void FCFSScheduler::run()
 				this->queuedProcesses.erase(this->queuedProcesses.begin());
 				done = false;
 			}
-			else if (this->coreThreads[core]->getCurrentProcessState() == Process::ProcessState::FINISHED) {
+			else if (this->coreThreads[core]->getCurrentProcess() != nullptr && this->coreThreads[core]->getCurrentProcessState() == Process::ProcessState::FINISHED) {
 				this->finishedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
 
 				if (!this->queuedProcesses.empty()) {
 					this->coreThreads[core]->setCurrentProcess(this->queuedProcesses.front());
 					this->queuedProcesses.erase(this->queuedProcesses.begin());
 					done = false;
+				}
+				else {
+					this->coreThreads[core]->setCurrentProcess(nullptr);
 				}
 			}
 		}
