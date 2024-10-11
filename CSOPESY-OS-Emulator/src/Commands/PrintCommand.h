@@ -9,6 +9,8 @@ class PrintCommand :
 public:
 	PrintCommand(int pid, String& toPrint);
 	void execute() override;
+
+	String getPrintMessage() const;
 private:
 	String toPrint;
 };

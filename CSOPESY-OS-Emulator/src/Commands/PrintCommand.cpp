@@ -14,3 +14,8 @@ void PrintCommand::execute()
 	// std::stringstream msg; msg << "PID " << this->pid << ": " << this->toPrint;
 	// MessageBuffer::log(msg.str());
 }
+
+String PrintCommand::getPrintMessage() const
+{
+	return this->toPrint;
+}

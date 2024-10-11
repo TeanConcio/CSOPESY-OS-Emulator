@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ctime>
+#include <fstream>
 #include "TypedefRepo.h"
 #include "Commands/ICommand.h"
 
@@ -28,6 +29,7 @@ public:
 	Process(int pid, String name, RequirementFlags requirementFlags);
 	void addCommand(ICommand::CommandType commandType);
 	void executeCurrentCommand();
+	void logCurrentCommand();
 
 	void updateLastCommandTime();
 	int getLastCommandTime() const;

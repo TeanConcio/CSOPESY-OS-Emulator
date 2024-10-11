@@ -22,7 +22,7 @@ void Process::addCommand(ICommand::CommandType commandType)
 	}
 	else
 	{
-		String toPrint = "This is a sample print";
+		String toPrint = "Hello world from " + this->name + "!";
 		const std::shared_ptr<ICommand> print = std::make_shared<PrintCommand>(this->pid, toPrint);
 		this->commandList.push_back(print);
 	}
@@ -35,14 +35,59 @@ void Process::executeCurrentCommand()
 	else {
 		this->currentState = ProcessState::RUNNING;
 		this->commandList[this->commandCounter]->execute();
+		this->logCurrentCommand();
 		this->updateLastCommandTime();
 		this->commandCounter++;
 	}
 }
 
+void Process::logCurrentCommand()
+{
+	// Make a log file in txt
+	String logFileName = this->name + "_log.txt";
+	std::ofstream logFile(logFileName, std::ios::app);
+	if (this->commandCounter == 0)
+	{
+		std::ofstream logFile(logFileName, std::ios::out);
+	}
 
+	if (logFile.is_open())
+	{
+		// If first command, assumed that it is the start of the process
+		if (this->commandCounter == 0)
+		{
+			
+			logFile << "Process name: " << this->name << std::endl;
+			logFile << "Logs:" << std::endl << std::endl;
+		}
 
+		// Log as "(<timestamp>) Core:<coreID> "<output>"
+		if (this->commandList[this->commandCounter]->getCommandType() == ICommand::IO)
+		{
 
+		}
+		else
+		{
+			PrintCommand* printCommand = dynamic_cast<PrintCommand*>(this->commandList[this->commandCounter].get());
+			
+			// It creates a timestamp in the format - MM/DD/YYYY HH:MM:SSAM/PM
+			char buffer[26];
+			std::tm now = std::tm();
+			std::time_t t = std::time(nullptr);
+			localtime_s(&now, &t);
+			std::strftime(buffer, sizeof(buffer), "%m/%d/%Y %H:%M:%S%p", &now);
+
+			logFile << "(" << buffer << ") Core:" << this->cpuCoreID << " " << "\"" << printCommand->getPrintMessage() << "\"" << std::endl;
+		}
+		logFile.close();
+	}
+	else
+	{
+		std::cerr << "Unable to open log file " << logFileName << std::endl;
+	}
+	
+	
+}
 
 void Process::updateLastCommandTime() {
 	this->lastCommandTime = std::time(nullptr);
