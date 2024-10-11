@@ -21,7 +21,7 @@ public:
 	String generateProcessName() const;
 
 	void createTestProcesses(const int limit);
-	
+	void printQueuedProcesses();
 
 private:
 	// Singleton

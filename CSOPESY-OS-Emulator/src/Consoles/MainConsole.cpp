@@ -182,17 +182,12 @@ void MainConsole::reportUtil() {
 	this->writeToConsoleHistory("report-util command recognized. Doing something.\n");
 }
 
-void MainConsole::addProcess(std::shared_ptr <Process> process) {
-	this->processTable.push_back(process);
-}
-
 void MainConsole::listProcesses()	{
+	GlobalScheduler* globalScheduler = GlobalScheduler::getInstance();
 	this->writeToConsoleHistory("--------------------------------------\n");
 	this->writeToConsoleHistory("Running processes :\n");
-	// TODO: Get the Processes from the GlobalScheduler, and then get ProcessInfo
-	for (const auto& currentProcess : processTable) {
-		this->writeToConsoleHistory(currentProcess->getName() + "\n");
-	}
-
+	
+	// Loop the processes in the scheduler
+	globalScheduler->printQueuedProcesses();
 	this->writeToConsoleHistory("--------------------------------------\n");
 }

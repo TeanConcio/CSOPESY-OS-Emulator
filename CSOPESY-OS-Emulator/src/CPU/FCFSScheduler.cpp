@@ -2,10 +2,10 @@
 #include <algorithm>
 
 
-FCFSScheduler::FCFSScheduler(int cores) 
-	: AScheduler(SchedulingAlgorithm::FCFS, 0, "FCFS") //TEMP
+FCFSScheduler::FCFSScheduler(int cores)  
 {
 	this->numCores = cores;
+	this->schedulingAlgo = FCFS;
 	
 	// Initialize the Core Threads
 	for (int i = 0; i < cores; ++i)
@@ -19,7 +19,6 @@ void FCFSScheduler::addProcess(std::shared_ptr<Process> process)
 {
 	if (this->findProcess(process->getName()) == nullptr)
 	{
-		AScheduler::addProcess(process);
 		this->queuedProcesses.push_back(process);
 	}
 	else
@@ -43,23 +42,13 @@ void FCFSScheduler::addProcess(std::shared_ptr<Process> process)
 //}
 
 
-//// Sort the currentProcess queues based on the remaining instructions (FCFS)
-//void FCFSScheduler::sortProcessQueues()
-//{
-//	for (auto& queue : this->processCPUQueues)
-//	{
-//		std::vector<std::shared_ptr<Process>> processMap;
-//		for (auto& entry : queue) {
-//			processMap.push_back(entry.second);
-//		}
-//
-//		std::sort(processMap.begin(), processMap.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
-//			return a->getLastCommandTime() > b->getLastCommandTime();
-//		});
-//	}
-//}
-//
-//
+// Sort the currentProcess queues based on the remaining instructions (FCFS)
+void FCFSScheduler::sortProcessQueues() {
+	std::sort(this->queuedProcesses.begin(), this->queuedProcesses.end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
+		return p1->getLinesOfCode()-p1->getCommandCounter() < p2->getLinesOfCode() - p2->getCommandCounter();
+	});
+}
+
 //// Run the scheduler
 //void FCFSScheduler::run()
 //{

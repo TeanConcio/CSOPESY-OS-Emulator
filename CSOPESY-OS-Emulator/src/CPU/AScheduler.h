@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "../Threading/IETThread.h"
+#include "../Threading/CPUCoreThread.h"
 #include "../Process.h"
 #include "../Common.h"
 
@@ -27,26 +28,29 @@ public:
 	};
 
 	AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName);
+	AScheduler() = default;
 	virtual ~AScheduler() = default;
 
 	virtual void addProcess(std::shared_ptr<Process> process); // adds a currentProcess to the scheduler
 	std::shared_ptr<Process> findProcess(const String& processName);
+	void printQueuedProcesses();
 
-	struct ProcessInfo
-	{
-		int pid;
-		String name;
-		int cpuID;
-		int lineCounter;
-		int linesOfCode;
-		int remainingTime;
-	};
+	//struct ProcessInfo
+	//{
+	//	int pid;
+	//	String name;
+	//	int cpuID;
+	//	int lineCounter;
+	//	int linesOfCode;
+	//	int remainingTime;
+	//};
 
 	virtual void run() = 0;
 
 protected:
+	int numCores;
 	SchedulingAlgorithm schedulingAlgo;
-
-	std::unordered_map<String, std::shared_ptr<Process>> processMap;
-	ProcessInfo currentProcessInfo;
+	std::vector<std::shared_ptr<CPUCoreThread>> coreThreads;
+	std::vector<std::shared_ptr<Process>> queuedProcesses;
+	std::vector<std::shared_ptr<Process>> finishedProcesses;
 };

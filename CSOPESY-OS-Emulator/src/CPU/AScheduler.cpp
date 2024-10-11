@@ -3,33 +3,37 @@
 
 AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo, int pid, const String& processName) 
 {
-	this->schedulingAlgo = schedulingAlgo;
-	this->currentProcessInfo.pid = pid;
-	this->currentProcessInfo.name = processName;
-	this->currentProcessInfo.cpuID = 0;
-	this->currentProcessInfo.lineCounter = 0;
-	this->currentProcessInfo.linesOfCode = 0;
-	this->currentProcessInfo.remainingTime = 0;
 
-	this->processMap = std::unordered_map<String, std::shared_ptr<Process>>();
 }
 
 
 void AScheduler::addProcess(std::shared_ptr<Process> process)
 {
-	this->processMap[process->getName()] = process;
+	this->queuedProcesses.push_back(process);
 }
 
 
 std::shared_ptr<Process> AScheduler::findProcess(const String& processName)
 {
-	auto it = this->processMap.find(processName);
-	if (it != this->processMap.end())
+	// Find the process in the queuedProcesses & finishedProcesses
+	auto it = std::find_if(this->queuedProcesses.begin(), this->queuedProcesses.end(), [&processName](const std::shared_ptr<Process>& process) {
+		return process->getName() == processName;
+		});
+	if (it == this->queuedProcesses.end())
 	{
-		return it->second;
+		it = std::find_if(this->finishedProcesses.begin(), this->finishedProcesses.end(), [&processName](const std::shared_ptr<Process>& process) {
+			return process->getName() == processName;
+			});
 	}
-	else
+
+	return nullptr;
+}
+
+void AScheduler::printQueuedProcesses()
+{
+	std::cout << "Queued Processes: \n";
+	for (const auto& process : this->queuedProcesses)
 	{
-		return nullptr;
+		std::cout << process->getName() << "\n";
 	}
 }
