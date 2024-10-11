@@ -5,15 +5,15 @@
 
 
 // Manages throughout the OS, singleton
-class GlobalScheduler : public IETThread 
+class GlobalScheduler 
 {
 public:
 	static GlobalScheduler* getInstance();
 	static void initialize();
 	static void destroy();
 
-	void start() override;
-	void run() override;
+	void start();
+	void run();
 	
 	static void setRunning(const bool isRunning);
 
