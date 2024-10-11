@@ -1,6 +1,5 @@
 #include "MainConsole.h"
 
-
 /**
  * @brief Constructs a new MainConsole object.
  * 
@@ -41,11 +40,16 @@ void MainConsole::decideCommand(const String& command) {
 		this->initialize();
 	}
 	else if (commandParts[0] == "screen") {
-		//// Check if enough arguments
-		//if (commandParts.size() <= 2) {
-		//	this->commandNotFound(command);
-		//	return;
-		//}
+		// Check if enough arguments
+
+		if (commandParts[1] == "-ls" && commandParts.size() == 2)
+		{
+			this->listProcesses();
+		}
+		else if (commandParts.size() <= 2) {
+			this->commandNotFound(command);
+			return;
+		}
 		//else if (commandParts[1] == "-s") {
 		//	// Check if currentProcess exists
 		//	for (const auto& currentProcess : this->processTable) {
@@ -76,9 +80,10 @@ void MainConsole::decideCommand(const String& command) {
 		//	this->writeToConsoleHistory("Unable to redraw " + commandParts[2] + ". Was it registered?\n");
 		//	return;
 		//}
-		//else {
-		//	this->commandNotFound(command);
-		//}
+		else 
+		{
+			this->commandNotFound(command);
+		}
 	}
 	else if (commandParts[0] == "scheduler-test") {
 		this->schedulerTest();
@@ -179,4 +184,15 @@ void MainConsole::reportUtil() {
 
 void MainConsole::addProcess(std::shared_ptr <Process> process) {
 	this->processTable.push_back(process);
+}
+
+void MainConsole::listProcesses()	{
+	this->writeToConsoleHistory("--------------------------------------\n");
+	this->writeToConsoleHistory("Running processes :\n");
+	// TODO: Get the Processes from the GlobalScheduler, and then get ProcessInfo
+	for (const auto& currentProcess : processTable) {
+		this->writeToConsoleHistory(currentProcess->getName() + "\n");
+	}
+
+	this->writeToConsoleHistory("--------------------------------------\n");
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../ConsoleManager.h"
+#include "../CPU/GlobalScheduler.h"
 
 #include <memory>
 
@@ -26,6 +27,7 @@ private:
 	void schedulerStop();
 	void reportUtil();
 	void addProcess(std::shared_ptr <Process> process); // Add currentProcess to currentProcess table
+	void listProcesses();
 
 	// List of all the processes
 	std::vector<std::shared_ptr<Process>> processTable;
