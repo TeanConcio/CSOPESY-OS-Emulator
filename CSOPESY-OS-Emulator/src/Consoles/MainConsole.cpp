@@ -36,7 +36,10 @@ void MainConsole::decideCommand(const String& command) {
 	std::vector<String> commandParts = Common::commandExtractor(command);
 
 	// Check if command is empty
-	if (commandParts[0] == "initialize") {
+	if (commandParts.empty()) {
+		return;
+	}
+	else if (commandParts[0] == "initialize") {
 		this->initialize();
 	}
 	else if (commandParts[0] == "screen") {
