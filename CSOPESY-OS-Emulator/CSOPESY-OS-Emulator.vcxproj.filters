@@ -15,6 +15,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Scheduler Files">
+      <UniqueIdentifier>{94a960ae-cafc-4ed9-baa7-d01bc9f5f870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread Files">
+      <UniqueIdentifier>{efa46e6c-999d-417f-a06c-25378db2d47f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command Files">
+      <UniqueIdentifier>{c4aaab2d-e464-4480-a3cf-fa4f31c8d505}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Consoles\AConsole.cpp">
@@ -37,6 +46,33 @@
     </ClCompile>
     <ClCompile Include="src\Process.cpp">
       <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Consoles\MarqueeConsole.cpp">
+      <Filter>Console Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\AScheduler.cpp">
+      <Filter>Scheduler Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\FCFSScheduler.cpp">
+      <Filter>Scheduler Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Threading\IETThread.cpp">
+      <Filter>Thread Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Commands\IOCommand.cpp">
+      <Filter>Command Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Commands\PrintCommand.cpp">
+      <Filter>Command Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Commands\ICommand.h">
+      <Filter>Command Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\GlobalScheduler.cpp">
+      <Filter>Scheduler Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Threading\CPUCoreThread.cpp">
+      <Filter>Thread Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +99,30 @@
     </ClInclude>
     <ClInclude Include="src\TypedefRepo.h">
       <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Commands\PrintCommand.h">
+      <Filter>Command Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consoles\MarqueeConsole.h">
+      <Filter>Console Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Commands\IOCommand.h">
+      <Filter>Command Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Threading\IETThread.h">
+      <Filter>Thread Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPU\GlobalScheduler.h">
+      <Filter>Scheduler Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPU\FCFSScheduler.h">
+      <Filter>Scheduler Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPU\AScheduler.h">
+      <Filter>Scheduler Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Threading\CPUCoreThread.h">
+      <Filter>Thread Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -134,6 +134,14 @@
     <ClCompile Include="src\Consoles\BaseScreen.cpp" />
     <ClCompile Include="src\Consoles\MainConsole.cpp" />
     <ClCompile Include="src\Process.cpp" />
+    <ClCompile Include="src\Consoles\MarqueeConsole.cpp" />
+    <ClCompile Include="src\CPU\AScheduler.cpp" />
+    <ClCompile Include="src\CPU\FCFSScheduler.cpp" />
+    <ClCompile Include="src\CPU\GlobalScheduler.cpp" />
+    <ClCompile Include="src\Commands\IOCommand.cpp" />
+    <ClCompile Include="src\Commands\PrintCommand.cpp" />
+    <ClCompile Include="src\Threading\CPUCoreThread.cpp" />
+    <ClCompile Include="src\Threading\IETThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp" />
@@ -142,8 +150,17 @@
     <ClInclude Include="src\Consoles\AConsole.h" />
     <ClInclude Include="src\Consoles\BaseScreen.h" />
     <ClInclude Include="src\Consoles\MainConsole.h" />
+    <ClInclude Include="src\Consoles\MarqueeConsole.h" />
     <ClInclude Include="src\Process.h" />
+    <ClInclude Include="src\Threading\CPUCoreThread.h" />
     <ClInclude Include="src\TypedefRepo.h" />
+    <ClInclude Include="src\CPU\AScheduler.h" />
+    <ClInclude Include="src\CPU\FCFSScheduler.h" />
+    <ClInclude Include="src\CPU\GlobalScheduler.h" />
+    <ClInclude Include="src\Commands\IOCommand.h" />
+    <ClInclude Include="src\Commands\PrintCommand.h" />
+    <ClInclude Include="src\Threading\IETThread.h" />
+    <ClCompile Include="src\Commands\ICommand.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />

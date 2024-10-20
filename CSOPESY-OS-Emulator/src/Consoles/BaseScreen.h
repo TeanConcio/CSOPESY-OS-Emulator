@@ -12,9 +12,10 @@ public:
 	void display() override;
 
 private:
-	void printProcessInfo() const;
+	void printProcessInfo();
 	std::shared_ptr<Process> attachedProcess;
 	bool refreshed = false;
 
-	void printHeader() const;
+	void decideCommand(const String& command) override;
+	void printHeader() override;
 };
