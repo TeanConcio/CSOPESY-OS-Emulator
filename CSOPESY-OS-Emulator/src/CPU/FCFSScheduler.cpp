@@ -1,7 +1,8 @@
 #include "FCFSScheduler.h"
 #include <algorithm>
 
-FCFSScheduler::FCFSScheduler(int cores) : AScheduler(FCFS)
+FCFSScheduler::FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo) 
+	: AScheduler(schedulingAlgo)
 {
 	this->numCores = cores;
 	
