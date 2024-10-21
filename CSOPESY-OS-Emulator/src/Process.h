@@ -44,7 +44,7 @@ public:
 	String getName() const;
 	void setArrivalTime(std::time_t arrivalTime);
 
-	void test_generateRandomCommands(int limit); // TEMP: make random in the future
+	void test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs); // TEMP: make random in the future
 
 private: 
 	int pid;

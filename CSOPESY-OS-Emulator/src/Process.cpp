@@ -147,11 +147,13 @@ String Process::getName() const
 	return this->name;
 }
 
-void Process::test_generateRandomCommands(int limit)
+void Process::test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs)
 {
-	for (int i = 0; i < limit; i++)
+	// Generate a number of commands between minInstructs and maxInstructs (inclusive)
+	unsigned int numCommands = minInstructs + (rand() % (maxInstructs - minInstructs + 1));
+	for (unsigned int i = 0; i < numCommands; i++)
 	{
-		this->addCommand(ICommand::PRINT);
+		this->addCommand(ICommand::CommandType::PRINT);
 	}
 }
 
