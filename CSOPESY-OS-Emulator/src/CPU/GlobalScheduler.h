@@ -34,6 +34,7 @@ public:
 	void setMinIns(unsigned int minIns) { this->minIns = minIns; }
 	void setMaxIns(unsigned int maxIns) { this->maxIns = maxIns; }
 
+	bool areConfigsValid(std::unordered_map<String, String> configs);
 	int getCoreCount() { return this->scheduler->getNumCores(); }
 	int getRunningCoreCount() { return this->scheduler->getRunningCores(); }
 	unsigned int getBatchProcessFreq() { return this->batchProcessFreq; }

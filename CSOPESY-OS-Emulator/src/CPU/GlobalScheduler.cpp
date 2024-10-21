@@ -49,7 +49,7 @@ std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name)
 			name = this->generateProcessName();
 		}
 		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
-		newProcess->test_generateRandomCommands(100);
+		newProcess->test_generateRandomCommands(this->minIns, this->maxIns);
 		this->pidCounter++;
 
 		return newProcess;
@@ -156,33 +156,43 @@ std::unordered_map<String, String> GlobalScheduler::getConfigs()
 void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 {
 	try {
-		// Set the algo, cores, and time slice
-		String schedulingAlgorithm = configs["scheduler"];
-		int numCores = std::stoi(configs["num-cpu"]);
-		int timeQuantum = std::stoi(configs["quantum-cycles"]);
-		int delay = std::stoi(configs["delay-per-exec"]);
-
-		AScheduler::SchedulingAlgorithm algo;
-		if (schedulingAlgorithm == "\"fcfs\"")
+		// Check if the configs are valid
+		if (areConfigsValid(configs))
 		{
-			algo = AScheduler::SchedulingAlgorithm::FCFS;
-			this->scheduler = new FCFSScheduler(numCores, algo, delay);
+			// Set the algo, cores, and time slice
+			String schedulingAlgorithm = configs["scheduler"];
+			int numCores = std::stoi(configs["num-cpu"]);
+			int timeQuantum = std::stoi(configs["quantum-cycles"]);
+			int delay = std::stoi(configs["delay-per-exec"]);
+
+			AScheduler::SchedulingAlgorithm algo;
+			if (schedulingAlgorithm == "\"fcfs\"")
+			{
+				algo = AScheduler::SchedulingAlgorithm::FCFS;
+				this->scheduler = new FCFSScheduler(numCores, algo, delay);
+			}
+			else
+			{
+				algo = AScheduler::SchedulingAlgorithm::ROUND_ROBIN;
+				// TODO: Make an RR class
+				//this->scheduler = new RoundRobinScheduler(numCores, timeQuantum);
+			}
+
+			// Set the batch process frequency, min instructions, max instructions, and delay
+			this->setBatchProcessFreq(std::stoi(configs["batch-process-freq"]));
+			this->setMinIns(std::stoi(configs["min-ins"]));
+			this->setMaxIns(std::stoi(configs["max-ins"]));
 		}
 		else
 		{
-			algo = AScheduler::SchedulingAlgorithm::ROUND_ROBIN;
-			// TODO: Make an RR class
-			//this->scheduler = new RoundRobinScheduler(numCores, timeQuantum);
+			// Throws an exception if the configs are invalid and sets default values
+			throw std::invalid_argument("Invalid configs.");
 		}
-
-		// Set the batch process frequency, min instructions, max instructions, and delay
-		this->setBatchProcessFreq(std::stoi(configs["batch-process-freq"]));
-		this->setMinIns(std::stoi(configs["min-ins"]));
-		this->setMaxIns(std::stoi(configs["max-ins"]));
+		
 	}
 	catch (std::exception& e)
 	{
-		std::cerr << "Error. Will set default values. " << e.what() << std::endl;
+		std::cerr << "Error: " << e.what() << ". Will set default configs." << std::endl;
 		// Set default values
 		// num-cpu: 4
 		// scheduler: rr
@@ -196,4 +206,58 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		this->setMinIns(1000);
 		this->setMaxIns(2000);
 	}	
+}
+
+bool GlobalScheduler::areConfigsValid(std::unordered_map<String, String> configs)
+{
+	// Check if the only components are num-cpu, scheduler, quantum-cycles, batch-process-freq, min-ins, max-ins, and delay-per-exec
+	if (configs.size() != 7)
+	{
+		return false;
+	}
+	// Check if the configs are valid
+	if (configs.find("num-cpu") == configs.end() || configs.find("scheduler") == configs.end() || configs.find("quantum-cycles") == configs.end() ||
+		configs.find("batch-process-freq") == configs.end() || configs.find("min-ins") == configs.end() || configs.find("max-ins") == configs.end() ||
+		configs.find("delay-per-exec") == configs.end())
+	{
+		return false;
+	}
+	// Check if the values are valid
+	// num-cpu: [1, 128]
+	// scheduler: "fcfs" or "rr"
+	// quantum-cycles: [1, 2e32]
+	// batch-process-freq: [1, 2e32]
+	// min-ins: [1, 2e32]
+	// max-ins: [1, 2e32]
+	// delay-per-exec: [0, 2e32]
+	if (std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
+	{
+		return false;
+	}
+	if (configs["scheduler"] != "\"fcfs\"" && configs["scheduler"] != "\"rr\"")
+	{
+		return false;
+	}
+	if (std::stoi(configs["quantum-cycles"]) < 1)
+	{
+		return false;
+	}
+	if (std::stoi(configs["batch-process-freq"]) < 1)
+	{
+		return false;
+	}
+	if (std::stoi(configs["min-ins"]) < 1)
+	{
+		return false;
+	}
+	if (std::stoi(configs["max-ins"]) < 1)
+	{
+		return false;
+	}
+	if (std::stoi(configs["delay-per-exec"]) < 0)
+	{
+		return false;
+	}
+
+	return true;
 }
