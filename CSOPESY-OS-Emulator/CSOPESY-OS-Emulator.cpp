@@ -16,7 +16,7 @@ int main() {
 	// Every frame draw console
 	// Process waits for now because no marquee
 	bool running = true;
-	GlobalScheduler::start();
+	// GlobalScheduler::start();
 	while (running)
 	{
 		ConsoleManager::getInstance()->process();

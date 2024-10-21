@@ -3,7 +3,6 @@
 #include "./IETThread.h"
 #include "./../Process.h"
 
-
 class CPUCoreThread : public IETThread
 {
 public:
@@ -19,6 +18,7 @@ public:
 
 private:
 	int coreNo;
+	unsigned int delay;
 	std::shared_ptr<Process> currentProcess;
 };
 

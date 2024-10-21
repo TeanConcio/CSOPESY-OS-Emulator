@@ -1,9 +1,11 @@
 #include "CPUCoreThread.h"
+#include "./../CPU/GlobalScheduler.h"
 
 
 CPUCoreThread::CPUCoreThread(const int coreNo) 
 {
 	this->coreNo = coreNo;
+	this->delay = GlobalScheduler::getInstance()->getDelay();
 	this->currentProcess = nullptr;
 }
 
@@ -16,7 +18,7 @@ void CPUCoreThread::run()
 				this->currentProcess->getState() == Process::ProcessState::RUNNING))
 			this->currentProcess->executeCurrentCommand();
 
-		this->sleep(100);
+		this->sleep();
 	}
 }
 
