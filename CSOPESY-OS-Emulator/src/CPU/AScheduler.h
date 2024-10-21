@@ -37,6 +37,9 @@ public:
 	virtual String makeRunningProcessesString() = 0;
 	virtual String makeFinishedProcessesString() = 0;
 
+	int getNumCores() const { return this->numCores; }
+	int getRunningCores();
+
 	//struct ProcessInfo
 	//{
 	//	int pid;

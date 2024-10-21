@@ -64,14 +64,48 @@ String GlobalScheduler::generateProcessName() const
 	return ss.str();
 }
 
-
-void GlobalScheduler::createTestProcesses(const int limit)
+void GlobalScheduler::createTestProcess()
 {
-	for (int i = 0; i < limit; ++i)
+	this->isGeneratingProcesses = true;
+}
+
+/**
+* @brief Create a new process every batchProcessFreq cycles
+*/
+void GlobalScheduler::generateTestProcesses()
+{
+	this->isGeneratingProcesses = true;
+
+	this->processGenerationThread = std::thread([this]() {
+		while (this->isGeneratingProcesses)
+		{
+			// Sleep for a second to simulate a cycle
+			for (int i = 0; i < this->getBatchProcessFreq(); i++)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			}
+
+			String processName = "process" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
+			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+			this->scheduler->addProcess(process);
+			
+		}
+	});
+
+	/*for (int i = 0; i < limit; ++i)
 	{
 		String processName = "screen_" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
 		this->scheduler->addProcess(process);
+	}*/
+}
+
+void GlobalScheduler::stopGeneratingProcesses()
+{
+	this->isGeneratingProcesses = false;
+	if (this->processGenerationThread.joinable())
+	{
+		this->processGenerationThread.join();
 	}
 }
 
@@ -148,6 +182,18 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 	}
 	catch (std::exception& e)
 	{
-		std::cerr << "Error: " << e.what() << std::endl;
+		std::cerr << "Error. Will set default values. " << e.what() << std::endl;
+		// Set default values
+		// num-cpu: 4
+		// scheduler: rr
+		// quantum-cycles: 5
+		// batch-process-freq: 1
+		// min-ins: 1000
+		// max-ins: 2000
+		// delay-per-exec: 0
+		this->scheduler = new FCFSScheduler(4, AScheduler::SchedulingAlgorithm::FCFS, 0);
+		this->setBatchProcessFreq(1);
+		this->setMinIns(1000);
+		this->setMaxIns(2000);
 	}	
 }

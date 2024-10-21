@@ -17,7 +17,9 @@ public:
 	
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
-	void createTestProcesses(const int limit);
+	void generateTestProcesses();
+	void createTestProcess();
+	void stopGeneratingProcesses();
 
 	static String makeQueuedProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeQueuedProcessesString(); }
 	static String makeRunningProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeRunningProcessesString(); }
@@ -32,6 +34,8 @@ public:
 	void setMinIns(unsigned int minIns) { this->minIns = minIns; }
 	void setMaxIns(unsigned int maxIns) { this->maxIns = maxIns; }
 
+	int getCoreCount() { return this->scheduler->getNumCores(); }
+	int getRunningCoreCount() { return this->scheduler->getRunningCores(); }
 	unsigned int getBatchProcessFreq() { return this->batchProcessFreq; }
 	unsigned int getMinIns() { return this->minIns; }
 	unsigned int getMaxIns() { return this->maxIns; }
@@ -51,4 +55,7 @@ private:
 	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of test processes to make per cycle
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
+
+	bool isGeneratingProcesses = false;
+	std::thread processGenerationThread;
 };

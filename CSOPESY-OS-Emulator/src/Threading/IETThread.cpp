@@ -12,5 +12,5 @@ void IETThread::start()
 
 void IETThread::sleep(unsigned int ms)
 {
-	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms*100));
 }

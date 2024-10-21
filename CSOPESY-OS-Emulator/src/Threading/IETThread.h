@@ -9,7 +9,7 @@ public:
 	IETThread();
 
 	virtual void start();
-	static void sleep(unsigned int ms = 1000);
+	static void sleep(unsigned int ms = 1);
 
 protected:
 	virtual void run() = 0;

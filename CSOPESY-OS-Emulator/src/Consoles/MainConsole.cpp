@@ -155,6 +155,7 @@ void MainConsole::printHeader() {
  * Calls the exitApplication method of the ConsoleManager.
  */
 void MainConsole::exit() const {
+	GlobalScheduler::getInstance()->stopGeneratingProcesses();
 	ConsoleManager::getInstance()->exitApplication();
 }
 
@@ -185,28 +186,67 @@ void MainConsole::help() {
  *
 **/
 void MainConsole::initialize() {
-	// this->writeToConsoleHistory("initialize command recognized. Doing something.\n");
+	this->writeToConsoleHistory("initialize command recognized. Doing something.\n");
 	GlobalScheduler::setScheduler();
 	GlobalScheduler::start();
-	this->writeToConsoleHistory("Scheduler initialized.\n");
 }
 
+/**
+* @brief Creates test processes for the scheduler.
+* 
+*/
 void MainConsole::schedulerTest() {
 	this->writeToConsoleHistory("scheduler-test command recognized. Doing something.\n");
-	GlobalScheduler::getInstance()->createTestProcesses(10);
-	// GlobalScheduler::start();
+	GlobalScheduler::getInstance()->generateTestProcesses();
 }
 
 void MainConsole::schedulerStop() {
 	this->writeToConsoleHistory("scheduler-stop command recognized. Doing something.\n");
+	GlobalScheduler::getInstance()->stopGeneratingProcesses();
 }
 
 void MainConsole::reportUtil() {
-	this->writeToConsoleHistory("report-util command recognized. Doing something.\n");
+	// ListProcesses but printed to a txt file
+	String logFileName = "csopesy-log.txt";
+	std::ofstream logFile(logFileName, std::ios::out);
+
+	if (logFile.is_open())
+	{
+		logFile << "CPU utilization: " << "100%\n";
+		logFile << "Cores used: " << GlobalScheduler::getInstance()->getCoreCount() << "\n";
+		logFile << "Cores available: " << GlobalScheduler::getInstance()->getCoreCount() - GlobalScheduler::getInstance()->getRunningCoreCount() << "\n\n";
+		logFile << "--------------------------------------\n";
+		logFile << "Running processes :\n";
+		logFile << GlobalScheduler::makeRunningProcessesString();
+		logFile << "\n";
+		logFile << "Finished processes :\n";
+		logFile << GlobalScheduler::makeFinishedProcessesString();
+		logFile << "--------------------------------------\n";
+		logFile.close();
+
+		this->writeToConsoleHistory("Report generated at C:/csopesy-log.txt!\n");
+	}
+	else
+	{
+		this->writeToConsoleHistory("Unable to create log file.\n");
+	}
 }
 
-
+/**
+* @brief Implements the screen -ls command.
+*
+* Lists the running and finished processes.
+*/
 void MainConsole::listProcesses()	{
+	this->writeToConsoleHistory("CPU utilization: ");
+	// TODO: Implement CPU utilization rate (current implementation is a placeholder)
+	this->writeToConsoleHistory("100%\n");
+
+	this->writeToConsoleHistory("Cores used: ");
+	this->writeToConsoleHistory(std::to_string(GlobalScheduler::getInstance()->getCoreCount()) + "\n");
+	this->writeToConsoleHistory("Cores available: ");
+	this->writeToConsoleHistory(std::to_string(GlobalScheduler::getInstance()->getCoreCount()-GlobalScheduler::getInstance()->getRunningCoreCount()) + "\n\n");
+
 	this->writeToConsoleHistory("--------------------------------------\n");
 	this->writeToConsoleHistory("Running processes :\n");
 	this->writeToConsoleHistory(GlobalScheduler::makeRunningProcessesString());

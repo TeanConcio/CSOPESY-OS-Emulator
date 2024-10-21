@@ -25,3 +25,17 @@ std::shared_ptr<Process> AScheduler::findProcess(const String& processName)
 	return nullptr;
 }
 
+int AScheduler::getRunningCores()
+{
+	// Get the number of cores that are currently running a process
+	int runningCores = 0;
+	for (int i = 0; i < this->numCores; ++i)
+	{
+		if (this->coreThreads[i]->getCurrentProcess() != nullptr)
+		{
+			runningCores++;
+		}
+	}
+
+	return runningCores;
+}
