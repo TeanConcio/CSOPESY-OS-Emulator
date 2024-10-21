@@ -23,7 +23,7 @@ public:
 	static String makeRunningProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeRunningProcessesString(); }
 	static String makeFinishedProcessesString() { return GlobalScheduler::getInstance()->scheduler->makeFinishedProcessesString(); }
 
-	bool hasInitialized() { return this != nullptr || this->scheduler != nullptr; }
+	bool hasInitialized() { return this != nullptr && this->scheduler != nullptr; }
 	static void setScheduler();
 	std::unordered_map<String, String> getConfigs();
 	void setConfigs(std::unordered_map<String, String> configs);
@@ -35,8 +35,6 @@ public:
 	unsigned int getBatchProcessFreq() { return this->batchProcessFreq; }
 	unsigned int getMinIns() { return this->minIns; }
 	unsigned int getMaxIns() { return this->maxIns; }
-	unsigned int getDelay() { return this->delay; }
-
 
 private:
 	// Singleton
@@ -53,5 +51,4 @@ private:
 	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of test processes to make per cycle
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
-	unsigned int delay = 0; // Range: [0, 2e32], determines delay per command executed in ms
 };

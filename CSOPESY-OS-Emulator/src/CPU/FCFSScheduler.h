@@ -9,7 +9,7 @@ class FCFSScheduler : public AScheduler
 {
 public:
 
-	FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo);
+	FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo, unsigned int delay);
 
 	void startCoreThreads();
 	void start() override;

@@ -1,4 +1,0 @@
-Process name: screen_04
-Logs:
-
-(10/21/2024 14:24:32PM) Core:3 "Hello world from screen_04!"

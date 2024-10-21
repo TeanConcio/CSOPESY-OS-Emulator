@@ -1,7 +1,7 @@
 #include "FCFSScheduler.h"
 #include <algorithm>
 
-FCFSScheduler::FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo) 
+FCFSScheduler::FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo, unsigned int delay) 
 	: AScheduler(schedulingAlgo)
 {
 	this->numCores = cores;
@@ -9,7 +9,7 @@ FCFSScheduler::FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm scheduli
 	// Initialize the Core Threads
 	for (int i = 0; i < cores; ++i)
 	{
-		this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i));
+		this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delay));
 	}
 }
 
@@ -33,11 +33,11 @@ void FCFSScheduler::start()
 
 void FCFSScheduler::run()
 {
-	bool allProcessesFinished = false;
+	// bool allProcessesFinished = false;
 
-	while (!allProcessesFinished)
+	while (true)
 	{
-		allProcessesFinished = true;
+		// allProcessesFinished = true;
 
 		for (int core = 0; core < this->numCores; core++)
 		{
@@ -47,8 +47,10 @@ void FCFSScheduler::run()
 			{
 				std::shared_ptr<Process> process = this->queuedProcesses.front();
 				this->queuedProcesses.erase(this->queuedProcesses.begin());
+				// Set the arrival time of the process to the current time
+				process->setArrivalTime(std::time(nullptr));
 				this->coreThreads[core]->setCurrentProcess(process);
-				allProcessesFinished = false;
+				// allProcessesFinished = false;
 			}
 			// If the core is running a process, check if it has finished
 			else if (this->coreThreads[core]->getCurrentProcess() != nullptr)
@@ -59,10 +61,10 @@ void FCFSScheduler::run()
 					this->coreThreads[core]->setCurrentProcess(nullptr);
 					this->finishedProcesses.push_back(process);
 				}
-				else
-				{
-					allProcessesFinished = false;
-				}
+				//else
+				//{
+				//	allProcessesFinished = false;
+				//}
 			}
 		}
 	}
@@ -80,7 +82,7 @@ String FCFSScheduler::makeQueuedProcessesString()
 	{
 		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
 		
-		ss << Common::formatTimeT(process->getLastCommandTime()) << "    ";
+		ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
 
 		ss << "Queued" << "      ";
 
@@ -104,7 +106,7 @@ String FCFSScheduler::makeRunningProcessesString()
 		{
 			ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
 
-			ss << Common::formatTimeT(process->getLastCommandTime()) << "    ";
+			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
 
 			ss << "Core: " << coreThread->getCoreNo() << "      ";
 
@@ -132,7 +134,7 @@ String FCFSScheduler::makeFinishedProcessesString()
 	{
 		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
 
-		ss << Common::formatTimeT(process->getLastCommandTime()) << "    ";
+		ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
 
 		ss << "Finished" << "      ";
 

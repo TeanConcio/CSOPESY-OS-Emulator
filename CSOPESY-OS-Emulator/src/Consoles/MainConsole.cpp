@@ -52,7 +52,7 @@ void MainConsole::decideCommand(const String& command) {
 	{
 		this->exit();
 	}
-	else if (GlobalScheduler::getInstance() != nullptr) 
+	else if (GlobalScheduler::getInstance()->hasInitialized())
 	{
 		if (commandParts[0] == "screen") {
 			// Check if enough arguments
@@ -193,6 +193,8 @@ void MainConsole::initialize() {
 
 void MainConsole::schedulerTest() {
 	this->writeToConsoleHistory("scheduler-test command recognized. Doing something.\n");
+	GlobalScheduler::getInstance()->createTestProcesses(10);
+	// GlobalScheduler::start();
 }
 
 void MainConsole::schedulerStop() {

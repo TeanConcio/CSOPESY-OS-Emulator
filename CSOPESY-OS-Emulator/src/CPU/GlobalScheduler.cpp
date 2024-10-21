@@ -6,9 +6,6 @@ GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
 
 GlobalScheduler* GlobalScheduler::getInstance()
 {
-	if (sharedInstance == nullptr) {
-		sharedInstance = new GlobalScheduler();
-	}
 	return GlobalScheduler::sharedInstance;
 }
 
@@ -72,7 +69,7 @@ void GlobalScheduler::createTestProcesses(const int limit)
 {
 	for (int i = 0; i < limit; ++i)
 	{
-		String processName = "screen_" + (i < 9 ? std::string("0") : "") + std::to_string(i + 1);
+		String processName = "screen_" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
 		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
 		this->scheduler->addProcess(process);
 	}
@@ -129,12 +126,13 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		String schedulingAlgorithm = configs["scheduler"];
 		int numCores = std::stoi(configs["num-cpu"]);
 		int timeQuantum = std::stoi(configs["quantum-cycles"]);
+		int delay = std::stoi(configs["delay-per-exec"]);
 
 		AScheduler::SchedulingAlgorithm algo;
 		if (schedulingAlgorithm == "\"fcfs\"")
 		{
 			algo = AScheduler::SchedulingAlgorithm::FCFS;
-			this->scheduler = new FCFSScheduler(numCores, algo);
+			this->scheduler = new FCFSScheduler(numCores, algo, delay);
 		}
 		else
 		{
@@ -147,7 +145,6 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		this->setBatchProcessFreq(std::stoi(configs["batch-process-freq"]));
 		this->setMinIns(std::stoi(configs["min-ins"]));
 		this->setMaxIns(std::stoi(configs["max-ins"]));
-		this->delay = std::stoi(configs["delay-per-exec"]);
 	}
 	catch (std::exception& e)
 	{

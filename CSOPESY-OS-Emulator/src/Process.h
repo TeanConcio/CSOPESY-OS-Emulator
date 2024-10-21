@@ -32,6 +32,7 @@ public:
 	void logCurrentCommand();
 
 	void updateLastCommandTime();
+	int getArrivalTime() const;
 	int getLastCommandTime() const;
 	int getCommandCounter() const;
 	int getLinesOfCode() const;
@@ -41,6 +42,7 @@ public:
 	ProcessState getState() const;
 	void setState(ProcessState state) { currentState = state; }
 	String getName() const;
+	void setArrivalTime(std::time_t arrivalTime);
 
 	void test_generateRandomCommands(int limit); // TEMP: make random in the future
 
@@ -54,6 +56,7 @@ private:
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
 	RequirementFlags requirementFlags; 
 	ProcessState currentState;
+	std::time_t arrivalTime;
 	std::time_t lastCommandTime;
 
 	// friend class ResourceEmulator;

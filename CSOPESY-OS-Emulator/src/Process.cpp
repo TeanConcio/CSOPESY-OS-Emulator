@@ -35,7 +35,7 @@ void Process::executeCurrentCommand()
 	else {
 		this->currentState = ProcessState::RUNNING;
 		this->commandList[this->commandCounter]->execute();
-		this->logCurrentCommand();
+		// this->logCurrentCommand();
 		this->updateLastCommandTime();
 		this->commandCounter++;
 	}
@@ -87,6 +87,16 @@ void Process::logCurrentCommand()
 	}
 	
 	
+}
+
+int Process::getArrivalTime() const {
+
+	return static_cast<int>(this->arrivalTime);
+}
+
+void Process::setArrivalTime(std::time_t arrivalTime)
+{
+	this->arrivalTime = arrivalTime;
 }
 
 void Process::updateLastCommandTime() {
