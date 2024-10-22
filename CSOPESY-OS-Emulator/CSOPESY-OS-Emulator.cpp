@@ -1,10 +1,8 @@
 #include "./src/ConsoleManager.h"
-#include "./src/CPU/GlobalScheduler.h"
+#include "./src/GlobalScheduler.h"
 
 /// @brief  Main function
 int main() {
-
-	//TODO: Add rest of Neil's singletons
 
 	// Initialize Singletons
 	//InputManager::initialize();

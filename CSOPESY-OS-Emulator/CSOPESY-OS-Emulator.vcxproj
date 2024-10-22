@@ -128,39 +128,39 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CSOPESY-OS-Emulator.cpp" />
+    <ClCompile Include="src\AConsole.cpp" />
+    <ClCompile Include="src\AScheduler.cpp" />
+    <ClCompile Include="src\BaseScreen.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\ConsoleManager.cpp" />
-    <ClCompile Include="src\Consoles\AConsole.cpp" />
-    <ClCompile Include="src\Consoles\BaseScreen.cpp" />
-    <ClCompile Include="src\Consoles\MainConsole.cpp" />
+    <ClCompile Include="src\CPUCoreThread.cpp" />
+    <ClCompile Include="src\FCFSScheduler.cpp" />
+    <ClCompile Include="src\GlobalScheduler.cpp" />
+    <ClCompile Include="src\IETThread.cpp" />
+    <ClCompile Include="src\IOCommand.cpp" />
+    <ClCompile Include="src\MainConsole.cpp" />
+    <ClCompile Include="src\MarqueeConsole.cpp" />
+    <ClCompile Include="src\PrintCommand.cpp" />
     <ClCompile Include="src\Process.cpp" />
-    <ClCompile Include="src\Consoles\MarqueeConsole.cpp" />
-    <ClCompile Include="src\CPU\AScheduler.cpp" />
-    <ClCompile Include="src\CPU\FCFSScheduler.cpp" />
-    <ClCompile Include="src\CPU\GlobalScheduler.cpp" />
-    <ClCompile Include="src\Commands\IOCommand.cpp" />
-    <ClCompile Include="src\Commands\PrintCommand.cpp" />
-    <ClCompile Include="src\Threading\CPUCoreThread.cpp" />
-    <ClCompile Include="src\Threading\IETThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp" />
+    <ClInclude Include="src\AConsole.h" />
+    <ClInclude Include="src\AScheduler.h" />
+    <ClInclude Include="src\BaseScreen.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\ConsoleManager.h" />
-    <ClInclude Include="src\Consoles\AConsole.h" />
-    <ClInclude Include="src\Consoles\BaseScreen.h" />
-    <ClInclude Include="src\Consoles\MainConsole.h" />
-    <ClInclude Include="src\Consoles\MarqueeConsole.h" />
+    <ClInclude Include="src\CPUCoreThread.h" />
+    <ClInclude Include="src\FCFSScheduler.h" />
+    <ClInclude Include="src\GlobalScheduler.h" />
+    <ClInclude Include="src\ICommand.h" />
+    <ClInclude Include="src\IETThread.h" />
+    <ClInclude Include="src\IOCommand.h" />
+    <ClInclude Include="src\MainConsole.h" />
+    <ClInclude Include="src\MarqueeConsole.h" />
+    <ClInclude Include="src\PrintCommand.h" />
     <ClInclude Include="src\Process.h" />
-    <ClInclude Include="src\Threading\CPUCoreThread.h" />
     <ClInclude Include="src\TypedefRepo.h" />
-    <ClInclude Include="src\CPU\AScheduler.h" />
-    <ClInclude Include="src\CPU\FCFSScheduler.h" />
-    <ClInclude Include="src\CPU\GlobalScheduler.h" />
-    <ClInclude Include="src\Commands\IOCommand.h" />
-    <ClInclude Include="src\Commands\PrintCommand.h" />
-    <ClInclude Include="src\Threading\IETThread.h" />
-    <ClCompile Include="src\Commands\ICommand.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />

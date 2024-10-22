@@ -1,5 +1,5 @@
 #include "PrintCommand.h"
-#include "../Threading/IETThread.h"
+#include "IETThread.h"
 
 PrintCommand::PrintCommand(const int pid, const String& toPrint) 
 	: ICommand(pid, PRINT)

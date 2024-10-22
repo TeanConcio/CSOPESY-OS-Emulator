@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 
-#include "./../ConsoleManager.h"
+#include "ConsoleManager.h"
 
 // Default screen for the currentProcess
 /**

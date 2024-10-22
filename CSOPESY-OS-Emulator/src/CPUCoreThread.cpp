@@ -1,5 +1,5 @@
 #include "CPUCoreThread.h"
-#include "./../CPU/GlobalScheduler.h"
+#include "GlobalScheduler.h"
 
 
 CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay) 

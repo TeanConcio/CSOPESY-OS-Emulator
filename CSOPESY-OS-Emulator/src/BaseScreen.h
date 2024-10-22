@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AConsole.h"
-#include "../Process.h"
+#include "Process.h"
 
 class BaseScreen : public AConsole
 {

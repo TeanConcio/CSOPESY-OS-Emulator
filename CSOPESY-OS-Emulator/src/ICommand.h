@@ -1,5 +1,5 @@
 #pragma once
-#include "../Threading//IETThread.h"
+#include "IETThread.h"
 
 // interface blueprint for all commands
 class ICommand

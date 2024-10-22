@@ -3,7 +3,7 @@
 #include <ctime>
 #include <fstream>
 #include "TypedefRepo.h"
-#include "Commands/ICommand.h"
+#include "ICommand.h"
 
 class Process
 {

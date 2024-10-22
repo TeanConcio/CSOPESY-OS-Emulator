@@ -1,8 +1,8 @@
 #pragma once
 
 #include "AScheduler.h"
-#include "../TypedefRepo.h"
-#include "../Threading/CPUCoreThread.h"
+#include "TypedefRepo.h"
+#include "CPUCoreThread.h"
 
 // First-Come-First-Serve Scheduler
 class FCFSScheduler : public AScheduler

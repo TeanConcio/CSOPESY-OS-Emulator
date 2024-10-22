@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../ConsoleManager.h"
-#include "../CPU/GlobalScheduler.h"
+#include "ConsoleManager.h"
+#include "GlobalScheduler.h"
 
 #include <memory>
 

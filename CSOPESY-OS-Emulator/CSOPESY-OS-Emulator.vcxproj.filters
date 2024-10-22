@@ -5,130 +5,129 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Console Files">
-      <UniqueIdentifier>{d0e227ff-2f9e-42a5-9419-98ea0efe937c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common Files">
-      <UniqueIdentifier>{6423e173-cf04-4927-8e1c-45afef18bbc6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="External Includes">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Scheduler Files">
-      <UniqueIdentifier>{94a960ae-cafc-4ed9-baa7-d01bc9f5f870}</UniqueIdentifier>
+    <Filter Include="Schedulers">
+      <UniqueIdentifier>{6cbddb4f-ec29-49d7-9dca-b8be440aa122}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Thread Files">
-      <UniqueIdentifier>{efa46e6c-999d-417f-a06c-25378db2d47f}</UniqueIdentifier>
+    <Filter Include="Common">
+      <UniqueIdentifier>{6423e173-cf04-4927-8e1c-45afef18bbc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Command Files">
-      <UniqueIdentifier>{c4aaab2d-e464-4480-a3cf-fa4f31c8d505}</UniqueIdentifier>
+    <Filter Include="Processes &amp; Commands">
+      <UniqueIdentifier>{b40d9707-6398-455d-b109-c41c5582c286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Consoles">
+      <UniqueIdentifier>{8cccbfe1-1c16-453d-a93b-ea7d44aba2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threads">
+      <UniqueIdentifier>{55866fe6-6807-48c8-b5d4-49d34eadc6b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Consoles\AConsole.cpp">
-      <Filter>Console Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Consoles\BaseScreen.cpp">
-      <Filter>Console Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Consoles\MainConsole.cpp">
-      <Filter>Console Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Common.cpp">
-      <Filter>Common Files</Filter>
+      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="src\ConsoleManager.cpp">
-      <Filter>Common Files</Filter>
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="CSOPESY-OS-Emulator.cpp">
-      <Filter>Common Files</Filter>
+    <ClCompile Include="CSOPESY-OS-Emulator.cpp" />
+    <ClCompile Include="src\AScheduler.cpp">
+      <Filter>Schedulers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FCFSScheduler.cpp">
+      <Filter>Schedulers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AConsole.cpp">
+      <Filter>Consoles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPUCoreThread.cpp">
+      <Filter>Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GlobalScheduler.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IETThread.cpp">
+      <Filter>Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MarqueeConsole.cpp">
+      <Filter>Consoles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainConsole.cpp">
+      <Filter>Consoles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IOCommand.cpp">
+      <Filter>Processes &amp; Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrintCommand.cpp">
+      <Filter>Processes &amp; Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseScreen.cpp">
+      <Filter>Consoles</Filter>
     </ClCompile>
     <ClCompile Include="src\Process.cpp">
-      <Filter>Common Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Consoles\MarqueeConsole.cpp">
-      <Filter>Console Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\AScheduler.cpp">
-      <Filter>Scheduler Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\FCFSScheduler.cpp">
-      <Filter>Scheduler Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Threading\IETThread.cpp">
-      <Filter>Thread Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Commands\IOCommand.cpp">
-      <Filter>Command Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Commands\PrintCommand.cpp">
-      <Filter>Command Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Commands\ICommand.h">
-      <Filter>Command Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\GlobalScheduler.cpp">
-      <Filter>Scheduler Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Threading\CPUCoreThread.cpp">
-      <Filter>Thread Files</Filter>
+      <Filter>Processes &amp; Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp">
       <Filter>External Includes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Consoles\AConsole.h">
-      <Filter>Console Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Consoles\MainConsole.h">
-      <Filter>Console Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Consoles\BaseScreen.h">
-      <Filter>Console Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Common.h">
-      <Filter>Common Files</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="src\ConsoleManager.h">
-      <Filter>Common Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Process.h">
-      <Filter>Common Files</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="src\TypedefRepo.h">
-      <Filter>Common Files</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\Commands\PrintCommand.h">
-      <Filter>Command Files</Filter>
+    <ClInclude Include="src\AScheduler.h">
+      <Filter>Schedulers</Filter>
     </ClInclude>
-    <ClInclude Include="src\Consoles\MarqueeConsole.h">
-      <Filter>Console Files</Filter>
+    <ClInclude Include="src\FCFSScheduler.h">
+      <Filter>Schedulers</Filter>
     </ClInclude>
-    <ClInclude Include="src\Commands\IOCommand.h">
-      <Filter>Command Files</Filter>
+    <ClInclude Include="src\AConsole.h">
+      <Filter>Consoles</Filter>
     </ClInclude>
-    <ClInclude Include="src\Threading\IETThread.h">
-      <Filter>Thread Files</Filter>
+    <ClInclude Include="src\BaseScreen.h">
+      <Filter>Consoles</Filter>
     </ClInclude>
-    <ClInclude Include="src\CPU\GlobalScheduler.h">
-      <Filter>Scheduler Files</Filter>
+    <ClInclude Include="src\MainConsole.h">
+      <Filter>Consoles</Filter>
     </ClInclude>
-    <ClInclude Include="src\CPU\FCFSScheduler.h">
-      <Filter>Scheduler Files</Filter>
+    <ClInclude Include="src\MarqueeConsole.h">
+      <Filter>Consoles</Filter>
     </ClInclude>
-    <ClInclude Include="src\CPU\AScheduler.h">
-      <Filter>Scheduler Files</Filter>
+    <ClInclude Include="src\ICommand.h">
+      <Filter>Processes &amp; Commands</Filter>
     </ClInclude>
-    <ClInclude Include="src\Threading\CPUCoreThread.h">
-      <Filter>Thread Files</Filter>
+    <ClInclude Include="src\IETThread.h">
+      <Filter>Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPUCoreThread.h">
+      <Filter>Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IOCommand.h">
+      <Filter>Processes &amp; Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrintCommand.h">
+      <Filter>Processes &amp; Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlobalScheduler.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Process.h">
+      <Filter>Processes &amp; Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
     <None Include="..\README.md" />
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

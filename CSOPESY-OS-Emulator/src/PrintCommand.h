@@ -1,6 +1,6 @@
 #pragma once
 #include "ICommand.h"
-#include "../TypedefRepo.h"
+#include "TypedefRepo.h"
 
 // implements the ICommand interface
 class PrintCommand :

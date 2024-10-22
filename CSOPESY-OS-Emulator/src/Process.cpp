@@ -1,7 +1,7 @@
 #include "Process.h"
-#include "./Commands/ICommand.h"
-#include "./Commands/IOCommand.h"
-#include "./Commands/PrintCommand.h"
+#include "ICommand.h"
+#include "IOCommand.h"
+#include "PrintCommand.h"
 
 Process::Process(int pid, String name, RequirementFlags requirementFlags)
 {

@@ -2,10 +2,10 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "../Threading/IETThread.h"
-#include "../Threading/CPUCoreThread.h"
-#include "../Process.h"
-#include "../Common.h"
+#include "IETThread.h"
+#include "CPUCoreThread.h"
+#include "Process.h"
+#include "Common.h"
 
 
 static const String DEBUG_SCHEDULER_NAME = "DebugScheduler";

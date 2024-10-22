@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include "AScheduler.h"
-#include "../Process.h"
+#include "Process.h"
 
 
 // Manages throughout the OS, singleton

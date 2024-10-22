@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./../TypedefRepo.h"
+#include "TypedefRepo.h"
 #include <sstream>
 
 // Abstract class of Console (Screen)

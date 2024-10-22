@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./IETThread.h"
-#include "./../Process.h"
+#include "IETThread.h"
+#include "Process.h"
 
 class CPUCoreThread : public IETThread
 {

@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "./Consoles/MainConsole.h"
-#include "./Consoles/MarqueeConsole.h"
+#include "MainConsole.h"
+#include "MarqueeConsole.h"
 //#include "SchedulingConsole.h"
 //#include "MemorySimulationConsole.h"
-#include "./Consoles/BaseScreen.h"
+#include "BaseScreen.h"
 
 
 ConsoleManager* ConsoleManager::sharedInstance = nullptr;

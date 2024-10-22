@@ -4,7 +4,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "./Consoles/BaseScreen.h"
+#include "BaseScreen.h"
 
 // Default names
 const String MAIN_CONSOLE = "MAIN_CONSOLE";

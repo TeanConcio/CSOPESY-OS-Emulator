@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ConsoleManager.h"
+#include "ConsoleManager.h"
 
 #include <Windows.h>
 #include <thread>

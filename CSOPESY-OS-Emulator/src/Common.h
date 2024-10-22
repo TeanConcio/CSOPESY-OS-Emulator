@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <iomanip>
-#include "./Consoles/AConsole.h"
+#include "AConsole.h"
 #include "TypedefRepo.h"
 
 class Common

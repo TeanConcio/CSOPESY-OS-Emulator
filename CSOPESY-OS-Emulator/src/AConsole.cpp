@@ -1,6 +1,6 @@
 #include "AConsole.h"
 
-#include "./../ConsoleManager.h"
+#include "ConsoleManager.h"
 
 
 AConsole::AConsole(const String& name)
