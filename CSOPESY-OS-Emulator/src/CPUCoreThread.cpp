@@ -12,7 +12,7 @@ CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay)
 
 void CPUCoreThread::run()
 {
-	while (true) {
+	while (GlobalScheduler::isRunning()) {
 		if (this->currentProcess != nullptr &&
 			(this->currentProcess->getState() == Process::ProcessState::READY ||
 				this->currentProcess->getState() == Process::ProcessState::RUNNING))

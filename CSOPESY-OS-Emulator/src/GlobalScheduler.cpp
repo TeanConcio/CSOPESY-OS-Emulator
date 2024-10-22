@@ -1,13 +1,8 @@
 #include "GlobalScheduler.h"
 #include "FCFSScheduler.h"
 
+
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
-
-
-GlobalScheduler* GlobalScheduler::getInstance()
-{
-	return GlobalScheduler::sharedInstance;
-}
 
 
 void GlobalScheduler::initialize()
@@ -26,8 +21,15 @@ void GlobalScheduler::setScheduler()
 
 void GlobalScheduler::destroy() 
 {
+	sharedInstance->running = false;
 	delete sharedInstance;
 	sharedInstance = nullptr;
+}
+
+void GlobalScheduler::start()
+{
+	sharedInstance->running = true;
+	sharedInstance->scheduler->start();
 }
 
 

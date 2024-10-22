@@ -1,5 +1,6 @@
 #include "FCFSScheduler.h"
 #include <algorithm>
+#include "GlobalScheduler.h"
 
 FCFSScheduler::FCFSScheduler(int cores, AScheduler::SchedulingAlgorithm schedulingAlgo, unsigned int delay) 
 	: AScheduler(schedulingAlgo)
@@ -35,7 +36,7 @@ void FCFSScheduler::run()
 {
 	// bool allProcessesFinished = false;
 
-	while (true)
+	while (GlobalScheduler::isRunning())
 	{
 		// allProcessesFinished = true;
 

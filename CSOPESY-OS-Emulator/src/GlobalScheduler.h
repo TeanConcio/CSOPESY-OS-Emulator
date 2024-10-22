@@ -9,11 +9,11 @@
 class GlobalScheduler 
 {
 public:
-	static GlobalScheduler* getInstance();
+	static GlobalScheduler* getInstance() { return GlobalScheduler::sharedInstance; }
 	static void initialize();
 	static void destroy();
 
-	static void start() { GlobalScheduler::getInstance()->scheduler->start(); }
+	static void start();
 	
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
@@ -41,6 +41,8 @@ public:
 	unsigned int getMinIns() { return this->minIns; }
 	unsigned int getMaxIns() { return this->maxIns; }
 
+	static bool isRunning() { return sharedInstance->running; }
+
 private:
 	// Singleton
 	// Private constructor so that no objects can be created.
@@ -56,6 +58,8 @@ private:
 	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of test processes to make per cycle
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
+
+	bool running;
 
 	bool isGeneratingProcesses = false;
 	std::thread processGenerationThread;
