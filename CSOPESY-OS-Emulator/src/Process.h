@@ -56,7 +56,7 @@ private:
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
 	RequirementFlags requirementFlags; 
 	ProcessState currentState;
-	std::time_t arrivalTime;
+	std::time_t arrivalTime = 0;
 	std::time_t lastCommandTime;
 
 	// friend class ResourceEmulator;

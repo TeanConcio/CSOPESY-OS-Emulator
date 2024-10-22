@@ -2,10 +2,14 @@
 #include "GlobalScheduler.h"
 
 
-CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay) 
+CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay, const unsigned int quantumCycle)
 {
 	this->coreNo = coreNo;
 	this->delay = delay;
+
+	this->currCycle = 0;
+	this->quantumCycle = quantumCycle;
+
 	this->currentProcess = nullptr;
 }
 
@@ -13,10 +17,15 @@ CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay)
 void CPUCoreThread::run()
 {
 	while (GlobalScheduler::isRunning()) {
+
 		if (this->currentProcess != nullptr &&
+			(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
 			(this->currentProcess->getState() == Process::ProcessState::READY ||
-				this->currentProcess->getState() == Process::ProcessState::RUNNING))
+			 this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
+
 			this->currentProcess->executeCurrentCommand();
+			this->currCycle++;
+		}
 
 		this->sleep(this->delay);
 	}
@@ -42,10 +51,3 @@ void CPUCoreThread::setCurrentProcess(std::shared_ptr<Process> process)
 	}
 }
 
-Process::ProcessState CPUCoreThread::getCurrentProcessState() const
-{
-	if (this->currentProcess != nullptr)
-		return this->currentProcess->getState();
-
-	return Process::ProcessState::FINISHED;
-}

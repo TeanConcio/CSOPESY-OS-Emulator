@@ -1,5 +1,6 @@
 #include "GlobalScheduler.h"
 #include "FCFSScheduler.h"
+#include "RRScheduler.h"
 
 
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
@@ -26,10 +27,21 @@ void GlobalScheduler::destroy()
 	sharedInstance = nullptr;
 }
 
+
 void GlobalScheduler::start()
 {
 	sharedInstance->running = true;
 	sharedInstance->scheduler->start();
+}
+
+
+bool GlobalScheduler::isRunning()
+{
+	if (sharedInstance == nullptr)
+	{
+		return false;
+	}
+	return sharedInstance->running;
 }
 
 
@@ -170,14 +182,11 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 			AScheduler::SchedulingAlgorithm algo;
 			if (schedulingAlgorithm == "\"fcfs\"")
 			{
-				algo = AScheduler::SchedulingAlgorithm::FCFS;
-				this->scheduler = new FCFSScheduler(numCores, algo, delay);
+				this->scheduler = new FCFSScheduler(numCores, delay);
 			}
-			else
+			else if (schedulingAlgorithm == "\"rr\"")
 			{
-				algo = AScheduler::SchedulingAlgorithm::ROUND_ROBIN;
-				// TODO: Make an RR class
-				//this->scheduler = new RoundRobinScheduler(numCores, timeQuantum);
+				this->scheduler = new RRScheduler(numCores, delay, timeQuantum);
 			}
 
 			// Set the batch process frequency, min instructions, max instructions, and delay
@@ -203,7 +212,7 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		// min-ins: 1000
 		// max-ins: 2000
 		// delay-per-exec: 0
-		this->scheduler = new FCFSScheduler(4, AScheduler::SchedulingAlgorithm::FCFS, 0);
+		this->scheduler = new FCFSScheduler(4, 0);
 		this->setBatchProcessFreq(1);
 		this->setMinIns(1000);
 		this->setMaxIns(2000);

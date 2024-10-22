@@ -5,11 +5,11 @@
 #include "CPUCoreThread.h"
 
 // First-Come-First-Serve Scheduler
-class FCFSScheduler : public AScheduler
+class RRScheduler : public AScheduler
 {
 public:
 
-	FCFSScheduler(int cores, unsigned int delay);
+	RRScheduler(int cores, unsigned int delay, unsigned int quantumCycles = 0);
 
 	void startCoreThreads();
 	void start() override;
@@ -25,6 +25,6 @@ protected:
 	void run() override;
 
 private:
-	
+
 	//std::vector<std::vector<std::shared_ptr<Process>>> processCPUQueues; // One queue per core
 };

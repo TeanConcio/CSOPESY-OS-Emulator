@@ -253,8 +253,8 @@ void MainConsole::listProcesses()	{
 	this->writeToConsoleHistory("\n");
 	this->writeToConsoleHistory("Finished processes :\n");
 	this->writeToConsoleHistory(GlobalScheduler::makeFinishedProcessesString());
-	// this->writeToConsoleHistory("\n");
-	// this->writeToConsoleHistory("Queued processes :\n");
-	// this->writeToConsoleHistory(GlobalScheduler::makeQueuedProcessesString());
+	 this->writeToConsoleHistory("\n");
+	 this->writeToConsoleHistory("Queued processes :\n");
+	 this->writeToConsoleHistory(GlobalScheduler::makeQueuedProcessesString());
 	this->writeToConsoleHistory("--------------------------------------\n");
 }

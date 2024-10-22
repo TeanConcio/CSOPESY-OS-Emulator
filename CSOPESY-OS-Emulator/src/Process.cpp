@@ -96,7 +96,13 @@ int Process::getArrivalTime() const {
 
 void Process::setArrivalTime(std::time_t arrivalTime)
 {
-	this->arrivalTime = arrivalTime;
+	if (this == nullptr) {
+		return;
+	}
+
+	// If arrival time is not set, set it
+	if (this->arrivalTime == 0)
+		this->arrivalTime = arrivalTime;
 }
 
 void Process::updateLastCommandTime() {

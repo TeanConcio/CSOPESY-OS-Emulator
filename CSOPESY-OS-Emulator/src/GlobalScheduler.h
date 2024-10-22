@@ -12,8 +12,8 @@ public:
 	static GlobalScheduler* getInstance() { return GlobalScheduler::sharedInstance; }
 	static void initialize();
 	static void destroy();
-
 	static void start();
+	static bool isRunning();
 	
 	std::shared_ptr<Process> createUniqueProcess(String& name);
 	String generateProcessName() const;
@@ -40,8 +40,6 @@ public:
 	unsigned int getBatchProcessFreq() { return this->batchProcessFreq; }
 	unsigned int getMinIns() { return this->minIns; }
 	unsigned int getMaxIns() { return this->maxIns; }
-
-	static bool isRunning() { return sharedInstance->running; }
 
 private:
 	// Singleton

@@ -142,6 +142,7 @@
     <ClCompile Include="src\MarqueeConsole.cpp" />
     <ClCompile Include="src\PrintCommand.cpp" />
     <ClCompile Include="src\Process.cpp" />
+    <ClCompile Include="src\RRScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\MarqueeConsole.h" />
     <ClInclude Include="src\PrintCommand.h" />
     <ClInclude Include="src\Process.h" />
+    <ClInclude Include="src\RRScheduler.h" />
     <ClInclude Include="src\TypedefRepo.h" />
   </ItemGroup>
   <ItemGroup>
