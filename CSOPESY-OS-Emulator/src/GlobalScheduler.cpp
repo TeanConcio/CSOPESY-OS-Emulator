@@ -28,100 +28,56 @@ void GlobalScheduler::destroy()
 }
 
 
-void GlobalScheduler::start()
+void GlobalScheduler::startGlobalScheduler()
 {
 	sharedInstance->running = true;
-	sharedInstance->scheduler->start();
+	sharedInstance->start();
 }
 
 
-bool GlobalScheduler::isRunning()
+void GlobalScheduler::run()
 {
-	if (sharedInstance == nullptr)
+	while (this->running)
 	{
-		return false;
-	}
-	return sharedInstance->running;
-}
+		// Run the scheduler
+		this->scheduler->start();
 
-
-std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name) 
-{
-	std::shared_ptr<Process> existingProcess = scheduler->findProcess(name);
-	if (existingProcess != nullptr)
-	{
-		return existingProcess;
-	}
-	else
-	{
-		//Process::RequirementFlags reqFlags = { ProcessRequirementFlags_CONFIG::REQUIRE_FILES, ProcessRequirementFlags_CONFIG::NUM_FILES,
-		//	ProcessRequirementFlags_CONFIG::REQUIRE_MEMORY, ProcessRequirementFlags_CONFIG::MEMORY_REQUIRED };
-		Process::RequirementFlags reqFlags = { false, 1, false, 0 }; // Placeholder values
-
-		if (name == "")
+		// Run each core thread
+		for (int i = 0; i < this->numCores; ++i)
 		{
-			name = this->generateProcessName();
+			this->coreThreads[i]->start();
 		}
-		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
-		newProcess->test_generateRandomCommands(this->minIns, this->maxIns);
-		this->pidCounter++;
 
-		return newProcess;
-	}
-}
+		// Sleep delay
+		IETThread::sleep(this->delay);
 
-
-String GlobalScheduler::generateProcessName() const
-{
-	std::stringstream ss;
-	ss << "Process" << this->pidCounter;
-	return ss.str();
-}
-
-void GlobalScheduler::createTestProcess()
-{
-	this->isGeneratingProcesses = true;
-}
-
-/**
-* @brief Create a new process every batchProcessFreq cycles
-*/
-void GlobalScheduler::generateTestProcesses()
-{
-	this->isGeneratingProcesses = true;
-
-	this->processGenerationThread = std::thread([this]() {
-		while (this->isGeneratingProcesses)
+		// Join each core thread
+		for (int i = 0; i < this->numCores; ++i)
 		{
-			// Sleep for a second to simulate a cycle
-			for (int i = 0; i < this->getBatchProcessFreq(); i++)
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			}
-
-			String processName = "process" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
-			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
-			this->scheduler->addProcess(process);
-			
+			this->coreThreads[i]->join();
 		}
-	});
 
-	/*for (int i = 0; i < limit; ++i)
-	{
-		String processName = "screen_" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
-		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
-		this->scheduler->addProcess(process);
-	}*/
-}
-
-void GlobalScheduler::stopGeneratingProcesses()
-{
-	this->isGeneratingProcesses = false;
-	if (this->processGenerationThread.joinable())
-	{
-		this->processGenerationThread.join();
+		// Join the scheduler thread
+		this->scheduler->join();
 	}
 }
+
+
+int GlobalScheduler::getRunningCoreCount()
+{
+	// Get the number of cores that are currently running a process
+	int runningCores = 0;
+	for (int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		if (sharedInstance->coreThreads[i]->getCurrentProcess() != nullptr)
+		{
+			runningCores++;
+		}
+	}
+
+	return runningCores;
+}
+
 
 /**
 * @brief Get the configs from the configs.txt file
@@ -173,20 +129,27 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		// Check if the configs are valid
 		if (areConfigsValid(configs))
 		{
-			// Set the algo, cores, and time slice
+			// Set the algo and time slice
 			String schedulingAlgorithm = configs["scheduler"];
-			int numCores = std::stoi(configs["num-cpu"]);
-			int timeQuantum = std::stoi(configs["quantum-cycles"]);
-			int delay = std::stoi(configs["delay-per-exec"]);
+			int timeQuantum = 0;
 
 			AScheduler::SchedulingAlgorithm algo;
 			if (schedulingAlgorithm == "\"fcfs\"")
 			{
-				this->scheduler = new FCFSScheduler(numCores, delay);
+				this->scheduler = new FCFSScheduler();
 			}
 			else if (schedulingAlgorithm == "\"rr\"")
 			{
-				this->scheduler = new RRScheduler(numCores, delay, timeQuantum);
+				this->scheduler = new RRScheduler();
+				timeQuantum = std::stoi(configs["quantum-cycles"]);
+			}
+
+			// Set the delays and cores
+			sharedInstance->numCores = std::stoi(configs["num-cpu"]);
+			sharedInstance->delay = std::stoi(configs["delay-per-exec"]);
+			for (int i = 0; i < this->numCores; ++i)
+			{
+				this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, timeQuantum));
 			}
 
 			// Set the batch process frequency, min instructions, max instructions, and delay
@@ -212,7 +175,7 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		// min-ins: 1000
 		// max-ins: 2000
 		// delay-per-exec: 0
-		this->scheduler = new FCFSScheduler(4, 0);
+		this->scheduler = new FCFSScheduler();
 		this->setBatchProcessFreq(1);
 		this->setMinIns(1000);
 		this->setMaxIns(2000);
@@ -271,4 +234,162 @@ bool GlobalScheduler::areConfigsValid(std::unordered_map<String, String> configs
 	}
 
 	return true;
+}
+
+
+std::shared_ptr<Process> GlobalScheduler::createUniqueProcess(String& name)
+{
+	std::shared_ptr<Process> existingProcess = scheduler->findProcess(name);
+	if (existingProcess != nullptr)
+	{
+		return existingProcess;
+	}
+	else
+	{
+		//Process::RequirementFlags reqFlags = { ProcessRequirementFlags_CONFIG::REQUIRE_FILES, ProcessRequirementFlags_CONFIG::NUM_FILES,
+		//	ProcessRequirementFlags_CONFIG::REQUIRE_MEMORY, ProcessRequirementFlags_CONFIG::MEMORY_REQUIRED };
+		Process::RequirementFlags reqFlags = { false, 1, false, 0 }; // Placeholder values
+
+		if (name == "")
+		{
+			name = this->generateProcessName();
+		}
+		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
+		newProcess->test_generateRandomCommands(this->minIns, this->maxIns);
+		this->pidCounter++;
+
+		return newProcess;
+	}
+}
+
+
+String GlobalScheduler::generateProcessName() const
+{
+	std::stringstream ss;
+	ss << "Process" << this->pidCounter;
+	return ss.str();
+}
+
+void GlobalScheduler::createTestProcess()
+{
+	this->isGeneratingProcesses = true;
+}
+
+/**
+* @brief Create a new process every batchProcessFreq cycles
+*/
+void GlobalScheduler::generateTestProcesses()
+{
+	this->isGeneratingProcesses = true;
+
+	this->processGenerationThread = std::thread([this]() {
+		while (this->isGeneratingProcesses)
+		{
+			// Sleep for a second to simulate a cycle
+			for (int i = 0; i < this->getBatchProcessFreq(); i++)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			}
+
+			String processName = "process" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
+			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+			this->scheduler->addProcess(process);
+
+		}
+		});
+
+	/*for (int i = 0; i < limit; ++i)
+	{
+		String processName = "screen_" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
+		std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+		this->scheduler->addProcess(process);
+	}*/
+}
+
+
+void GlobalScheduler::stopGeneratingProcesses()
+{
+	this->isGeneratingProcesses = false;
+	if (this->processGenerationThread.joinable())
+	{
+		this->processGenerationThread.join();
+	}
+}
+
+
+String GlobalScheduler::makeQueuedProcessesString()
+{
+	if (sharedInstance->scheduler->queuedProcesses.empty())
+		return "No Queued Processes\n";
+
+	std::stringstream ss;
+
+	for (const auto& process : sharedInstance->scheduler->queuedProcesses)
+	{
+		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
+
+		// If process has set arrival time, display it
+		if (process->getArrivalTime() != 0)
+			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
+
+		ss << "Queued" << "      ";
+
+		ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
+
+		ss << "\n";
+	}
+
+	return ss.str();
+}
+
+
+String GlobalScheduler::makeRunningProcessesString()
+{
+	std::stringstream ss;
+
+	for (const auto& coreThread : sharedInstance->coreThreads)
+	{
+		std::shared_ptr<Process> process = coreThread->getCurrentProcess();
+		if (process != nullptr && process->getState() != Process::ProcessState::FINISHED)
+		{
+			ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
+
+			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
+
+			ss << "Core: " << coreThread->getCoreNo() << "      ";
+
+			ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
+
+			ss << "\n";
+		}
+	}
+
+	if (ss.str().empty())
+		return "No Running Processes\n";
+
+	return ss.str();
+}
+
+
+String GlobalScheduler::makeFinishedProcessesString()
+{
+	if (sharedInstance->scheduler->finishedProcesses.empty())
+		return "No Finished Processes\n";
+
+	std::stringstream ss;
+
+	for (const auto& process : sharedInstance->scheduler->finishedProcesses)
+	{
+		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
+
+		ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
+
+		ss << "Finished" << "      ";
+
+		ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
+
+		ss << "\n";
+	}
+
+	return ss.str();
 }

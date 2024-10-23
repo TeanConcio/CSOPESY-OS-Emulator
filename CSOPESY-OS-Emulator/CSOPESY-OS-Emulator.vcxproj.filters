@@ -48,9 +48,6 @@
     <ClCompile Include="src\GlobalScheduler.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\IETThread.cpp">
-      <Filter>Threads</Filter>
-    </ClCompile>
     <ClCompile Include="src\MarqueeConsole.cpp">
       <Filter>Consoles</Filter>
     </ClCompile>
@@ -71,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="src\RRScheduler.cpp">
       <Filter>Schedulers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IETThread.cpp">
+      <Filter>Threads</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

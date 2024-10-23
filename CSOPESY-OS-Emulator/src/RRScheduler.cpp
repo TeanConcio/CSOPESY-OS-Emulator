@@ -3,238 +3,92 @@
 #include "GlobalScheduler.h"
 
 
-RRScheduler::RRScheduler(int cores, unsigned int delay, unsigned int quantumCycles) : AScheduler(AScheduler::SchedulingAlgorithm::ROUND_ROBIN)
-{
-	this->numCores = cores;
-
-	// Initialize the Core Threads
-	for (int i = 0; i < cores; ++i)
-	{
-		this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delay, quantumCycles));
-	}
-}
-
-
-void RRScheduler::startCoreThreads()
-{
-	for (int i = 0; i < this->numCores; ++i)
-	{
-		//std::cout << "core " << i << " started" << std::endl;
-		this->coreThreads[i]->start();
-	}
-}
-
-
-void RRScheduler::start()
-{
-	AScheduler::start();
-	this->startCoreThreads();
-}
-
 
 void RRScheduler::run()
 {
-	// bool allProcessesFinished = false;
-
-	while (GlobalScheduler::isRunning())
+	for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
 	{
-		for (int core = 0; core < this->numCores; core++)
+		// If the core is not running a process, assign it one
+		if (!this->queuedProcesses.empty() &&
+			GlobalScheduler::getCoreThread(core)->getCurrentProcess() == nullptr)
 		{
-			// If the core is not running a process, assign it one
-			if (!this->queuedProcesses.empty() &&
-				this->coreThreads[core]->getCurrentProcess() == nullptr)
+			std::shared_ptr<Process> process = this->queuedProcesses.front();
+			this->queuedProcesses.erase(this->queuedProcesses.begin());
+
+			// Set the arrival time of the process to the current time
+			process->setArrivalTime(std::time(nullptr));
+			GlobalScheduler::getCoreThread(core)->resetQuantumCycle();
+			GlobalScheduler::getCoreThread(core)->setCurrentProcess(process);
+		}
+		// If the core is running a process, check if it has finished or if it has reached the quantum cycle limit
+		else if (GlobalScheduler::getCoreThread(core)->getCurrentProcess() != nullptr)
+		{
+			std::shared_ptr<Process> process = GlobalScheduler::getCoreThread(core)->getCurrentProcess();
+
+			// If the process has finished, preempt a new process to the core
+			if (process->getState() == Process::ProcessState::FINISHED)
 			{
-				std::shared_ptr<Process> process = this->queuedProcesses.front();
-				this->queuedProcesses.erase(this->queuedProcesses.begin());
-
-				// Set the arrival time of the process to the current time
-				process->setArrivalTime(std::time(nullptr));
-				this->coreThreads[core]->resetQuantumCycle();
-				this->coreThreads[core]->setCurrentProcess(process);
+				// Remove the process from the core and add it to the finished processes list
+				GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
+				this->finishedProcesses.push_back(process);
+				// If there are queued processes, assign the core a new process and reset the quantum cycle
+				if (!this->queuedProcesses.empty())
+				{
+					std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
+					this->queuedProcesses.erase(this->queuedProcesses.begin());
+					newProcess->setArrivalTime(std::time(nullptr));
+					GlobalScheduler::getCoreThread(core)->resetQuantumCycle();
+					GlobalScheduler::getCoreThread(core)->setCurrentProcess(newProcess);
+				}
 			}
-			// If the core is running a process, check if it has finished or if it has reached the quantum cycle limit
-			else if (this->coreThreads[core]->getCurrentProcess() != nullptr)
+
+			// If a process is running but quantum cycles has been reached 
+			else if (process->getState() == Process::ProcessState::RUNNING &&
+				GlobalScheduler::getCoreThread(core)->hasQuantumCyclesLeft() == false)
 			{
-				std::shared_ptr<Process> process = this->coreThreads[core]->getCurrentProcess();
+				// Reset the quantum cycle no matter what
+				GlobalScheduler::getCoreThread(core)->resetQuantumCycle();
 
-				// If the process has finished, preempt a new process to the core
-				if (process->getState() == Process::ProcessState::FINISHED)
+				// Only preempt if no other cores are available and there are queued processes
+				if (GlobalScheduler::getRunningCoreCount() == GlobalScheduler::getCoreCount() &&
+					!this->queuedProcesses.empty())
 				{
-					// Remove the process from the core and add it to the finished processes list
-					this->coreThreads[core]->setCurrentProcess(nullptr);
-					this->finishedProcesses.push_back(process);
-					// If there are queued processes, assign the core a new process and reset the quantum cycle
-					if (!this->queuedProcesses.empty())
-					{
-						std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
-						this->queuedProcesses.erase(this->queuedProcesses.begin());
-						newProcess->setArrivalTime(std::time(nullptr));
-						this->coreThreads[core]->resetQuantumCycle();
-						this->coreThreads[core]->setCurrentProcess(newProcess);
-					}
+					// Remove the current process from the core and add it to the queued processes list
+					GlobalScheduler::getCoreThread(core)->getCurrentProcess()->setState(Process::ProcessState::READY);
+					this->queuedProcesses.push_back(GlobalScheduler::getCoreThread(core)->getCurrentProcess());
+					GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
+
+					// Assign the process in the front of the queued processes list to the core
+					std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
+					this->queuedProcesses.erase(this->queuedProcesses.begin());
+					newProcess->setArrivalTime(std::time(nullptr));
+					GlobalScheduler::getCoreThread(core)->resetQuantumCycle();
+					GlobalScheduler::getCoreThread(core)->setCurrentProcess(newProcess);
 				}
-
-				// If a process is running but quantum cycles has been reached 
-				else if (process->getState() == Process::ProcessState::RUNNING &&
-					this->coreThreads[core]->hasQuantumCyclesLeft() == false)
-				{
-					// Reset the quantum cycle no matter what
-					this->coreThreads[core]->resetQuantumCycle();
-
-					// Only preempt if no other cores are available and there are queued processes
-					if (this->getRunningCores() == this->numCores &&
-						!this->queuedProcesses.empty())
-					{
-						// Remove the current process from the core and add it to the queued processes list
-						this->coreThreads[core]->getCurrentProcess()->setState(Process::ProcessState::READY);
-						this->queuedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
-						this->coreThreads[core]->setCurrentProcess(nullptr);
-
-						// Assign the process in the front of the queued processes list to the core
-						std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
-						this->queuedProcesses.erase(this->queuedProcesses.begin());
-						newProcess->setArrivalTime(std::time(nullptr));
-						this->coreThreads[core]->resetQuantumCycle();
-						this->coreThreads[core]->setCurrentProcess(newProcess);
-					}
-				}
-
-				//// If the process has finished, remove it from the core and add it to the finished processes list
-				//if (process->getState() == Process::ProcessState::FINISHED)
-				//{
-				//	this->coreThreads[core]->setCurrentProcess(nullptr);
-				//	this->finishedProcesses.push_back(process);
-				//}
-
-				//// If there are more CPU cores than queued processes, just reset the CPU quantum cycle
-				///*else if (process->getState() == Process::ProcessState::RUNNING && 
-				//	this->queuedProcesses.size() <= this->coreThreads.size())
-				//{
-				//	this->coreThreads[core]->resetQuantumCycle();
-				//}*/
-
-				//// If the process has reached the quantum cycle limit, remove it from the core and add it to the queued processes list
-				//else if (process->getState() == Process::ProcessState::RUNNING &&
-				//	this->coreThreads[core]->hasQuantumCyclesLeft() == false)
-				//{
-				//	this->coreThreads[core]->getCurrentProcess()->setState(Process::ProcessState::READY);
-				//	this->queuedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
-				//	this->coreThreads[core]->setCurrentProcess(nullptr);
-				//}
 			}
+
+			//// If the process has finished, remove it from the core and add it to the finished processes list
+			//if (process->getState() == Process::ProcessState::FINISHED)
+			//{
+			//	GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
+			//	this->finishedProcesses.push_back(process);
+			//}
+
+			//// If there are more CPU cores than queued processes, just reset the CPU quantum cycle
+			///*else if (process->getState() == Process::ProcessState::RUNNING && 
+			//	this->queuedProcesses.size() <= this->coreThreads.size())
+			//{
+			//	GlobalScheduler::getCoreThread(core)->resetQuantumCycle();
+			//}*/
+
+			//// If the process has reached the quantum cycle limit, remove it from the core and add it to the queued processes list
+			//else if (process->getState() == Process::ProcessState::RUNNING &&
+			//	GlobalScheduler::getCoreThread(core)->hasQuantumCyclesLeft() == false)
+			//{
+			//	GlobalScheduler::getCoreThread(core)->getCurrentProcess()->setState(Process::ProcessState::READY);
+			//	this->queuedProcesses.push_back(GlobalScheduler::getCoreThread(core)->getCurrentProcess());
+			//	GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
+			//}
 		}
 	}
 }
-
-
-String RRScheduler::makeQueuedProcessesString()
-{
-	if (this->queuedProcesses.empty())
-		return "No Queued Processes\n";
-
-	std::stringstream ss;
-
-	for (const auto& process : this->queuedProcesses)
-	{
-		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
-
-		// If process has set arrival time, display it
-		if (process->getArrivalTime() != 0)
-			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
-
-		ss << "Queued" << "      ";
-
-		ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
-
-		ss << "\n";
-	}
-
-	return ss.str();
-}
-
-
-String RRScheduler::makeRunningProcessesString()
-{
-	std::stringstream ss;
-
-	for (const auto& coreThread : this->coreThreads)
-	{
-		std::shared_ptr<Process> process = coreThread->getCurrentProcess();
-		if (process != nullptr && process->getState() != Process::ProcessState::FINISHED)
-		{
-			ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
-
-			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
-
-			ss << "Core: " << coreThread->getCoreNo() << "      ";
-
-			ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
-
-			ss << "\n";
-		}
-	}
-
-	if (ss.str().empty())
-		return "No Running Processes\n";
-
-	return ss.str();
-}
-
-
-String RRScheduler::makeFinishedProcessesString()
-{
-	if (this->finishedProcesses.empty())
-		return "No Finished Processes\n";
-
-	std::stringstream ss;
-
-	for (const auto& process : this->finishedProcesses)
-	{
-		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
-
-		ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
-
-		ss << "Finished" << "      ";
-
-		ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
-
-		ss << "\n";
-	}
-
-	return ss.str();
-}
-
-
-
-// Sort the currentProcess queues based on the remaining instructions (FCFS)
-//void RRScheduler::sortProcessQueues() {
-//	std::sort(this->queuedProcesses.begin(), this->queuedProcesses.end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
-//		return p1->getLinesOfCode()-p1->getCommandCounter() < p2->getLinesOfCode() - p2->getCommandCounter();
-//	});
-//}
-
-//// Run the scheduler
-//void RRScheduler::run()
-//{
-//	while (!this->processCPUQueues[0].empty())
-//	{
-//		for (int core = 0; core < this->numCores; ++core)
-//		{
-//			if (!this->processCPUQueues[core].empty())
-//			{
-//				auto it = this->processCPUQueues[core].begin();
-//				std::shared_ptr<Process> currentProcess = it->second;
-//				this->processCPUQueues[core].erase(it);
-//
-//				// Run every possible currentProcess in the scheduler
-//				while (!currentProcess->isFinished())
-//				{
-//					currentProcess->executeCurrentCommand();
-//					currentProcess->moveToNextLine();
-//				}
-//
-//				std::cout << "Process " << currentProcess->getLastCommandTime() << " completed on Core " << core + 1 << ".\n";
-//			}
-//		}
-//	}
-//}

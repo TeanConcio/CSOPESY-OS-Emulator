@@ -188,7 +188,7 @@ void MainConsole::help() {
 void MainConsole::initialize() {
 	this->writeToConsoleHistory("initialize command recognized. Doing something.\n");
 	GlobalScheduler::setScheduler();
-	GlobalScheduler::start();
+	GlobalScheduler::startGlobalScheduler();
 }
 
 /**

@@ -9,22 +9,8 @@ class RRScheduler : public AScheduler
 {
 public:
 
-	RRScheduler(int cores, unsigned int delay, unsigned int quantumCycles = 0);
-
-	void startCoreThreads();
-	void start() override;
-
-	String makeQueuedProcessesString() override;
-	String makeRunningProcessesString() override;
-	String makeFinishedProcessesString() override;
-
-	//void sortProcessQueues();
-
+	RRScheduler() : AScheduler(AScheduler::SchedulingAlgorithm::ROUND_ROBIN) {}
 
 protected:
 	void run() override;
-
-private:
-
-	//std::vector<std::vector<std::shared_ptr<Process>>> processCPUQueues; // One queue per core
 };

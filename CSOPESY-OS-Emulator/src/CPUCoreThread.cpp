@@ -2,10 +2,9 @@
 #include "GlobalScheduler.h"
 
 
-CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay, const unsigned int quantumCycle)
+CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int quantumCycle) : IETThread(false)
 {
 	this->coreNo = coreNo;
-	this->delay = delay;
 
 	this->currCycle = 0;
 	this->quantumCycle = quantumCycle;
@@ -16,18 +15,13 @@ CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int delay, const u
 
 void CPUCoreThread::run()
 {
-	while (GlobalScheduler::isRunning()) {
+	if (this->currentProcess != nullptr &&
+		(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
+		(this->currentProcess->getState() == Process::ProcessState::READY ||
+			this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
 
-		if (this->currentProcess != nullptr &&
-			(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
-			(this->currentProcess->getState() == Process::ProcessState::READY ||
-			 this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
-
-			this->currentProcess->executeCurrentCommand();
-			this->currCycle++;
-		}
-
-		this->sleep(this->delay);
+		this->currentProcess->executeCurrentCommand();
+		this->currCycle++;
 	}
 }
 
