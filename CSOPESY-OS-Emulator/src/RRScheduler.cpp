@@ -57,28 +57,70 @@ void RRScheduler::run()
 			{
 				std::shared_ptr<Process> process = this->coreThreads[core]->getCurrentProcess();
 
-				// If the process has finished, remove it from the core and add it to the finished processes list
+				// If the process has finished, preempt a new process to the core
 				if (process->getState() == Process::ProcessState::FINISHED)
 				{
+					// Remove the process from the core and add it to the finished processes list
 					this->coreThreads[core]->setCurrentProcess(nullptr);
 					this->finishedProcesses.push_back(process);
+					// If there are queued processes, assign the core a new process and reset the quantum cycle
+					if (!this->queuedProcesses.empty())
+					{
+						std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
+						this->queuedProcesses.erase(this->queuedProcesses.begin());
+						newProcess->setArrivalTime(std::time(nullptr));
+						this->coreThreads[core]->resetQuantumCycle();
+						this->coreThreads[core]->setCurrentProcess(newProcess);
+					}
 				}
 
-				// If there are more CPU cores than queued processes, just reset the CPU quantum cycle
-				/*else if (process->getState() == Process::ProcessState::RUNNING && 
-					this->queuedProcesses.size() <= this->coreThreads.size())
-				{
-					this->coreThreads[core]->resetQuantumCycle();
-				}*/
-
-				// If the process has reached the quantum cycle limit, remove it from the core and add it to the queued processes list
+				// If a process is running but quantum cycles has been reached 
 				else if (process->getState() == Process::ProcessState::RUNNING &&
 					this->coreThreads[core]->hasQuantumCyclesLeft() == false)
 				{
-					this->coreThreads[core]->getCurrentProcess()->setState(Process::ProcessState::READY);
-					this->queuedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
-					this->coreThreads[core]->setCurrentProcess(nullptr);
+					// Reset the quantum cycle no matter what
+					this->coreThreads[core]->resetQuantumCycle();
+
+					// Only preempt if no other cores are available and there are queued processes
+					if (this->getRunningCores() == this->numCores &&
+						!this->queuedProcesses.empty())
+					{
+						// Remove the current process from the core and add it to the queued processes list
+						this->coreThreads[core]->getCurrentProcess()->setState(Process::ProcessState::READY);
+						this->queuedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
+						this->coreThreads[core]->setCurrentProcess(nullptr);
+
+						// Assign the process in the front of the queued processes list to the core
+						std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
+						this->queuedProcesses.erase(this->queuedProcesses.begin());
+						newProcess->setArrivalTime(std::time(nullptr));
+						this->coreThreads[core]->resetQuantumCycle();
+						this->coreThreads[core]->setCurrentProcess(newProcess);
+					}
 				}
+
+				//// If the process has finished, remove it from the core and add it to the finished processes list
+				//if (process->getState() == Process::ProcessState::FINISHED)
+				//{
+				//	this->coreThreads[core]->setCurrentProcess(nullptr);
+				//	this->finishedProcesses.push_back(process);
+				//}
+
+				//// If there are more CPU cores than queued processes, just reset the CPU quantum cycle
+				///*else if (process->getState() == Process::ProcessState::RUNNING && 
+				//	this->queuedProcesses.size() <= this->coreThreads.size())
+				//{
+				//	this->coreThreads[core]->resetQuantumCycle();
+				//}*/
+
+				//// If the process has reached the quantum cycle limit, remove it from the core and add it to the queued processes list
+				//else if (process->getState() == Process::ProcessState::RUNNING &&
+				//	this->coreThreads[core]->hasQuantumCyclesLeft() == false)
+				//{
+				//	this->coreThreads[core]->getCurrentProcess()->setState(Process::ProcessState::READY);
+				//	this->queuedProcesses.push_back(this->coreThreads[core]->getCurrentProcess());
+				//	this->coreThreads[core]->setCurrentProcess(nullptr);
+				//}
 			}
 		}
 	}

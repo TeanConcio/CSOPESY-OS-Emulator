@@ -58,6 +58,15 @@ void FCFSScheduler::run()
 				{
 					this->coreThreads[core]->setCurrentProcess(nullptr);
 					this->finishedProcesses.push_back(process);
+
+					// If there are still processes in the queue, assign the core a new process
+					if (!this->queuedProcesses.empty())
+					{
+						std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
+						this->queuedProcesses.erase(this->queuedProcesses.begin());
+						newProcess->setArrivalTime(std::time(nullptr));
+						this->coreThreads[core]->setCurrentProcess(newProcess);
+					}
 				}
 			}
 		}
