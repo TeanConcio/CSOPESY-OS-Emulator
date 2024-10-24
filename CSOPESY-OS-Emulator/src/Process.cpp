@@ -90,10 +90,6 @@ void Process::logCurrentCommand()
 	
 }
 
-int Process::getArrivalTime() const {
-
-	return static_cast<int>(this->arrivalTime);
-}
 
 void Process::setArrivalTime(std::time_t arrivalTime)
 {
@@ -106,53 +102,6 @@ void Process::setArrivalTime(std::time_t arrivalTime)
 		this->arrivalTime = arrivalTime;
 }
 
-void Process::updateLastCommandTime() {
-	this->lastCommandTime = std::time(nullptr);
-}
-
-
-int Process::getLastCommandTime() const {
-
-	return static_cast<int>(this->lastCommandTime);
-}
-
-
-int Process::getCommandCounter() const
-{
-	return this->commandCounter;
-}
-
-int Process::getLinesOfCode() const
-{
-	return this->commandList.size();
-}
-
-int Process::getPID() const
-{
-	return this->pid;
-}
-
-int Process::getCPUCoreID() const
-{
-	return this->cpuCoreID;
-}
-
-void Process::setCPUCoreID(int coreID)
-{
-	this->cpuCoreID = coreID;
-}
-
-Process::ProcessState Process::getState() const
-{
-	if (this == nullptr || !this->currentState)
-		return ProcessState::FINISHED; // or some default state
-	return this->currentState;
-}
-
-String Process::getName() const
-{
-	return this->name;
-}
 
 void Process::test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs)
 {

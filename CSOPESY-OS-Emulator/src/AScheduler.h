@@ -29,18 +29,11 @@ public:
 		ROUND_ROBIN
 	};
 
-	AScheduler(SchedulingAlgorithm schedulingAlgo);
+	AScheduler(SchedulingAlgorithm schedulingAlgo) : IETThread(false), schedulingAlgo(schedulingAlgo) {}
 	virtual ~AScheduler() = default;
-
-	virtual void addProcess(std::shared_ptr<Process> process); // adds a currentProcess to the scheduler
-	std::shared_ptr<Process> findProcess(const String& processName);
 
 	virtual void run() = 0;
 
 protected:
 	SchedulingAlgorithm schedulingAlgo;
-
-	std::unordered_map<String, std::shared_ptr<Process>> processMap;
-	std::vector<std::shared_ptr<Process>> queuedProcesses;
-	std::vector<std::shared_ptr<Process>> finishedProcesses;
 };

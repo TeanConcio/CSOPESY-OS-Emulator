@@ -1,5 +1,4 @@
 #include "./src/ConsoleManager.h"
-#include "./src/ProcessManager.h"
 #include "./src/GlobalScheduler.h"
 
 /// @brief  Main function
@@ -8,8 +7,8 @@ int main() {
 	// Initialize Singletons
 	//InputManager::initialize();
 	ConsoleManager::initialize();
-	ProcessManager::initialize();
 	GlobalScheduler::initialize();
+
 
 	// Main loop
 	// Any currentProcess that happens in between every frame
@@ -31,7 +30,6 @@ int main() {
 	// Destroy Singletons
 	//InputManager::destroy();
 	ConsoleManager::destroy();
-	ProcessManager::destroy();
 	GlobalScheduler::destroy();
 
 	return 0;

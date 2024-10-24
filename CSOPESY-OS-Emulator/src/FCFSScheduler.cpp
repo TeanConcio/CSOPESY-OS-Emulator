@@ -9,11 +9,11 @@ void FCFSScheduler::run()
 	for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
 	{
 		// If the core is not running a process, assign it one
-		if (!this->queuedProcesses.empty() &&
+		if (!ProcessManager::getQueuedProcesses().empty() &&
 			GlobalScheduler::getCoreThread(core)->getCurrentProcess() == nullptr)
 		{
-			std::shared_ptr<Process> process = this->queuedProcesses.front();
-			this->queuedProcesses.erase(this->queuedProcesses.begin());
+			std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
+			ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
 			// Set the arrival time of the process to the current time
 			process->setArrivalTime(std::time(nullptr));
 			GlobalScheduler::getCoreThread(core)->setCurrentProcess(process);
@@ -25,13 +25,13 @@ void FCFSScheduler::run()
 			if (process->getState() == Process::ProcessState::FINISHED)
 			{
 				GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
-				this->finishedProcesses.push_back(process);
+				ProcessManager::getFinishedProcesses().push_back(process);
 
 				// If there are still processes in the queue, assign the core a new process
-				if (!this->queuedProcesses.empty())
+				if (!ProcessManager::getQueuedProcesses().empty())
 				{
-					std::shared_ptr<Process> newProcess = this->queuedProcesses.front();
-					this->queuedProcesses.erase(this->queuedProcesses.begin());
+					std::shared_ptr<Process> newProcess = ProcessManager::getQueuedProcesses().front();
+					ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
 					newProcess->setArrivalTime(std::time(nullptr));
 					GlobalScheduler::getCoreThread(core)->setCurrentProcess(newProcess);
 				}
@@ -44,7 +44,7 @@ void FCFSScheduler::run()
 
 // Sort the currentProcess queues based on the remaining instructions (FCFS)
 //void FCFSScheduler::sortProcessQueues() {
-//	std::sort(this->queuedProcesses.begin(), this->queuedProcesses.end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
+//	std::sort(ProcessManager::getQueuedProcesses().begin(), ProcessManager::getQueuedProcesses().end(), [](const std::shared_ptr<Process>& p1, const std::shared_ptr<Process>& p2) {
 //		return p1->getLinesOfCode()-p1->getCommandCounter() < p2->getLinesOfCode() - p2->getCommandCounter();
 //	});
 //}

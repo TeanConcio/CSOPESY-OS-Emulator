@@ -2,14 +2,16 @@
 #include "GlobalScheduler.h"
 
 
-CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int quantumCycle) : IETThread(false)
+CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delayPerExecution, const unsigned int quantumCycle) : IETThread(false)
 {
 	this->coreNo = coreNo;
 
 	this->currCycle = 0;
-	this->delayPerExecution = GlobalScheduler::getInstance()->getDelay();
+	this->delayPerExecution = delayPerExecution;
+
 	this->currQuantumCycle = 0;
 	this->quantumCycle = quantumCycle;
+
 	this->currentProcess = nullptr;
 }
 

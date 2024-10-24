@@ -31,20 +31,21 @@ public:
 	void executeCurrentCommand();
 	void logCurrentCommand();
 
-	void updateLastCommandTime();
-	int getArrivalTime() const;
-	int getLastCommandTime() const;
-	int getCommandCounter() const;
-	int getLinesOfCode() const;
-	int getPID() const;
-	int getCPUCoreID() const;
-	void setCPUCoreID(int coreID);
-	ProcessState getState() const;
+	// Getters and Setters
+	String getName() const { return this->name; }
+	int getArrivalTime() const { return this->arrivalTime; }
+	int getLastCommandTime() const { return this->lastCommandTime; }
+	int getCommandCounter() const { return this->commandCounter; }
+	int getLinesOfCode() const { return this->commandList.size(); }
+	int getPID() const { return this->pid; }
+	int getCPUCoreID() const { return this->cpuCoreID; }
+	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::FINISHED : this->currentState; }
+	void updateLastCommandTime() { this->lastCommandTime = std::time(nullptr); }
+	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
-	String getName() const;
 	void setArrivalTime(std::time_t arrivalTime);
 
-	void test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs); // TEMP: make random in the future
+	void test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs); // TODO: make random in the future
 
 private: 
 	int pid;

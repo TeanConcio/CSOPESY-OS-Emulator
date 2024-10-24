@@ -57,13 +57,10 @@ void MainConsole::decideCommand(const String& command) {
 		if (commandParts[0] == "screen") {
 			// Check if enough arguments
 
+			// Display process status
 			if (commandParts[1] == "-ls" && commandParts.size() == 2)
 			{
-				this->listProcesses();
-			}
-			else if (commandParts.size() <= 2) {
-				this->commandNotFound(command);
-				return;
+				this->writeToConsoleHistory(ProcessManager::makeListProcessesString());
 			}
 			//else if (commandParts[1] == "-s") {
 			//	// Check if currentProcess exists
@@ -134,7 +131,7 @@ void MainConsole::printHeader() {
 	this->writeToConsoleHistory(" / ___/ ___| / _ \\|  _ \\| ____/ ___\\ \\ / /\n");
 	this->writeToConsoleHistory("| |   \\___ \\| | | | |_) |  _| \\___ \\\\ V / \n");
 	this->writeToConsoleHistory("| |___ ___) | |_| |  __/| |___ ___) || |  \n");
-	this->writeToConsoleHistory("\\____|_____/ \\___/|_|   |_____|____/ |_|  \n");
+	this->writeToConsoleHistory(" \\____|____/ \\___/|_|   |_____|____/ |_|  \n");
 	this->writeToConsoleHistory("-------------------------------------------\n");
 	// std::cout << "\033[1;32m" << "Hello, Welcome to CSOPESY commandline!\n";
 	// std::cout << "\033[1;33m" << "Type 'exit' to quit, 'clear' to clear the screen\n";
@@ -144,7 +141,7 @@ void MainConsole::printHeader() {
 	this->writeToConsoleHistory("Ong, Nicole Daphne\n");
 	this->writeToConsoleHistory("Teves, Hannah Juliet\n");
 	this->writeToConsoleHistory("Yu, Marco Jalen\n\n");
-	this->writeToConsoleHistory("Last updated: 10-08-2024\n");
+	this->writeToConsoleHistory("Last updated: 10-25-2024\n");
 	this->writeToConsoleHistory("-------------------------------------------\n\n");
 }
 
@@ -155,7 +152,7 @@ void MainConsole::printHeader() {
  * Calls the exitApplication method of the ConsoleManager.
  */
 void MainConsole::exit() const {
-	GlobalScheduler::getInstance()->stopGeneratingProcesses();
+	ProcessManager::stopGeneratingProcessesLoop();
 	ConsoleManager::getInstance()->exitApplication();
 }
 
@@ -197,12 +194,12 @@ void MainConsole::initialize() {
 */
 void MainConsole::schedulerTest() {
 	this->writeToConsoleHistory("scheduler-test command recognized. Doing something.\n");
-	GlobalScheduler::getInstance()->generateTestProcesses();
+	ProcessManager::startGeneratingProcessesLoop();
 }
 
 void MainConsole::schedulerStop() {
 	this->writeToConsoleHistory("scheduler-stop command recognized. Doing something.\n");
-	GlobalScheduler::getInstance()->stopGeneratingProcesses();
+	ProcessManager::stopGeneratingProcessesLoop();
 }
 
 void MainConsole::reportUtil() {
@@ -212,49 +209,14 @@ void MainConsole::reportUtil() {
 
 	if (logFile.is_open())
 	{
-		logFile << "CPU utilization: " << "100%\n";
-		logFile << "Cores used: " << GlobalScheduler::getInstance()->getCoreCount() << "\n";
-		logFile << "Cores available: " << GlobalScheduler::getInstance()->getCoreCount() - GlobalScheduler::getInstance()->getRunningCoreCount() << "\n\n";
-		logFile << "--------------------------------------\n";
-		logFile << "Running processes :\n";
-		logFile << GlobalScheduler::makeRunningProcessesString();
-		logFile << "\n";
-		logFile << "Finished processes :\n";
-		logFile << GlobalScheduler::makeFinishedProcessesString();
-		logFile << "--------------------------------------\n";
+		logFile << ProcessManager::makeListProcessesString();
 		logFile.close();
 
-		this->writeToConsoleHistory("Report generated at C:/csopesy-log.txt!\n");
+		//TODO: Get actual file path
+		this->writeToConsoleHistory("Report generated at csopesy-log.txt!\n");
 	}
 	else
 	{
 		this->writeToConsoleHistory("Unable to create log file.\n");
 	}
-}
-
-/**
-* @brief Implements the screen -ls command.
-*
-* Lists the running and finished processes.
-*/
-void MainConsole::listProcesses()	{
-	this->writeToConsoleHistory("CPU utilization: ");
-	// TODO: Implement CPU utilization rate (current implementation is a placeholder)
-	this->writeToConsoleHistory("100%\n");
-
-	this->writeToConsoleHistory("Cores used: ");
-	this->writeToConsoleHistory(std::to_string(GlobalScheduler::getInstance()->getCoreCount()) + "\n");
-	this->writeToConsoleHistory("Cores available: ");
-	this->writeToConsoleHistory(std::to_string(GlobalScheduler::getInstance()->getCoreCount()-GlobalScheduler::getInstance()->getRunningCoreCount()) + "\n\n");
-
-	this->writeToConsoleHistory("--------------------------------------\n");
-	this->writeToConsoleHistory("Running processes :\n");
-	this->writeToConsoleHistory(GlobalScheduler::makeRunningProcessesString());
-	this->writeToConsoleHistory("\n");
-	this->writeToConsoleHistory("Finished processes :\n");
-	this->writeToConsoleHistory(GlobalScheduler::makeFinishedProcessesString());
-	 this->writeToConsoleHistory("\n");
-	 this->writeToConsoleHistory("Queued processes :\n");
-	 this->writeToConsoleHistory(GlobalScheduler::makeQueuedProcessesString());
-	this->writeToConsoleHistory("--------------------------------------\n");
 }

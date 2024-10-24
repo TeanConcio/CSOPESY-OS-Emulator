@@ -6,8 +6,7 @@
 class CPUCoreThread : public IETThread
 {
 public:
-	explicit CPUCoreThread(const int coreNo, const unsigned int quantumCycle = 0);
-	virtual ~CPUCoreThread() = default;
+	CPUCoreThread(const unsigned int coreNo, const unsigned int delayPerExecution, const unsigned int quantumCycle = 0);
 
 	void run() override;
 

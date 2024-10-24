@@ -72,6 +72,9 @@
     <ClCompile Include="src\IETThread.cpp">
       <Filter>Threads</Filter>
     </ClCompile>
+    <ClCompile Include="src\ProcessManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="src\RRScheduler.h">
       <Filter>Schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProcessManager.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
