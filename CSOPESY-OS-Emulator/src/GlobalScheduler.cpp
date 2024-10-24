@@ -49,7 +49,7 @@ void GlobalScheduler::run()
 		}
 
 		// Sleep delay
-		IETThread::sleep(this->delay);
+		// IETThread::sleep(this->delay);
 		
 		// Join each core thread
 		for (int i = 0; i < this->numCores; ++i)
@@ -64,10 +64,10 @@ void GlobalScheduler::run()
 		// Create a new process
 		this->createTestProcess();
 
-		// Print queue , running, and finished processes
-		std::cout << "Queued Processes:\n" << this->makeQueuedProcessesString() << std::endl;
-		std::cout << "Running Processes:\n" << this->makeRunningProcessesString() << std::endl;
-		std::cout << "Finished Processes:\n" << this->makeFinishedProcessesString() << std::endl;
+		// Print queue , running, and finished processes (For debugging purposes)
+		//std::cout << "Queued Processes:\n" << this->makeQueuedProcessesString() << std::endl;
+		//std::cout << "Running Processes:\n" << this->makeRunningProcessesString() << std::endl;
+		//std::cout << "Finished Processes:\n" << this->makeFinishedProcessesString() << std::endl;
 	}
 }
 

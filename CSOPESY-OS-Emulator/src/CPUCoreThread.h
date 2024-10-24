@@ -15,14 +15,16 @@ public:
 	std::shared_ptr<Process> getCurrentProcess() const;
 	void setCurrentProcess(std::shared_ptr<Process> process);
 	
-	bool hasQuantumCyclesLeft() const { return this->quantumCycle > this->currCycle; }
-	void resetQuantumCycle() { this->currCycle = 0; }
+	bool hasQuantumCyclesLeft() const { return this->quantumCycle > this->currQuantumCycle; }
+	void resetQuantumCycle() { this->currQuantumCycle = 0; }
 
 private:
 	int coreNo;
 
-	int unsigned currCycle;
-	int unsigned quantumCycle;
+	unsigned int currCycle; // Current amount of cycles
+	unsigned int delayPerExecution; // Delay per execution
+	unsigned int currQuantumCycle; // Current amount of quantum cycles used
+	unsigned int quantumCycle; // Quantum slice
 
 	std::shared_ptr<Process> currentProcess;
 };

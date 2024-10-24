@@ -7,22 +7,27 @@ CPUCoreThread::CPUCoreThread(const int coreNo, const unsigned int quantumCycle) 
 	this->coreNo = coreNo;
 
 	this->currCycle = 0;
+	this->delayPerExecution = GlobalScheduler::getInstance()->getDelay();
+	this->currQuantumCycle = 0;
 	this->quantumCycle = quantumCycle;
-
 	this->currentProcess = nullptr;
 }
 
 
 void CPUCoreThread::run()
 {
-	if (this->currentProcess != nullptr &&
-		(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
-		(this->currentProcess->getState() == Process::ProcessState::READY ||
-			this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
+	if (this->currCycle % this->delayPerExecution == 0) {
+		if (this->currentProcess != nullptr &&
+			(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
+			(this->currentProcess->getState() == Process::ProcessState::READY ||
+				this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
 
-		this->currentProcess->executeCurrentCommand();
-		this->currCycle++;
+			this->currentProcess->executeCurrentCommand();
+			this->currQuantumCycle++;
+		}
 	}
+
+	this->currCycle++;
 }
 
 

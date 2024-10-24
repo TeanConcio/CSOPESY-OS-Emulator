@@ -51,7 +51,7 @@ public:
 	void setMinIns(unsigned int minIns) { this->minIns = minIns; }
 	unsigned int getMaxIns() { return this->maxIns; }
 	void setMaxIns(unsigned int maxIns) { this->maxIns = maxIns; }
-
+	unsigned int getDelay() { return this->delay; }
 
 
 private:
