@@ -15,7 +15,7 @@ public:
 	std::shared_ptr<Process> getCurrentProcess() const;
 	void setCurrentProcess(std::shared_ptr<Process> process);
 	
-	bool hasQuantumCyclesLeft() const { return this->quantumCycle - this->currCycle > 0; }
+	bool hasQuantumCyclesLeft() const { return this->quantumCycle > this->currCycle; }
 	void resetQuantumCycle() { this->currCycle = 0; }
 
 private:

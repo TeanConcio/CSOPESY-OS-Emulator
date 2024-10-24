@@ -47,7 +47,7 @@ void GlobalScheduler::run()
 		{
 			this->coreThreads[i]->start();
 		}
-		
+
 		// Sleep delay
 		IETThread::sleep(this->delay);
 		
@@ -57,11 +57,17 @@ void GlobalScheduler::run()
 			this->coreThreads[i]->join();
 		}
 
-		// Create a new process
-		this->createTestProcess();
 
 		// Join the scheduler thread
 		this->scheduler->join();
+
+		// Create a new process
+		this->createTestProcess();
+
+		// Print queue , running, and finished processes
+		std::cout << "Queued Processes:\n" << this->makeQueuedProcessesString() << std::endl;
+		std::cout << "Running Processes:\n" << this->makeRunningProcessesString() << std::endl;
+		std::cout << "Finished Processes:\n" << this->makeFinishedProcessesString() << std::endl;
 	}
 }
 
@@ -276,8 +282,6 @@ String GlobalScheduler::generateProcessName() const
 void GlobalScheduler::createTestProcess()
 {
 	if (this->isGeneratingProcesses) {
-		this->currBatchProcessCycle++;
-
 		// If the current cycle is a multiple of the batch process frequency, create a new process
 		if (this->currBatchProcessCycle % this->batchProcessFreq == 0)
 		{
@@ -285,6 +289,9 @@ void GlobalScheduler::createTestProcess()
 			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
 			this->scheduler->addProcess(process);
 		}
+
+		// Increment the current batch process cycle
+		this->currBatchProcessCycle++;
 	}
 }
 
@@ -385,4 +392,48 @@ String GlobalScheduler::makeFinishedProcessesString()
 	}
 
 	return ss.str();
+}
+
+std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getFinishedCores()
+{
+	std::vector<std::shared_ptr<CPUCoreThread>> finishedCores;
+	for (int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
+		if (process != nullptr && 
+			process->getState() == Process::ProcessState::FINISHED)
+		{
+			finishedCores.push_back(sharedInstance->coreThreads[i]);
+		}
+	}
+	return finishedCores;
+}
+
+std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getEmptyCores()
+{
+	std::vector<std::shared_ptr<CPUCoreThread>> emptyCores;
+	for (int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
+		if (process == nullptr)
+		{
+			emptyCores.push_back(sharedInstance->coreThreads[i]);
+		}
+	}
+	return emptyCores;
+}
+
+std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getRunningCores()
+{
+	std::vector<std::shared_ptr<CPUCoreThread>> runningCores;
+	for (int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
+		if (process != nullptr &&
+			process->getState() == Process::ProcessState::RUNNING)
+		{
+			runningCores.push_back(sharedInstance->coreThreads[i]);
+		}
+	}
+	return runningCores;
 }

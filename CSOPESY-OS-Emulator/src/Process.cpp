@@ -30,14 +30,15 @@ void Process::addCommand(ICommand::CommandType commandType)
 
 void Process::executeCurrentCommand()
 {
+	this->currentState = ProcessState::RUNNING;
+	this->commandList[this->commandCounter]->execute();
+	// this->logCurrentCommand();
+	this->updateLastCommandTime();
+	this->commandCounter++;
+
 	if (this->commandCounter >= this->commandList.size())
+	{
 		this->currentState = ProcessState::FINISHED;
-	else {
-		this->currentState = ProcessState::RUNNING;
-		this->commandList[this->commandCounter]->execute();
-		// this->logCurrentCommand();
-		this->updateLastCommandTime();
-		this->commandCounter++;
 	}
 }
 

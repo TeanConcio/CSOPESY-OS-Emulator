@@ -21,6 +21,10 @@ public:
 	static std::shared_ptr<CPUCoreThread> getCoreThread(int coreNum) { return sharedInstance->coreThreads[coreNum]; }
 	static int getRunningCoreCount();
 
+	static std::vector<std::shared_ptr<CPUCoreThread>> getFinishedCores();
+	static std::vector<std::shared_ptr<CPUCoreThread>> getEmptyCores();
+	static std::vector<std::shared_ptr<CPUCoreThread>> getRunningCores();
+
 	// Configurations
 	bool hasInitialized() { return this != nullptr && this->scheduler != nullptr; }
 	static void setScheduler();
