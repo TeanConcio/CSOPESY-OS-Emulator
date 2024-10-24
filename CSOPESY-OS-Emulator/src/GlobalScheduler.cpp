@@ -47,15 +47,18 @@ void GlobalScheduler::run()
 		{
 			this->coreThreads[i]->start();
 		}
-
+		
 		// Sleep delay
 		IETThread::sleep(this->delay);
-
+		
 		// Join each core thread
 		for (int i = 0; i < this->numCores; ++i)
 		{
 			this->coreThreads[i]->join();
 		}
+
+		// Create a new process
+		this->createTestProcess();
 
 		// Join the scheduler thread
 		this->scheduler->join();
@@ -272,7 +275,17 @@ String GlobalScheduler::generateProcessName() const
 
 void GlobalScheduler::createTestProcess()
 {
-	this->isGeneratingProcesses = true;
+	if (this->isGeneratingProcesses) {
+		this->currBatchProcessCycle++;
+
+		// If the current cycle is a multiple of the batch process frequency, create a new process
+		if (this->currBatchProcessCycle % this->batchProcessFreq == 0)
+		{
+			String processName = "process" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
+			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
+			this->scheduler->addProcess(process);
+		}
+	}
 }
 
 /**
@@ -281,22 +294,6 @@ void GlobalScheduler::createTestProcess()
 void GlobalScheduler::generateTestProcesses()
 {
 	this->isGeneratingProcesses = true;
-
-	this->processGenerationThread = std::thread([this]() {
-		while (this->isGeneratingProcesses)
-		{
-			// Sleep for a second to simulate a cycle
-			for (int i = 0; i < this->getBatchProcessFreq(); i++)
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			}
-
-			String processName = "process" + (this->pidCounter < 9 ? std::string("0") : "") + std::to_string(this->pidCounter + 1);
-			std::shared_ptr<Process> process = this->createUniqueProcess(processName);
-			this->scheduler->addProcess(process);
-
-		}
-		});
 
 	/*for (int i = 0; i < limit; ++i)
 	{
@@ -310,10 +307,6 @@ void GlobalScheduler::generateTestProcesses()
 void GlobalScheduler::stopGeneratingProcesses()
 {
 	this->isGeneratingProcesses = false;
-	if (this->processGenerationThread.joinable())
-	{
-		this->processGenerationThread.join();
-	}
 }
 
 

@@ -72,11 +72,11 @@ private:
 
 	// Configurations
 	int pidCounter = 0; // How many processes its created
-	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of test processes to make per cycle
+	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of cycle between process creation
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
 
 	// Process generation
+	int currBatchProcessCycle = 0;
 	bool isGeneratingProcesses = false;
-	std::thread processGenerationThread;
 };

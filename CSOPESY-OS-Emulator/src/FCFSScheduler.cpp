@@ -9,7 +9,7 @@ void FCFSScheduler::run()
 	for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
 	{
 		// If the core is not running a process, assign it one
-		if (!this->queuedProcesses.empty() && 
+		if (!this->queuedProcesses.empty() &&
 			GlobalScheduler::getCoreThread(core)->getCurrentProcess() == nullptr)
 		{
 			std::shared_ptr<Process> process = this->queuedProcesses.front();
