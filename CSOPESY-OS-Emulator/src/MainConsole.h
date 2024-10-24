@@ -25,5 +25,6 @@ private:
 	void initialize();
 	void schedulerTest();
 	void schedulerStop();
+	void listProcesses();
 	void reportUtil();
 };

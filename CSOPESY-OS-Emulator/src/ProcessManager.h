@@ -1,10 +1,13 @@
 #pragma once
 
 #include <unordered_map>
+
 #include "Process.h"
 #include "Common.h"
 #include "GlobalScheduler.h"
 #include "CPUCoreThread.h"
+#include "ConsoleManager.h"
+#include "BaseScreen.h"
 
 
 
@@ -21,12 +24,12 @@ public:
 	static void destroy();
 
 	// Process management
-	static void addProcess(std::shared_ptr<Process> process);
+	void addProcess(std::shared_ptr<Process> process);
 	static std::shared_ptr<Process> findProcess(const String& processName);
 
 	// Process creation
 	String generateProcessName() const;
-	std::shared_ptr<Process> createUniqueProcess(String& name);
+	static std::shared_ptr<Process> createUniqueProcess(String& name);
 	static void generateTestProcessesLoop();
 	static void startGeneratingProcessesLoop() { sharedInstance->isGeneratingProcesses = true; }
 	static void stopGeneratingProcessesLoop() { sharedInstance->isGeneratingProcesses = false; }

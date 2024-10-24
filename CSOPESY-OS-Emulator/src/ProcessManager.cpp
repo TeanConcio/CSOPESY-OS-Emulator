@@ -49,31 +49,36 @@ String ProcessManager::generateProcessName() const
 
 std::shared_ptr<Process> ProcessManager::createUniqueProcess(String& name)
 {
-	std::shared_ptr<Process> existingProcess = ProcessManager::findProcess(name);
-	if (existingProcess != nullptr)
-	{
+	// Check if process with the same name already exists
+	if (ProcessManager::findProcess(name) != nullptr)
 		return nullptr;
-	}
-	else
-	{
-		//Process::RequirementFlags reqFlags = { 
-		// ProcessRequirementFlags_CONFIG::REQUIRE_FILES, 
-		// ProcessRequirementFlags_CONFIG::NUM_FILES,
-		//	ProcessRequirementFlags_CONFIG::REQUIRE_MEMORY, 
-		// ProcessRequirementFlags_CONFIG::MEMORY_REQUIRED };
 
-		Process::RequirementFlags reqFlags = { false, 1, false, 0 }; // Placeholder values
+	// Requirement flags for the process
+	//Process::RequirementFlags reqFlags = { 
+	// ProcessRequirementFlags_CONFIG::REQUIRE_FILES, 
+	// ProcessRequirementFlags_CONFIG::NUM_FILES,
+	//	ProcessRequirementFlags_CONFIG::REQUIRE_MEMORY, 
+	// ProcessRequirementFlags_CONFIG::MEMORY_REQUIRED };
+	Process::RequirementFlags reqFlags = { false, 1, false, 0 }; // Placeholder values
 
-		if (name == "")
-		{
-			name = this->generateProcessName();
-		}
-		auto newProcess = std::make_shared<Process>(this->pidCounter, name, reqFlags);
-		newProcess->test_generateRandomCommands(this->minIns, this->maxIns);
-		this->pidCounter++;
+	// If name is empty, generate a new name
+	if (name == "")
+		name = ProcessManager::sharedInstance->generateProcessName();
+	
+	// Create Process
+	auto process = std::make_shared<Process>(ProcessManager::sharedInstance->pidCounter, name, reqFlags);
+	process->test_generateRandomCommands(ProcessManager::sharedInstance->minIns, ProcessManager::sharedInstance->maxIns);
 
-		return newProcess;
-	}
+	// Create and register screen for the process
+	auto screen = std::make_shared<BaseScreen>(process);
+	if (ConsoleManager::getInstance()->registerScreen(screen) == nullptr)
+		return nullptr;
+
+	// Add process to the process manager
+	ProcessManager::sharedInstance->addProcess(process);
+	ProcessManager::sharedInstance->pidCounter++;
+	
+	return process;
 }
 
 
@@ -87,10 +92,7 @@ void ProcessManager::generateTestProcessesLoop()
 		if (ProcessManager::sharedInstance->currBatchProcessCycle % ProcessManager::sharedInstance->batchProcessFreq == 0)
 		{
 			String processName = "process" + (ProcessManager::sharedInstance->pidCounter < 9 ? std::string("0") : "") + std::to_string(ProcessManager::sharedInstance->pidCounter + 1);
-			std::shared_ptr<Process> process = ProcessManager::sharedInstance->createUniqueProcess(processName);
-
-			if (process != nullptr)
-				ProcessManager::addProcess(process);
+			ProcessManager::createUniqueProcess(processName);
 		}
 
 		// Increment the current batch process cycle

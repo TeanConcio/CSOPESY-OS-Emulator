@@ -55,43 +55,54 @@ void MainConsole::decideCommand(const String& command) {
 	else if (GlobalScheduler::getInstance()->hasInitialized())
 	{
 		if (commandParts[0] == "screen") {
-			// Check if enough arguments
-
 			// Display process status
 			if (commandParts[1] == "-ls" && commandParts.size() == 2)
 			{
-				this->writeToConsoleHistory(ProcessManager::makeListProcessesString());
+				// Check if too many arguments
+				if (commandParts.size() != 2) {
+					this->writeToConsoleHistory("Invalid arguments for screen -ls command.\n");
+					return;
+				}
+
+				this->listProcesses();
 			}
-			//else if (commandParts[1] == "-s") {
-			//	// Check if currentProcess exists
-			//	for (const auto& currentProcess : this->processTable) {
-			//		if (currentProcess->getName() == commandParts[2]) {
-			//			this->writeToConsoleHistory("Process " + commandParts[2] + " already exists.\n");
-			//			return;
-			//		}
-			//	}
+			else if (commandParts[1] == "-s") {
+				// Check if enough arguments
+				if (commandParts.size() != 3) {
+					this->writeToConsoleHistory("Invalid arguments for screen -s command.\n");
+					return;
+				}
+				
+				// Create a new process and screen
+				if (ProcessManager::createUniqueProcess(commandParts[2]) == nullptr) {
+					this->writeToConsoleHistory("Process " + commandParts[2] + " already exists. Use \"screen -r\" command.\n");
+					return;
+				}
 
-			//	// TODO: Make lines not a placeholder
-			//	auto currentProcess = std::make_shared<Process>(commandParts[2], 100, ConsoleManager::getInstance()->processID);
-			//	this->addProcess(currentProcess); // Push to vector
-			//	auto screen = std::make_shared<BaseScreen>(currentProcess, commandParts[2]); // Initialize screen with name and currentProcess
+				// Switch to the new screen
+				this->writeToConsoleHistory("Switching to " + commandParts[2] + ".\n");
+				if (ConsoleManager::getInstance()->switchScreen(commandParts[2]) == nullptr) {
+					this->writeToConsoleHistory("Unable to switch to " + commandParts[2] + ".\n");
+					return;
+				}
+			}
+			else if (commandParts[1] == "-r") {
+				// Check if enough arguments
+				if (commandParts.size() != 3) {
+					this->writeToConsoleHistory("Invalid arguments for screen -r command.\n");
+					return;
+				}
 
-			//	// Go to screen itself
-			//	ConsoleManager::getInstance()->registerScreen(screen);
-			//	ConsoleManager::getInstance()->switchConsole(commandParts[2]);
-			//}
-			//else if (commandParts[1] == "-r") {
-			//	for (const auto& currentProcess : this->processTable) {
-			//		if (currentProcess->getName() == commandParts[2]) {
-			//			auto screen = std::make_shared<BaseScreen>(currentProcess, commandParts[2]);
-			//			ConsoleManager::getInstance()->registerScreen(screen);
-			//			ConsoleManager::getInstance()->switchConsole(commandParts[2]);
-			//			return;
-			//		}
-			//	}
-			//	this->writeToConsoleHistory("Unable to redraw " + commandParts[2] + ". Was it registered?\n");
-			//	return;
-			//}
+				// Switch to the new screen
+				this->writeToConsoleHistory("Switching to " + commandParts[2] + ".\n");
+				if (ConsoleManager::getInstance()->switchScreen(commandParts[2]) == nullptr) {
+					this->writeToConsoleHistory("Process " + commandParts[2] + " not found.\n");
+					return;
+				}
+			}
+			else {
+				this->writeToConsoleHistory("Invalid arguments for screen command.\n");
+			}
 		}
 		else if (commandParts[0] == "scheduler-test") {
 			this->schedulerTest();
@@ -108,7 +119,7 @@ void MainConsole::decideCommand(const String& command) {
 		else if (commandParts[0] == "marquee") {
 			// Switch to marquee screen
 			this->writeToConsoleHistory("Switching to MARQUEE_CONSOLE\n");
-			ConsoleManager::getInstance()->switchConsole("MARQUEE_CONSOLE");
+			ConsoleManager::getInstance()->switchScreen("MARQUEE_CONSOLE");
 		}
 		else
 		{
@@ -202,6 +213,22 @@ void MainConsole::schedulerStop() {
 	ProcessManager::stopGeneratingProcessesLoop();
 }
 
+
+/**
+ * @brief Generates a report.
+ *
+ * Calls the makeListProcessesString method of ProcessManager and writes the output to the console.
+ */
+void MainConsole::listProcesses() {
+	this->writeToConsoleHistory(ProcessManager::makeListProcessesString());
+}
+
+
+/**
+ * @brief Generates a report in a log file.
+ *
+ * Calls the makeListProcessesString method of ProcessManager and writes the output to a file.
+ */
 void MainConsole::reportUtil() {
 	// ListProcesses but printed to a txt file
 	String logFileName = "csopesy-log.txt";

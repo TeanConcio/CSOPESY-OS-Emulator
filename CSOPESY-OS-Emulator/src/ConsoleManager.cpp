@@ -84,56 +84,27 @@ void ConsoleManager::process() const
 
 
 /**
- * @brief Switches to a different console.
- * 
- * Clears the screen, sets the current console to the specified console, and calls the onEnabled method of the new console.
- * 
- * @param consoleName The name of the console to switch to.
- */
-void ConsoleManager::switchConsole(const String& consoleName)
-{
-	if (hasConsole(consoleName))
-	{
-		if (this->currentConsole != nullptr)
-		{
-			this->currentConsole->onDisabled();
-		}
-		system("cls");
-		this->previousConsole = this->currentConsole;
-		this->currentConsole = this->consoleTable[consoleName];
-		this->currentConsole->onEnabled();
-	}
-	else
-	{
-		std::cerr << "Console name " << consoleName << " not found. Was it initialized?" << std::endl;
-	}
-}
-
-
-/**
  * @brief Switches to a different screen.
  * 
  * Clears the screen, sets the current console to the specified screen, and calls the onEnabled method of the new screen.
  * 
  * @param screenName The name of the screen to switch to.
  */
-void ConsoleManager::switchToScreen(const String& screenName)
+std::shared_ptr<AConsole> ConsoleManager::switchScreen(const String& screenName)
 {
-	if (hasConsole(screenName))
+	if (!hasConsole(screenName))
+		return nullptr;
+	
+	if (this->currentConsole != nullptr)
 	{
-		if (this->currentConsole != nullptr)
-		{
-			this->currentConsole->onDisabled();
-		}
-		system("cls");
-		this->previousConsole = this->currentConsole;
-		this->currentConsole = this->consoleTable[screenName];
-		this->currentConsole->onEnabled();
+		this->currentConsole->onDisabled();
 	}
-	else
-	{
-		std::cerr << "Screen name " << screenName << " not found. Was it initialized?" << std::endl;
-	}
+	system("cls");
+	this->previousConsole = this->currentConsole;
+	this->currentConsole = this->consoleTable[screenName];
+	this->currentConsole->onEnabled();
+
+	return this->currentConsole;
 }
 
 
@@ -144,16 +115,17 @@ void ConsoleManager::switchToScreen(const String& screenName)
  * 
  * @param screenRef A shared pointer to the screen to be registered.
  */
-void ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
+std::shared_ptr<BaseScreen> ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
 {
 	if (hasConsole(screenRef->name))
 	{
-		std::cerr << "Screen name " << screenRef->name << " already exists. Please use a different name." << std::endl;
-		return;
+		return nullptr;
 	}
 
 	this->consoleTable[screenRef->name] = screenRef;
 	this->processID++;
+
+	return screenRef;
 }
 
 
@@ -166,14 +138,12 @@ void ConsoleManager::registerScreen(std::shared_ptr<BaseScreen> screenRef)
  */
 void ConsoleManager::unregisterScreen(const String& screenName)
 {
-	if (hasConsole(screenName))
+	if (!hasConsole(screenName))
 	{
-		this->consoleTable.erase(screenName);
+		return;
 	}
-	else
-	{
-		std::cerr << "Unable to unregister " << screenName << ". Was it registered?" << std::endl;
-	}
+	
+	this->consoleTable.erase(screenName);
 }
 
 
@@ -251,7 +221,7 @@ ConsoleManager::ConsoleManager()
 	//initialize consoles
 	this->initializeConsoles();
 
-	this->switchConsole(MAIN_CONSOLE);
+	this->switchScreen(MAIN_CONSOLE);
 }
 
 

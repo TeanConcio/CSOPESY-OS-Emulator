@@ -6,11 +6,17 @@
 
 #include "BaseScreen.h"
 
+
+
 // Default names
 const String MAIN_CONSOLE = "MAIN_CONSOLE";
 const String MARQUEE_CONSOLE = "MARQUEE_CONSOLE";
 const String SCHEDULING_CONSOLE = "SCHEDULING_CONSOLE";
 const String MEMORY_CONSOLE = "MEMORY_CONSOLE";
+
+class BaseScreen;
+
+
 
 class ConsoleManager
 {
@@ -28,9 +34,9 @@ public:
 	void drawConsole() const;
 	void process() const;
 
-	void switchConsole(const String& consoleName);
-	void switchToScreen(const String& screenName);
-	void registerScreen(std::shared_ptr<BaseScreen> screenRef);
+	// Console management
+	std::shared_ptr<AConsole> switchScreen(const String& screenName);
+	std::shared_ptr<BaseScreen> registerScreen(std::shared_ptr<BaseScreen> screenRef);
 	void unregisterScreen(const String& screenName);
 
 	void returnToPreviousConsole();

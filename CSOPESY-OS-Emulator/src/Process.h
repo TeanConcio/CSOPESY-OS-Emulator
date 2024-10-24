@@ -2,8 +2,10 @@
 
 #include <ctime>
 #include <fstream>
+
 #include "TypedefRepo.h"
 #include "ICommand.h"
+#include "ConsoleManager.h"
 
 class Process
 {

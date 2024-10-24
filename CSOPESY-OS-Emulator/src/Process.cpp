@@ -36,9 +36,11 @@ void Process::executeCurrentCommand()
 	this->updateLastCommandTime();
 	this->commandCounter++;
 
+	// If all commands are executed, set state to finished and unregister screen
 	if (this->commandCounter >= this->commandList.size())
 	{
 		this->currentState = ProcessState::FINISHED;
+		ConsoleManager::getInstance()->unregisterScreen(this->name);
 	}
 }
 

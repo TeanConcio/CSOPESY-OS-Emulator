@@ -5,16 +5,18 @@
 
 #include "ConsoleManager.h"
 
-// Default screen for the currentProcess
+
+
+// Default screen for the attached Process
 /**
  * @brief Constructs a new BaseScreen object.
  * 
- * @param currentProcess A shared pointer to the currentProcess.
- * @param processName The name of the currentProcess.
+ * @param currentProcess A shared pointer to the attached Process.
  */
-BaseScreen::BaseScreen(std::shared_ptr<Process> process, String processName) : AConsole(processName)
+BaseScreen::BaseScreen(std::shared_ptr<Process> process) : AConsole(process->getName())
 {
 	this->attachedProcess = process;
+	this->refreshed = false;
 }
 
 /**
@@ -57,29 +59,9 @@ void BaseScreen::process()
 	this->decideCommand(command);
 }
 
+
 void BaseScreen::display()
 {
-}
-
-/**
- * @brief Prints the currentProcess information.
- * 
- * Prints the name, ID, current instruction line, total lines of code, and creation time of the currentProcess.
- */
-void BaseScreen::printProcessInfo()
-{
-	/*this->writeToConsoleHistory("Process: " + this->attachedProcess->getName() + "\n");
-	this->writeToConsoleHistory("ID: " + std::to_string(this->attachedProcess->getPID()) + "\n");
-	this->writeToConsoleHistory("\n");
-	this->writeToConsoleHistory("Current instruction line: " + std::to_string(this->attachedProcess->getCommandCounter()) + "\n");
-	this->writeToConsoleHistory("Lines of code: " + std::to_string(this->attachedProcess->getLinesOfCode()) + "\n");
-	this->writeToConsoleHistory("\n");*/
-
-	/*char buffer[26];
-	std::tm timeInfo;
-	localtime_s(&timeInfo, &this->attachedProcess->createdTime);
-	asctime_s(buffer, sizeof(buffer), &timeInfo);
-	this->writeToConsoleHistory("Created: " + String(buffer) + "\n");*/
 }
 
 
@@ -115,4 +97,20 @@ void BaseScreen::decideCommand(const String& command)
 void BaseScreen::printHeader()
 {
 	this->printProcessInfo();
+}
+
+
+/**
+ * @brief Prints the currentProcess information.
+ *
+ * Prints the name, ID, current instruction line, total lines of code, and creation time of the currentProcess.
+ */
+void BaseScreen::printProcessInfo()
+{
+	this->writeToConsoleHistory("Process: " + this->attachedProcess->getName() + "\n");
+	this->writeToConsoleHistory("ID: " + std::to_string(this->attachedProcess->getPID()) + "\n");
+	this->writeToConsoleHistory("\n");
+	this->writeToConsoleHistory("Current instruction line: " + std::to_string(this->attachedProcess->getCommandCounter()) + "\n");
+	this->writeToConsoleHistory("Lines of code: " + std::to_string(this->attachedProcess->getLinesOfCode()) + "\n");
+	this->writeToConsoleHistory("\n");
 }
