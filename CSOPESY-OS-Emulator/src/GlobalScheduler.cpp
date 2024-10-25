@@ -184,42 +184,35 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 {
 	try {
 		// Check if the configs are valid
-		if (areConfigsValid(configs))
+		validateConfigs(configs);
+
+		// Set the algo and time slice
+		String schedulingAlgorithm = configs["scheduler"];
+		int timeQuantum = 0;
+
+		AScheduler::SchedulingAlgorithm algo;
+		if (schedulingAlgorithm == "\"fcfs\"")
 		{
-			// Set the algo and time slice
-			String schedulingAlgorithm = configs["scheduler"];
-			int timeQuantum = 0;
-
-			AScheduler::SchedulingAlgorithm algo;
-			if (schedulingAlgorithm == "\"fcfs\"")
-			{
-				this->scheduler = new FCFSScheduler();
-			}
-			else if (schedulingAlgorithm == "\"rr\"")
-			{
-				this->scheduler = new RRScheduler();
-				timeQuantum = std::stoi(configs["quantum-cycles"]);
-			}
-
-			// Set the cores and delays
-			sharedInstance->numCores = std::stoi(configs["num-cpu"]);
-			unsigned int delayPerExecution = std::stoi(configs["delay-per-exec"]);
-			for (int i = 0; i < this->numCores; ++i)
-			{
-				this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
-			}
-
-			// Set the batch process frequency, min instructions, max instructions
-			ProcessManager::sharedInstance->batchProcessFreq = std::stoi(configs["batch-process-freq"]);
-			ProcessManager::sharedInstance->minIns = std::stoi(configs["min-ins"]);
-			ProcessManager::sharedInstance->maxIns = std::stoi(configs["max-ins"]);
+			this->scheduler = new FCFSScheduler();
 		}
-		else
+		else if (schedulingAlgorithm == "\"rr\"")
 		{
-			// Throws an exception if the configs are invalid and sets default values
-			throw std::invalid_argument("Invalid configs.");
+			this->scheduler = new RRScheduler();
+			timeQuantum = std::stoi(configs["quantum-cycles"]);
 		}
-		
+
+		// Set the cores and delays
+		sharedInstance->numCores = std::stoi(configs["num-cpu"]);
+		unsigned int delayPerExecution = std::stoi(configs["delay-per-exec"]);
+		for (int i = 0; i < this->numCores; ++i)
+		{
+			this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
+		}
+
+		// Set the batch process frequency, min instructions, max instructions
+		ProcessManager::sharedInstance->batchProcessFreq = std::stoi(configs["batch-process-freq"]);
+		ProcessManager::sharedInstance->minIns = std::stoi(configs["min-ins"]);
+		ProcessManager::sharedInstance->maxIns = std::stoi(configs["max-ins"]);		
 	}
 	catch (std::exception& e)
 	{
@@ -246,56 +239,83 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 	}	
 }
 
-bool GlobalScheduler::areConfigsValid(std::unordered_map<String, String> configs)
+void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& configs)
 {
-	// Check if the only components are num-cpu, scheduler, quantum-cycles, batch-process-freq, min-ins, max-ins, and delay-per-exec
-	if (configs.size() != 7)
-	{
-		return false;
+	try {
+		// Check if num-cpu is not in range [1, 128] or does not exist
+		if (configs.find("num-cpu") == configs.end() || std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
+		{
+			configs["num-cpu"] = "4";
+		}
 	}
-	// Check if the configs are valid
-	if (configs.find("num-cpu") == configs.end() || configs.find("scheduler") == configs.end() || configs.find("quantum-cycles") == configs.end() ||
-		configs.find("batch-process-freq") == configs.end() || configs.find("min-ins") == configs.end() || configs.find("max-ins") == configs.end() ||
-		configs.find("delay-per-exec") == configs.end())
-	{
-		return false;
-	}
-	// Check if the values are valid
-	// num-cpu: [1, 128]
-	// scheduler: "fcfs" or "rr"
-	// quantum-cycles: [1, 2e32]
-	// batch-process-freq: [1, 2e32]
-	// min-ins: [1, 2e32]
-	// max-ins: [1, 2e32]
-	// delay-per-exec: [0, 2e32]
-    if (std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
-    {
-        configs["num-cpu"] = "4";
-    }
-	if (configs["scheduler"] != "\"fcfs\"" && configs["scheduler"] != "\"rr\"")
-	{
-		configs["scheduler"] = "rr";
-	}
-	if (std::stoi(configs["quantum-cycles"]) < 1)
-	{
-		configs["quantum-cycles"] = "5";
-	}
-	if (std::stoi(configs["batch-process-freq"]) < 1)
-	{
-		configs["batch-process-freq"] = "1";
-	}
-	if (std::stoi(configs["min-ins"]) < 1)
-	{
-		configs["min-ins"] = "1000";
-	}
-	if (std::stoi(configs["max-ins"]) < 1)
-	{
-		configs["max-ins"] = "2000";
-	}
-	if (std::stoi(configs["delay-per-exec"]) < 0)
-	{
-		configs["delay-per-exec"] = "0";
+	catch (const std::exception&) {
+		configs["num-cpu"] = "4";
 	}
 
-	return true;
+	try {
+		// Check if the scheduler is not "fcfs" or "rr"
+		if (configs.find("scheduler") == configs.end() || (configs["scheduler"] != "\"fcfs\"" && configs["scheduler"] != "\"rr\""))
+		{
+			configs["scheduler"] = "rr";
+		}
+	}
+	catch (const std::exception&) {
+		configs["scheduler"] = "rr";
+	}
+
+	try {
+		// Check if quantum-cycles is not in range [1, 2e32] or does not exist
+		if (configs.find("quantum-cycles") == configs.end() || std::stoi(configs["quantum-cycles"]) < 1)
+		{
+			configs["quantum-cycles"] = "5";
+		}
+	}
+	catch (const std::exception&) {
+		configs["quantum-cycles"] = "5";
+	}
+
+	try {
+		// Check if batch-process-freq is not in range [1, 2e32] or does not exist
+		if (configs.find("batch-process-freq") == configs.end() || std::stoi(configs["batch-process-freq"]) < 1)
+		{
+			configs["batch-process-freq"] = "1";
+		}
+	}
+	catch (const std::exception&) {
+		configs["batch-process-freq"] = "1";
+	}
+
+	try {
+		// Check if min-ins is not in range [1, 2e32] or does not exist
+		if (configs.find("min-ins") == configs.end() || std::stoi(configs["min-ins"]) < 1)
+		{
+			configs["min-ins"] = "1000";
+		}
+	}
+	catch (const std::exception&) {
+		configs["min-ins"] = "1000";
+	}
+
+	try {
+		// Check if max-ins is not in range [1, 2e32] or does not exist
+		if (configs.find("max-ins") == configs.end() || std::stoi(configs["max-ins"]) < 1)
+		{
+			configs["max-ins"] = "2000";
+		}
+	}
+	catch (const std::exception&) {
+		configs["max-ins"] = "2000";
+	}
+
+	try {
+		// Check if delay-per-exec is not in range [0, 2e32] or does not exist
+		if (configs.find("delay-per-exec") == configs.end() || std::stoi(configs["delay-per-exec"]) < 0)
+		{
+			configs["delay-per-exec"] = "0";
+		}
+	}
+	catch (const std::exception&) {
+		configs["delay-per-exec"] = "0";
+	}
 }
+

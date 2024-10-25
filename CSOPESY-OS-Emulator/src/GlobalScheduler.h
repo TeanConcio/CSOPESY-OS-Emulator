@@ -30,7 +30,7 @@ public:
 	static void setScheduler();
 	std::unordered_map<String, String> getConfigs();
 	void setConfigs(std::unordered_map<String, String> configs);
-	bool areConfigsValid(std::unordered_map<String, String> configs);
+	void validateConfigs(std::unordered_map<String, String>& configs);
  
 
 
