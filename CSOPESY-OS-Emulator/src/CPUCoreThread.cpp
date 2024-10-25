@@ -18,7 +18,8 @@ CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delay
 
 void CPUCoreThread::run()
 {
-	if (this->currCycle % this->delayPerExecution == 0) {
+	if (this->delayPerExecution == 0 || this->currCycle % this->delayPerExecution == 0) {
+	// if (this->currCycle % this->delayPerExecution == 0) {
 		if (this->currentProcess != nullptr &&
 			(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
 			(this->currentProcess->getState() == Process::ProcessState::READY ||

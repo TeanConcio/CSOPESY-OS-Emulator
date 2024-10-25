@@ -209,7 +209,7 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 				this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
 			}
 
-			// Set the batch process frequency, min instructions, max instructions, and delay
+			// Set the batch process frequency, min instructions, max instructions
 			ProcessManager::sharedInstance->batchProcessFreq = std::stoi(configs["batch-process-freq"]);
 			ProcessManager::sharedInstance->minIns = std::stoi(configs["min-ins"]);
 			ProcessManager::sharedInstance->maxIns = std::stoi(configs["max-ins"]);
@@ -232,7 +232,14 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		// min-ins: 1000
 		// max-ins: 2000
 		// delay-per-exec: 0
-		this->scheduler = new FCFSScheduler();
+
+		this->scheduler = new RRScheduler();
+		// Set the cores and delays
+		sharedInstance->numCores = 4;
+		for (int i = 0; i < this->numCores; ++i)
+		{
+			this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, 100000000, 5));
+		}
 		ProcessManager::sharedInstance->batchProcessFreq = 1;
 		ProcessManager::sharedInstance->minIns = 1000;
 		ProcessManager::sharedInstance->maxIns = 2000;
@@ -261,33 +268,33 @@ bool GlobalScheduler::areConfigsValid(std::unordered_map<String, String> configs
 	// min-ins: [1, 2e32]
 	// max-ins: [1, 2e32]
 	// delay-per-exec: [0, 2e32]
-	if (std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
-	{
-		return false;
-	}
+    if (std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
+    {
+        configs["num-cpu"] = "4";
+    }
 	if (configs["scheduler"] != "\"fcfs\"" && configs["scheduler"] != "\"rr\"")
 	{
-		return false;
+		configs["scheduler"] = "rr";
 	}
 	if (std::stoi(configs["quantum-cycles"]) < 1)
 	{
-		return false;
+		configs["quantum-cycles"] = "5";
 	}
 	if (std::stoi(configs["batch-process-freq"]) < 1)
 	{
-		return false;
+		configs["batch-process-freq"] = "1";
 	}
 	if (std::stoi(configs["min-ins"]) < 1)
 	{
-		return false;
+		configs["min-ins"] = "1000";
 	}
 	if (std::stoi(configs["max-ins"]) < 1)
 	{
-		return false;
+		configs["max-ins"] = "2000";
 	}
 	if (std::stoi(configs["delay-per-exec"]) < 0)
 	{
-		return false;
+		configs["delay-per-exec"] = "0";
 	}
 
 	return true;

@@ -43,6 +43,7 @@ void MainConsole::decideCommand(const String& command) {
 	else if (commandParts[0] == "initialize") 
 	{
 		this->initialize();
+		std::cout << GlobalScheduler::getCoreCount();
 	}
 	else if (commandParts[0] == "exit") 
 	{

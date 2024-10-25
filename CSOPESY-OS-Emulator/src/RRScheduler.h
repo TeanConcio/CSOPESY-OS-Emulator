@@ -4,7 +4,7 @@
 #include "TypedefRepo.h"
 #include "CPUCoreThread.h"
 
-// First-Come-First-Serve Scheduler
+// Round robin scheduler
 class RRScheduler : public AScheduler
 {
 public:
