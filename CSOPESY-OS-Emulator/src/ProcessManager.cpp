@@ -187,8 +187,8 @@ String ProcessManager::makeListProcessesString()
 {
 	std::stringstream ss;
 
-	// TODO: Implement CPU utilization rate (current implementation is a placeholder)
-	ss << "CPU utilization: " << "100%\n";
+	// TODO: Check if implementation is correct
+    ss << "CPU utilization: " << (GlobalScheduler::getInstance()->getRunningCoreCount() * 100 / GlobalScheduler::getInstance()->getCoreCount()) << "%\n";
 	ss << "Cores used: " << GlobalScheduler::getInstance()->getCoreCount() << "\n";
 	ss << "Cores available: " << GlobalScheduler::getInstance()->getCoreCount() - GlobalScheduler::getInstance()->getRunningCoreCount() << "\n\n";
 

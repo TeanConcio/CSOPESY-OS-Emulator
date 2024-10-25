@@ -2,6 +2,7 @@
 
 #include <ctime>
 #include <fstream>
+//#include <chrono>
 
 #include "TypedefRepo.h"
 #include "ICommand.h"
@@ -46,6 +47,7 @@ public:
 	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
 	void setArrivalTime(std::time_t arrivalTime);
+	//std::chrono::duration<double> getFirstCommandDuration() const;
 
 	void test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs); // TODO: make random in the future
 
@@ -61,6 +63,7 @@ private:
 	ProcessState currentState;
 	std::time_t arrivalTime = 0;
 	std::time_t lastCommandTime;
+	//std::chrono::duration<double> firstCommandDuration;
 
 	// friend class ResourceEmulator;
 };

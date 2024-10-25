@@ -31,7 +31,20 @@ void Process::addCommand(ICommand::CommandType commandType)
 void Process::executeCurrentCommand()
 {
 	this->currentState = ProcessState::RUNNING;
-	this->commandList[this->commandCounter]->execute();
+
+	// // Measure the time for the first command
+	//if (this->commandCounter == 0) {
+	//	auto start = std::chrono::high_resolution_clock::now();
+
+		this->commandList[this->commandCounter]->execute();
+
+	//	auto end = std::chrono::high_resolution_clock::now();
+	//	this->firstCommandDuration = std::chrono::duration<double, std::milli>(end - start);
+	//}
+	//else {
+	//	this->commandList[this->commandCounter]->execute();
+	//}
+
 	// this->logCurrentCommand();
 	this->updateLastCommandTime();
 	this->commandCounter++;
@@ -59,7 +72,7 @@ void Process::logCurrentCommand()
 		// If first command, assumed that it is the start of the process
 		if (this->commandCounter == 0)
 		{
-			
+
 			logFile << "Process name: " << this->name << std::endl;
 			logFile << "Logs:" << std::endl << std::endl;
 		}
@@ -72,7 +85,7 @@ void Process::logCurrentCommand()
 		else
 		{
 			PrintCommand* printCommand = dynamic_cast<PrintCommand*>(this->commandList[this->commandCounter].get());
-			
+
 			// It creates a timestamp in the format - MM/DD/YYYY HH:MM:SSAM/PM
 			char buffer[26];
 			std::tm now = std::tm();
@@ -88,8 +101,8 @@ void Process::logCurrentCommand()
 	{
 		std::cerr << "Unable to open log file " << logFileName << std::endl;
 	}
-	
-	
+
+
 }
 
 
@@ -114,6 +127,10 @@ void Process::test_generateRandomCommands(unsigned int minInstructs, unsigned in
 		this->addCommand(ICommand::CommandType::PRINT);
 	}
 }
+
+//std::chrono::duration<double> Process::getFirstCommandDuration() const {
+//	return firstCommandDuration;
+//}
 
 
 
