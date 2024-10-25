@@ -115,7 +115,18 @@ void BaseScreen::printProcessInfo()
 	this->writeToConsoleHistory("Process: " + this->attachedProcess->getName() + "\n");
 	this->writeToConsoleHistory("ID: " + std::to_string(this->attachedProcess->getPID()) + "\n");
 	this->writeToConsoleHistory("\n");
-	this->writeToConsoleHistory("Current instruction line: " + std::to_string(this->attachedProcess->getCommandCounter()) + "\n");
-	this->writeToConsoleHistory("Lines of code: " + std::to_string(this->attachedProcess->getLinesOfCode()) + "\n");
+
+	// If the process is finished, print "Finished!"
+	if (this->attachedProcess->getState() == Process::ProcessState::FINISHED)
+	{
+		this->writeToConsoleHistory("Finished!\n");
+	}
+	// Else, print the current instruction line and total lines of code
+	else
+	{
+		this->writeToConsoleHistory("Current instruction line: " + std::to_string(this->attachedProcess->getCommandCounter()) + "\n");
+		this->writeToConsoleHistory("Lines of code: " + std::to_string(this->attachedProcess->getLinesOfCode()) + "\n");
+	}
+
 	this->writeToConsoleHistory("\n");
 }

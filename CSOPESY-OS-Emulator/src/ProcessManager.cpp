@@ -197,9 +197,9 @@ String ProcessManager::makeListProcessesString()
 	ss << ProcessManager::makeRunningProcessesString();
 	ss << "\n";
 
-	ss << "Queued processes :\n";
-	ss << ProcessManager::makeQueuedProcessesString();
-	ss << "\n";
+	//ss << "Queued processes :\n";
+	//ss << ProcessManager::makeQueuedProcessesString();
+	//ss << "\n";
 
 	ss << "Finished processes :\n";
 	ss << ProcessManager::makeFinishedProcessesString();
