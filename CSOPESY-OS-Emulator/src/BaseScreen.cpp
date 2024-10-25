@@ -83,6 +83,11 @@ void BaseScreen::decideCommand(const String& command)
 		this->exit();
 		//ConsoleManager::getInstance()->unregisterScreen(this->name); // TODO: Remove  or it will kill the currentProcess
 	}
+	else if (commandParts[0] == "help")
+	{
+		this->writeToConsoleHistory("\tprocess-smi : Simple information of the process\n");
+		this->writeToConsoleHistory("\texit : Returns the user to the main menu.\n");
+	}
 	else {
 		this->commandNotFound(command);
 	}

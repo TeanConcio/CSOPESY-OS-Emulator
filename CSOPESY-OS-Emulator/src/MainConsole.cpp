@@ -44,10 +44,6 @@ void MainConsole::decideCommand(const String& command) {
 	{
 		this->initialize();
 	}
-	else if (commandParts[0] == "help")
-	{
-		this->help();
-	}
 	else if (commandParts[0] == "exit") 
 	{
 		this->exit();
@@ -55,8 +51,11 @@ void MainConsole::decideCommand(const String& command) {
 	else if (GlobalScheduler::getInstance()->hasInitialized())
 	{
 		if (commandParts[0] == "screen") {
-			// Display process status
-			if (commandParts[1] == "-ls" && commandParts.size() == 2)
+			if (commandParts.size() < 2)
+			{
+				return;
+			}
+			else if (commandParts[1] == "-ls" && commandParts.size() == 2)
 			{
 				// Check if too many arguments
 				if (commandParts.size() != 2) {
@@ -103,6 +102,10 @@ void MainConsole::decideCommand(const String& command) {
 			else {
 				this->writeToConsoleHistory("Invalid arguments for screen command.\n");
 			}
+		}
+		else if (commandParts[0] == "help")
+		{
+			this->help();
 		}
 		else if (commandParts[0] == "scheduler-test") {
 			this->schedulerTest();
@@ -178,12 +181,15 @@ void MainConsole::help() {
 	// Call help from AConsole then add on to it
 	AConsole::help();
 
-	this->writeToConsoleHistory("\tscreen -s <console_name / screen_name> : Displays the screen\n");
-	this->writeToConsoleHistory("\tinitialize : Initializes the program\n");
+	this->writeToConsoleHistory("\tinitialize : Initialize the processor configuration\n");
+	this->writeToConsoleHistory("\tscreen -s : Creates a new process and moves to the process screen\n");
+	this->writeToConsoleHistory("\tscreen -r : Accesses a preexisting screen\n");
+	this->writeToConsoleHistory("\tscreen -ls : List all running processes\n");
 	this->writeToConsoleHistory("\tscheduler-test : Tests the scheduler\n");
 	this->writeToConsoleHistory("\tscheduler-stop : Stops the scheduler\n");
 	this->writeToConsoleHistory("\treport-util : Generates a report\n");
-	this->writeToConsoleHistory("\tmarquee: Open a threaded marquee console\n");
+	this->writeToConsoleHistory("\tmarquee : Open a threaded marquee console\n");
+	this->writeToConsoleHistory("\texit : Terminates the console.\n");
 
 }
 

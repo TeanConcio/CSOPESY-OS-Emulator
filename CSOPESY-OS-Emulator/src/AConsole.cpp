@@ -101,7 +101,7 @@ void AConsole::help()
 	this->writeToConsoleHistory("List of commands: \n");
 	this->writeToConsoleHistory("\thelp : Displays this help message\n");
 	this->writeToConsoleHistory("\tclear : Clears the console screen\n");
-	this->writeToConsoleHistory("\texit : Exits the console\n");
+	//this->writeToConsoleHistory("\texit : Exits the console\n");
 }
 
 
