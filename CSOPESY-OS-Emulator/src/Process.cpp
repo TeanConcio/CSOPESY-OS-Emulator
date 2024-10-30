@@ -36,7 +36,7 @@ void Process::executeCurrentCommand()
 	//if (this->commandCounter == 0) {
 	//	auto start = std::chrono::high_resolution_clock::now();
 
-		this->commandList[this->commandCounter]->execute();
+	this->commandList[this->commandCounter]->execute();
 
 	//	auto end = std::chrono::high_resolution_clock::now();
 	//	this->firstCommandDuration = std::chrono::duration<double, std::milli>(end - start);

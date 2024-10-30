@@ -36,13 +36,13 @@ public:
 
 	// Getters and Setters
 	String getName() const { return this->name; }
-	int getArrivalTime() const { return this->arrivalTime; }
-	int getLastCommandTime() const { return this->lastCommandTime; }
+	std::time_t getArrivalTime() const { return this->arrivalTime; }
+	std::time_t getLastCommandTime() const { return this->lastCommandTime; }
 	int getCommandCounter() const { return this->commandCounter; }
 	int getLinesOfCode() const { return this->commandList.size(); }
 	int getPID() const { return this->pid; }
 	int getCPUCoreID() const { return this->cpuCoreID; }
-	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::FINISHED : this->currentState; }
+	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::WAITING : this->currentState; }
 	void updateLastCommandTime() { this->lastCommandTime = std::time(nullptr); }
 	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
