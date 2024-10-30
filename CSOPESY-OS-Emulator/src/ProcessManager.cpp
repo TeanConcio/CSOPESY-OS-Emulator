@@ -145,14 +145,20 @@ String ProcessManager::makeQueuedProcessesString()
 		ss << Common::makeTextCell(11, process->getName(), 'l') << " ";
 
 		// If process has set arrival time, display it
-		if (process->getArrivalTime() != 0)
-			ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
+		try {
+			if (process->getArrivalTime() != 0)
+				ss << Common::formatTimeT(process->getArrivalTime()) << "    ";
 
-		ss << "Queued" << "      ";
+			ss << "Queued" << "      ";
 
-		ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
+			ss << process->getCommandCounter() << " / " << process->getLinesOfCode();
 
-		ss << "\n";
+			ss << "\n";
+		}
+		catch (std::exception& e) 
+		{
+			std::cerr << "Error: " << e.what() << std::endl;
+		}
 	}
 
 	return ss.str();
