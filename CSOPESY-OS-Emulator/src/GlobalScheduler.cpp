@@ -208,21 +208,21 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		else if (schedulingAlgorithm == "\"rr\"")
 		{
 			this->scheduler = new RRScheduler();
-			timeQuantum = std::stoi(configs["quantum-cycles"]);
+			timeQuantum = std::stoul(configs["quantum-cycles"]);
 		}
 
 		// Set the cores and delays
-		sharedInstance->numCores = std::stoi(configs["num-cpu"]);
-		unsigned int delayPerExecution = std::stoi(configs["delay-per-exec"]);
+		sharedInstance->numCores = std::stoul(configs["num-cpu"]);
+		unsigned int delayPerExecution = std::stoul(configs["delay-per-exec"]);
 		for (int i = 0; i < this->numCores; ++i)
 		{
 			this->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
 		}
 
 		// Set the batch process frequency, min instructions, max instructions
-		ProcessManager::sharedInstance->batchProcessFreq = std::stoi(configs["batch-process-freq"]);
-		ProcessManager::sharedInstance->minIns = std::stoi(configs["min-ins"]);
-		ProcessManager::sharedInstance->maxIns = std::stoi(configs["max-ins"]);		
+		ProcessManager::sharedInstance->batchProcessFreq = std::stoul(configs["batch-process-freq"]);
+		ProcessManager::sharedInstance->minIns = std::stoul(configs["min-ins"]);
+		ProcessManager::sharedInstance->maxIns = std::stoul(configs["max-ins"]);
 	}
 	catch (std::exception& e)
 	{
@@ -253,7 +253,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 {
 	try {
 		// Check if num-cpu is not in range [1, 128] or does not exist
-		if (configs.find("num-cpu") == configs.end() || std::stoi(configs["num-cpu"]) < 1 || std::stoi(configs["num-cpu"]) > 128)
+		if (configs.find("num-cpu") == configs.end() || std::stoul(configs["num-cpu"]) < 1 || std::stoul(configs["num-cpu"]) > 128)
 		{
 			configs["num-cpu"] = "4";
 		}
@@ -275,7 +275,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 
 	try {
 		// Check if quantum-cycles is not in range [1, 2e32] or does not exist
-		if (configs.find("quantum-cycles") == configs.end() || std::stoi(configs["quantum-cycles"]) < 1)
+		if (configs.find("quantum-cycles") == configs.end() || std::stoul(configs["quantum-cycles"]) < 1)
 		{
 			configs["quantum-cycles"] = "5";
 		}
@@ -286,7 +286,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 
 	try {
 		// Check if batch-process-freq is not in range [1, 2e32] or does not exist
-		if (configs.find("batch-process-freq") == configs.end() || std::stoi(configs["batch-process-freq"]) < 1)
+		if (configs.find("batch-process-freq") == configs.end() || std::stoul(configs["batch-process-freq"]) < 1)
 		{
 			configs["batch-process-freq"] = "1";
 		}
@@ -297,7 +297,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 
 	try {
 		// Check if min-ins is not in range [1, 2e32] or does not exist
-		if (configs.find("min-ins") == configs.end() || std::stoi(configs["min-ins"]) < 1)
+		if (configs.find("min-ins") == configs.end() || std::stoul(configs["min-ins"]) < 1)
 		{
 			configs["min-ins"] = "1000";
 		}
@@ -308,7 +308,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 
 	try {
 		// Check if max-ins is not in range [1, 2e32] or does not exist
-		if (configs.find("max-ins") == configs.end() || std::stoi(configs["max-ins"]) < 1)
+		if (configs.find("max-ins") == configs.end() || std::stoul(configs["max-ins"]) < 1)
 		{
 			configs["max-ins"] = "2000";
 		}
@@ -319,7 +319,7 @@ void GlobalScheduler::validateConfigs(std::unordered_map<String, String>& config
 
 	try {
 		// Check if delay-per-exec is not in range [0, 2e32] or does not exist
-		if (configs.find("delay-per-exec") == configs.end() || std::stoi(configs["delay-per-exec"]) < 0)
+		if (configs.find("delay-per-exec") == configs.end() || std::stoul(configs["delay-per-exec"]) < 0)
 		{
 			configs["delay-per-exec"] = "0";
 		}
