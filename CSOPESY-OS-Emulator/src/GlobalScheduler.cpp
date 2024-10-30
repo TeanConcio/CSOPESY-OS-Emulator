@@ -33,13 +33,23 @@ void GlobalScheduler::run()
 {
 	while (this->running)
 	{
-		// Run the scheduler
-		this->scheduler->start();
+		try {
+			// Run the scheduler
+			this->scheduler->start();
+		}
+		catch (std::exception& e) {
+			std::cerr << "Error (Scheduler): " << e.what() << std::endl;
+		}
 
 		// Run each core thread
 		for (int i = 0; i < this->numCores; ++i)
 		{
-			this->coreThreads[i]->start();
+			try {
+				this->coreThreads[i]->start();
+			}
+			catch (std::exception& e) {
+				std::cerr << "Error (Core " << i << "): " << e.what() << std::endl;
+			}
 		}
 
 		// Sleep delay
