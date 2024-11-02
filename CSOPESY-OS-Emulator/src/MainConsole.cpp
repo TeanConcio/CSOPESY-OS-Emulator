@@ -181,7 +181,7 @@ void MainConsole::help() {
 	// Call help from AConsole then add on to it
 	AConsole::help();
 
-	this->writeToConsoleHistory("\tinitialize : Initialize the processor configuration\n");
+	//this->writeToConsoleHistory("\tinitialize : Initialize the processor configuration\n");
 	this->writeToConsoleHistory("\tscreen -s : Creates a new process and moves to the process screen\n");
 	this->writeToConsoleHistory("\tscreen -r : Accesses a preexisting screen\n");
 	this->writeToConsoleHistory("\tscreen -ls : List all running processes\n");
