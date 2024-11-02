@@ -14,35 +14,54 @@ Marco Yu S12
 
 ## Description
 
-An initial operating system emulator main menu created in C++.
+An operating system emulator created in C++. To configure the parameters for your CPU scheduler and process attributes before starting, set them in config.txt. To use the default configuration, simply leave it as is.
+To run the program, use Run/Debug in an IDE such as Visual Studio. The entry class file with the main function is located in CSOPESY-OS-Emulator.cpp.
 
+## On Launch
 
-## Commands
-
+Once launched, the only available commands are the following
 
 ### initialize
 
-Prints initialize command recognized. Doing something
+Initialize the processor configuration of the application. Will use the configurations set in config.txt.
 
 
-### screen
+### exit
 
-Prints screen command recognized. Doing something
+Terminates the console.
+
+## Commands
+
+After initialization, you will have access to all the other commands.
+
+### screen -s &lt;process name>
+
+Create a new process if process does not already exist and moves to the process screen
+
+
+### screen -r &lt;process name>
+
+Accesses the screen if the process is still running
+
+
+### screen -ls 
+
+Lists all processes
 
 
 ### scheduler-test
 
-Prints scheduler-test command recognized. Doing something
+Continuously generates a batch of dummy processes for the CPU scheduler. Each process is accessible via the “screen” command.
 
 
 ### scheduler-stop
 
-Prints scheduler-stop command recognized. Doing something
+Stops generating dummy processes.
 
 
 ### report-util
 
-Prints report-util command recognized. Doing something
+Saves all processes into text file – "csopesylog.txt." 
 
 
 ### clear
@@ -50,6 +69,31 @@ Prints report-util command recognized. Doing something
 Clears the screen and reprints the header.
 
 
+### help
+
+Displays all commands
+
+
 ### exit
 
-Closes the application/CLI.
+Terminates the console.
+
+
+## Inside a process screen
+
+Inside a process screen, you will have access to these commands
+
+
+### process-smi
+
+Prints a simple information of the process
+
+
+### help
+
+Displays all commands
+
+
+### exit
+
+Returns to the main menu
