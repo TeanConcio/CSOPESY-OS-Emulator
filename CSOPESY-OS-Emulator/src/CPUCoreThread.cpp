@@ -35,7 +35,7 @@ void CPUCoreThread::run()
 
 		this->currCycle++;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(0));
 
 	} while (GlobalScheduler::isRunning() && GlobalScheduler::MULTI_THREAD_MODE);
 }
