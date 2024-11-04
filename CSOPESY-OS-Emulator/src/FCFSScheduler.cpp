@@ -6,38 +6,44 @@
 
 void FCFSScheduler::run()
 {
-	for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
-	{
-		// If the core is not running a process, assign it one
-		if (!ProcessManager::getQueuedProcesses().empty() &&
-			GlobalScheduler::getCoreThread(core)->getCurrentProcess() == nullptr)
+	do {
+		for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
 		{
-			std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
-			ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
-			// Set the arrival time of the process to the current time
-			process->setArrivalTime(std::time(nullptr));
-			GlobalScheduler::getCoreThread(core)->setCurrentProcess(process);
-		}
-		// If the core is running a process, check if it has finished
-		else if (GlobalScheduler::getCoreThread(core)->getCurrentProcess() != nullptr)
-		{
-			std::shared_ptr<Process> process = GlobalScheduler::getCoreThread(core)->getCurrentProcess();
-			if (process->getState() == Process::ProcessState::FINISHED)
+			// If the core is not running a process, assign it one
+			if (!ProcessManager::getQueuedProcesses().empty() &&
+				GlobalScheduler::getCoreThread(core)->getCurrentProcess() == nullptr)
 			{
-				GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
-				ProcessManager::getFinishedProcesses().push_back(process);
-
-				// If there are still processes in the queue, assign the core a new process
-				if (!ProcessManager::getQueuedProcesses().empty())
+				std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
+				ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
+				// Set the arrival time of the process to the current time
+				process->setArrivalTime(std::time(nullptr));
+				GlobalScheduler::getCoreThread(core)->setCurrentProcess(process);
+			}
+			// If the core is running a process, check if it has finished
+			else if (GlobalScheduler::getCoreThread(core)->getCurrentProcess() != nullptr)
+			{
+				std::shared_ptr<Process> process = GlobalScheduler::getCoreThread(core)->getCurrentProcess();
+				if (process->getState() == Process::ProcessState::FINISHED)
 				{
-					std::shared_ptr<Process> newProcess = ProcessManager::getQueuedProcesses().front();
-					ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
-					newProcess->setArrivalTime(std::time(nullptr));
-					GlobalScheduler::getCoreThread(core)->setCurrentProcess(newProcess);
+					GlobalScheduler::getCoreThread(core)->setCurrentProcess(nullptr);
+					ProcessManager::getFinishedProcesses().push_back(process);
+
+					// If there are still processes in the queue, assign the core a new process
+					if (!ProcessManager::getQueuedProcesses().empty())
+					{
+						std::shared_ptr<Process> newProcess = ProcessManager::getQueuedProcesses().front();
+						ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
+						newProcess->setArrivalTime(std::time(nullptr));
+						GlobalScheduler::getCoreThread(core)->setCurrentProcess(newProcess);
+					}
 				}
 			}
 		}
-	}
+
+		// Create a new process
+		ProcessManager::generateTestProcessesLoop();
+
+	} while (GlobalScheduler::isRunning() && GlobalScheduler::MULTI_THREAD_MODE);
 }
 
 

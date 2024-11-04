@@ -6,6 +6,7 @@
 #include "CPUCoreThread.h"
 #include "Process.h"
 #include "Common.h"
+#include "GlobalScheduler.h"
 
 
 static const String DEBUG_SCHEDULER_NAME = "DebugScheduler";
@@ -29,7 +30,7 @@ public:
 		ROUND_ROBIN
 	};
 
-	AScheduler(SchedulingAlgorithm schedulingAlgo) : IETThread(false), schedulingAlgo(schedulingAlgo) {}
+	AScheduler(SchedulingAlgorithm schedulingAlgo);
 	virtual ~AScheduler() = default;
 
 	virtual void run() = 0;

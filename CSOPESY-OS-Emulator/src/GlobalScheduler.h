@@ -5,17 +5,22 @@
 #include "Process.h"
 #include "ProcessManager.h"
 
+class AScheduler;
+
 
 
 // Manages throughout the OS, singleton
 class GlobalScheduler : public IETThread
 {
 public:
+	static const bool MULTI_THREAD_MODE = true;
+
 	// Singleton initialization
 	static GlobalScheduler* getInstance() { return GlobalScheduler::sharedInstance; }
 	static void initialize();
 	static void destroy();
 	static void startGlobalScheduler();
+	static bool isRunning() { return sharedInstance->running; }
 	
 	// CPU core management
 	static int getCoreCount() { return sharedInstance->numCores; }

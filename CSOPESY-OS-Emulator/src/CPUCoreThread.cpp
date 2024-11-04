@@ -2,7 +2,7 @@
 #include "GlobalScheduler.h"
 
 
-CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delayPerExecution, const unsigned int quantumCycle) : IETThread(false)
+CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delayPerExecution, const unsigned int quantumCycle) : IETThread(GlobalScheduler::MULTI_THREAD_MODE)
 {
 	this->coreNo = coreNo;
 
@@ -18,19 +18,26 @@ CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delay
 
 void CPUCoreThread::run()
 {
-	if (this->delayPerExecution == 0 || this->currCycle % this->delayPerExecution == 0) {
-	// if (this->currCycle % this->delayPerExecution == 0) {
-		if (this->currentProcess != nullptr &&
-			(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
-			(this->currentProcess->getState() == Process::ProcessState::READY ||
-				this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
+	do {
+		if (this->delayPerExecution == 0 || this->currCycle % this->delayPerExecution == 0) {
+			// if (this->currCycle % this->delayPerExecution == 0) {
+			if (this->currentProcess != nullptr &&
+				(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
+				(this->currentProcess->getState() == Process::ProcessState::READY ||
+					this->currentProcess->getState() == Process::ProcessState::RUNNING)) {
 
-			this->currentProcess->executeCurrentCommand();
-			this->currQuantumCycle++;
+				if (this->currentProcess != nullptr) {
+					this->currentProcess->executeCurrentCommand();
+					this->currQuantumCycle++;
+				}
+			}
 		}
-	}
 
-	this->currCycle++;
+		this->currCycle++;
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+	} while (GlobalScheduler::isRunning() && GlobalScheduler::MULTI_THREAD_MODE);
 }
 
 

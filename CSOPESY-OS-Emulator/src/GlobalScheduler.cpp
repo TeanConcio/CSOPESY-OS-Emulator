@@ -25,54 +25,55 @@ void GlobalScheduler::destroy()
 void GlobalScheduler::startGlobalScheduler()
 {
 	sharedInstance->running = true;
-	sharedInstance->start();
+
+	if (GlobalScheduler::MULTI_THREAD_MODE)
+	{
+		sharedInstance->run();
+	}
+	else
+	{
+		sharedInstance->start();
+	}
 }
 
 
 void GlobalScheduler::run()
 {
-	while (this->running)
+	try {
+		// Run the scheduler
+		this->scheduler->start();
+	}
+	catch (std::exception& e) {
+		std::cerr << "Error (Scheduler): " << e.what() << std::endl;
+	}
+
+	// Run each core thread
+	for (int i = 0; i < this->numCores; ++i)
 	{
 		try {
-			// Run the scheduler
-			this->scheduler->start();
+			this->coreThreads[i]->start();
 		}
 		catch (std::exception& e) {
-			std::cerr << "Error (Scheduler): " << e.what() << std::endl;
+			std::cerr << "Error (Core " << i << "): " << e.what() << std::endl;
 		}
-
-		// Run each core thread
-		for (int i = 0; i < this->numCores; ++i)
-		{
-			try {
-				this->coreThreads[i]->start();
-			}
-			catch (std::exception& e) {
-				std::cerr << "Error (Core " << i << "): " << e.what() << std::endl;
-			}
-		}
-
-		// Sleep delay
-		// IETThread::sleep(this->delay);
-		
-		// Join each core thread
-		for (int i = 0; i < this->numCores; ++i)
-		{
-			this->coreThreads[i]->join();
-		}
-
-
-		// Join the scheduler thread
-		this->scheduler->join();
-
-		// Create a new process
-		ProcessManager::generateTestProcessesLoop();
-
-		// Print queue , running, and finished processes (For debugging purposes)
-		//std::cout << "Queued Processes:\n" << this->makeQueuedProcessesString() << std::endl;
-		//std::cout << "Running Processes:\n" << this->makeRunningProcessesString() << std::endl;
-		//std::cout << "Finished Processes:\n" << this->makeFinishedProcessesString() << std::endl;
 	}
+
+	// Sleep delay
+	// IETThread::sleep(this->delay);
+		
+	// Join each core thread
+	for (int i = 0; i < this->numCores; ++i)
+	{
+		this->coreThreads[i]->join();
+	}
+
+	// Join the scheduler thread
+	this->scheduler->join();
+
+	// Print queue , running, and finished processes (For debugging purposes)
+	//std::cout << "Queued Processes:\n" << this->makeQueuedProcessesString() << std::endl;
+	//std::cout << "Running Processes:\n" << this->makeRunningProcessesString() << std::endl;
+	//std::cout << "Finished Processes:\n" << this->makeFinishedProcessesString() << std::endl;
 }
 
 

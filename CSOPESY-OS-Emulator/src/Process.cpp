@@ -30,6 +30,18 @@ void Process::addCommand(ICommand::CommandType commandType)
 
 void Process::executeCurrentCommand()
 {
+	if (this == nullptr || 
+		this->commandCounter > this->commandList.size())
+		return;
+
+	// Another safety check
+	else if (this->commandCounter == this->commandList.size())
+	{
+		this->currentState = ProcessState::FINISHED;
+		ConsoleManager::getInstance()->unregisterScreen(this->name);
+		return;
+	}
+
 	this->currentState = ProcessState::RUNNING;
 
 	// // Measure the time for the first command

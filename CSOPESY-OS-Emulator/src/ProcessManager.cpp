@@ -93,6 +93,8 @@ void ProcessManager::generateTestProcessesLoop()
 		{
 			String processName = "process" + (ProcessManager::sharedInstance->pidCounter < 9 ? std::string("0") : "") + std::to_string(ProcessManager::sharedInstance->pidCounter + 1);
 			ProcessManager::createUniqueProcess(processName);
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 
 		// Increment the current batch process cycle
@@ -194,7 +196,7 @@ String ProcessManager::makeListProcessesString()
 	std::stringstream ss;
 
 	// TODO: Check if implementation is correct
-    ss << "CPU utilization: " << (GlobalScheduler::getInstance()->getRunningCoreCount() * 100 / GlobalScheduler::getInstance()->getCoreCount()) << "%\n";
+	ss << "CPU utilization: " << (GlobalScheduler::getInstance()->getRunningCoreCount() * 100 / GlobalScheduler::getInstance()->getCoreCount()) << "%\n";
 	ss << "Cores used: " << GlobalScheduler::getInstance()->getCoreCount() << "\n";
 	ss << "Cores available: " << GlobalScheduler::getInstance()->getCoreCount() - GlobalScheduler::getInstance()->getRunningCoreCount() << "\n\n";
 

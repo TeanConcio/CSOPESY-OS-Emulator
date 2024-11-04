@@ -6,59 +6,66 @@
 
 void RRScheduler::run()
 {
-	// Get the cores that have finished processes
-	std::vector<std::shared_ptr<CPUCoreThread>> finishedCores = GlobalScheduler::getFinishedCores();
-	// For each core that has finished a process
-	for (std::shared_ptr<CPUCoreThread> core : finishedCores)
-	{
-		// Remove the process from the core and add it to the finished processes list
-		std::shared_ptr<Process> process = core->getCurrentProcess();
-		core->setCurrentProcess(nullptr);
-		ProcessManager::getFinishedProcesses().push_back(process);
-		core->resetQuantumCycle();
-	}
-
-	// Get the cores that are not running a process
-	std::vector<std::shared_ptr<CPUCoreThread>> emptyCores = GlobalScheduler::getEmptyCores();
-	// For each core that is not running a process
-	for (std::shared_ptr<CPUCoreThread> core : emptyCores)
-	{
-		// Assign the core a process from the front of the queued processes list
-		if (!ProcessManager::getQueuedProcesses().empty()) 
+	do {
+		// Get the cores that have finished processes
+		std::vector<std::shared_ptr<CPUCoreThread>> finishedCores = GlobalScheduler::getFinishedCores();
+		// For each core that has finished a process
+		for (std::shared_ptr<CPUCoreThread> core : finishedCores)
 		{
-			std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
-			ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
-			process->setArrivalTime(std::time(nullptr));
-			core->setCurrentProcess(process);
+			// Remove the process from the core and add it to the finished processes list
+			std::shared_ptr<Process> process = core->getCurrentProcess();
+			core->setCurrentProcess(nullptr);
+			ProcessManager::getFinishedProcesses().push_back(process);
 			core->resetQuantumCycle();
 		}
-	}
 
-	// Get the cores that are running a process
-	std::vector<std::shared_ptr<CPUCoreThread>> runningCores = GlobalScheduler::getRunningCores();
-	// For each core that is running a process
-	for (std::shared_ptr<CPUCoreThread> core : runningCores)
-	{
-		// If quantum cycles has been reached
-		if (!core->hasQuantumCyclesLeft())
+		// Get the cores that are not running a process
+		std::vector<std::shared_ptr<CPUCoreThread>> emptyCores = GlobalScheduler::getEmptyCores();
+		// For each core that is not running a process
+		for (std::shared_ptr<CPUCoreThread> core : emptyCores)
 		{
-			// Reset the quantum cycle
-			core->resetQuantumCycle();
-			// If there are queued processes, assign the core a new process
-			if (!ProcessManager::getQueuedProcesses().empty())
+			// Assign the core a process from the front of the queued processes list
+			if (!ProcessManager::getQueuedProcesses().empty()) 
 			{
-				// Remove the process from the core and add it to the queued processes list
-				core->getCurrentProcess()->setState(Process::ProcessState::READY);
-				ProcessManager::getQueuedProcesses().push_back(core->getCurrentProcess());
-				core->setCurrentProcess(nullptr);
-				// Assign the process in the front of the queued processes list to the core
 				std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
 				ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
 				process->setArrivalTime(std::time(nullptr));
 				core->setCurrentProcess(process);
+				core->resetQuantumCycle();
 			}
 		}
-	}
+
+		// Get the cores that are running a process
+		std::vector<std::shared_ptr<CPUCoreThread>> runningCores = GlobalScheduler::getRunningCores();
+		// For each core that is running a process
+		for (std::shared_ptr<CPUCoreThread> core : runningCores)
+		{
+			// If quantum cycles has been reached
+			if (!core->hasQuantumCyclesLeft())
+			{
+				// Reset the quantum cycle
+				core->resetQuantumCycle();
+				// If there are queued processes, assign the core a new process
+				if (!ProcessManager::getQueuedProcesses().empty())
+				{
+					// Remove the process from the core and add it to the queued processes list
+					core->getCurrentProcess()->setState(Process::ProcessState::READY);
+					ProcessManager::getQueuedProcesses().push_back(core->getCurrentProcess());
+					core->setCurrentProcess(nullptr);
+					// Assign the process in the front of the queued processes list to the core
+					std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
+					ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
+					process->setArrivalTime(std::time(nullptr));
+					core->setCurrentProcess(process);
+				}
+			}
+		}
+
+		// Create a new process
+		ProcessManager::generateTestProcessesLoop();
+
+	} while (GlobalScheduler::isRunning() && GlobalScheduler::MULTI_THREAD_MODE);
+
 	//for (int core = 0; core < GlobalScheduler::getCoreCount(); core++)
 	//{
 	//	// If the core is not running a process, assign it one
