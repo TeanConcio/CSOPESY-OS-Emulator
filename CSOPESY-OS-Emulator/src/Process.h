@@ -29,24 +29,29 @@ public:
 	};
 
 	// Process(String name, int totalCodeLines, int id);
-	Process(int pid, String name, RequirementFlags requirementFlags);
+	Process(const int pid, const String& name, const size_t memoryRequired, RequirementFlags requirementFlags);
 	void addCommand(ICommand::CommandType commandType);
 	void executeCurrentCommand();
 	void logCurrentCommand();
 
-	// Getters and Setters
-	String getName() const { return this->name; }
-	std::time_t getArrivalTime() const { return this->arrivalTime; }
-	std::time_t getLastCommandTime() const { return this->lastCommandTime; }
-	int getCommandCounter() const { return this->commandCounter; }
-	int getLinesOfCode() const { return this->commandList.size(); }
+	// Getters
 	int getPID() const { return this->pid; }
+	String getName() const { return this->name; }
+	int getLinesOfCode() const { return this->commandList.size(); }
+	int getCommandCounter() const { return this->commandCounter; }
+	size_t getMemoryRequired() const { return this->memoryRequired; }
+	void* getMemoryAddress() const { return this->memoryAddress; }
 	int getCPUCoreID() const { return this->cpuCoreID; }
 	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::WAITING : this->currentState; }
-	void updateLastCommandTime() { this->lastCommandTime = std::time(nullptr); }
+	std::time_t getArrivalTime() const { return this->arrivalTime; }
+	std::time_t getLastCommandTime() const { return this->lastCommandTime; }
+
+	// Setters
+	void setMemoryAddress(char* memoryAddress) { this->memoryAddress = memoryAddress; }
 	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
 	void setArrivalTime(std::time_t arrivalTime);
+	void updateLastCommandTime() { this->lastCommandTime = std::time(nullptr); }
 	//std::chrono::duration<double> getFirstCommandDuration() const;
 
 	void test_generateRandomCommands(unsigned int minInstructs, unsigned int maxInstructs); // TODO: make random in the future
@@ -54,12 +59,16 @@ public:
 private: 
 	int pid;
 	String name;
+	RequirementFlags requirementFlags; 
+
 	typedef std::vector<std::shared_ptr<ICommand>> CommandList;
 	CommandList commandList;
-
 	int commandCounter; // determines index of what command you are in
+
+	size_t memoryRequired;
+	void* memoryAddress;
+
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
-	RequirementFlags requirementFlags; 
 	ProcessState currentState;
 	std::time_t arrivalTime = 0;
 	std::time_t lastCommandTime;
@@ -67,22 +76,3 @@ private:
 
 	// friend class ResourceEmulator;
 };
-
-
-
-//#pragma once
-//
-//#include <ctime>
-//#include "TypedefRepo.h"
-//
-//class Process
-//{
-//public:
-//    Process(String name, int totalCodeLines, int id);
-//
-//    int id;
-//    String name;
-//    int currInstructionLine;
-//    int totalCodeLines;
-//    std::time_t createdTime;
-//};

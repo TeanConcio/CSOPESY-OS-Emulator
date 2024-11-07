@@ -27,9 +27,9 @@ void Config::destroy()
 */
 void Config::set()
 {
-	GlobalScheduler::setScheduler(sharedInstance->configs);
-	// TODO: Add one for the memory manager
-
+	ProcessManager::setConfigs(sharedInstance->configs);
+	GlobalScheduler::setConfigs(sharedInstance->configs);
+	MemoryManagementUnit::setConfigs(sharedInstance->configs);
 }
 
 /**

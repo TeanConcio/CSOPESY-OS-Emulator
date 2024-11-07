@@ -4,6 +4,9 @@
 #include "AScheduler.h"
 #include "Process.h"
 #include "ProcessManager.h"
+#include "AScheduler.h"
+#include "FCFSScheduler.h"
+#include "RRScheduler.h"
 
 class AScheduler;
 
@@ -19,10 +22,10 @@ public:
 	static GlobalScheduler* getInstance() { return GlobalScheduler::sharedInstance; }
 	static void initialize();
 	static void destroy();
+	static void setConfigs(std::unordered_map<String, String> configs);
+	static void setDefaultConfigs();
 	static void startGlobalScheduler();
 	static bool isRunning() { return sharedInstance->running; }
-	static void setScheduler(std::unordered_map<String, String> configs);
-	static void setDefaultScheduler();
 	
 	// CPU core management
 	static int getCoreCount() { return sharedInstance->numCores; }
@@ -33,7 +36,7 @@ public:
 	static std::vector<std::shared_ptr<CPUCoreThread>> getRunningCores();
 
 	// Configurations
-	bool hasInitialized() { return this != nullptr && this->scheduler != nullptr; }
+	bool hasInitialized() const { return this != nullptr && this->scheduler != nullptr; }
 
 private:
 	// Singleton private
@@ -46,7 +49,7 @@ private:
 	static GlobalScheduler* sharedInstance;
 
 	// Scheduler and core threads
-	AScheduler* scheduler;
+	AScheduler* scheduler = nullptr;
 	unsigned int numCores;
 	std::vector<std::shared_ptr<CPUCoreThread>> coreThreads;
 	bool running;

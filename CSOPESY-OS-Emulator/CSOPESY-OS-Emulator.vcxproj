@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AMemoryAllocator.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="CSOPESY-OS-Emulator.cpp" />
     <ClCompile Include="src\AConsole.cpp" />
@@ -136,17 +137,20 @@
     <ClCompile Include="src\ConsoleManager.cpp" />
     <ClCompile Include="src\CPUCoreThread.cpp" />
     <ClCompile Include="src\FCFSScheduler.cpp" />
+    <ClCompile Include="src\FlatAllocator.cpp" />
     <ClCompile Include="src\GlobalScheduler.cpp" />
     <ClCompile Include="src\IETThread.cpp" />
     <ClCompile Include="src\IOCommand.cpp" />
     <ClCompile Include="src\MainConsole.cpp" />
     <ClCompile Include="src\MarqueeConsole.cpp" />
+    <ClCompile Include="src\MemoryManagementUnit.cpp" />
     <ClCompile Include="src\PrintCommand.cpp" />
     <ClCompile Include="src\Process.cpp" />
     <ClCompile Include="src\ProcessManager.cpp" />
     <ClCompile Include="src\RRScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AMemoryAllocator.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="include\color.hpp" />
     <ClInclude Include="src\AConsole.h" />
@@ -156,12 +160,14 @@
     <ClInclude Include="src\ConsoleManager.h" />
     <ClInclude Include="src\CPUCoreThread.h" />
     <ClInclude Include="src\FCFSScheduler.h" />
+    <ClInclude Include="src\FlatAllocator.h" />
     <ClInclude Include="src\GlobalScheduler.h" />
     <ClInclude Include="src\ICommand.h" />
     <ClInclude Include="src\IETThread.h" />
     <ClInclude Include="src\IOCommand.h" />
     <ClInclude Include="src\MainConsole.h" />
     <ClInclude Include="src\MarqueeConsole.h" />
+    <ClInclude Include="src\MemoryManagementUnit.h" />
     <ClInclude Include="src\PrintCommand.h" />
     <ClInclude Include="src\Process.h" />
     <ClInclude Include="src\ProcessManager.h" />

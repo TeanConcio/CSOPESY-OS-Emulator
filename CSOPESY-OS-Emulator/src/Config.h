@@ -1,10 +1,13 @@
 #pragma once
 
-#include "TypedefRepo.h"
-#include "GlobalScheduler.h"
-
-#include <unordered_map>
 #include <fstream>
+
+#include "TypedefRepo.h"
+#include "ProcessManager.h"
+#include "GlobalScheduler.h"
+#include "MemoryManagementUnit.h"
+
+
 
 // Singleton class for configurations from config.txt
 class Config

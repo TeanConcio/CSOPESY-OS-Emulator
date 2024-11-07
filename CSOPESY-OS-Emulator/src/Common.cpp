@@ -86,10 +86,30 @@ String Common::formatTimeT(const time_t& time)
 	return timeStr;
 }
 
+
 /**
 * Check if a number is a power of 2
 */
 bool Common::isPowerOfTwo(const unsigned int num)
 {
 	return (num & (num - 1)) == 0;
+}
+
+
+/**
+* Write a string to a file
+*/
+bool Common::writeToFile(const String& filename, const String& text)
+{
+	std::ofstream file(filename, std::ios::out);
+
+	if (file.is_open())
+	{
+		file << text;
+		file.close();
+
+		return true;
+	}
+	else
+		return false;
 }

@@ -238,18 +238,11 @@ void MainConsole::listProcesses() {
 void MainConsole::reportUtil() {
 	// ListProcesses but printed to a txt file
 	String logFileName = "csopesy-log.txt";
-	std::ofstream logFile(logFileName, std::ios::out);
 
-	if (logFile.is_open())
-	{
-		logFile << ProcessManager::makeListProcessesString();
-		logFile.close();
-
-		//TODO: Get actual file path
+	if (Common::writeToFile(logFileName, ProcessManager::makeListProcessesString()))
 		this->writeToConsoleHistory("Report generated at csopesy-log.txt!\n");
-	}
+
 	else
-	{
 		this->writeToConsoleHistory("Unable to create log file.\n");
-	}
+
 }

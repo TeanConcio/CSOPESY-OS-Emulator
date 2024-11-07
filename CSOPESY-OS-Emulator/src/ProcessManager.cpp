@@ -20,7 +20,42 @@ void ProcessManager::destroy()
 }
 
 
-void ProcessManager::addProcess(std::shared_ptr<Process> process)
+/**
+* @brief Set the configs from the configs.txt file
+* @param configs - hash map of the configs from the configs.txt file
+*/
+void ProcessManager::setConfigs(std::unordered_map<String, String> configs)
+{
+	try {
+		// Set the batch process frequency, min instructions, max instructions
+		ProcessManager::sharedInstance->batchProcessFreq = std::stoul(configs["batch-process-freq"]);
+		ProcessManager::sharedInstance->minIns = std::stoul(configs["min-ins"]);
+		ProcessManager::sharedInstance->maxIns = std::stoul(configs["max-ins"]);
+		ProcessManager::sharedInstance->memPerProc = std::stoul(configs["mem-per-proc"]);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << ". Will set default configs." << std::endl;
+		ProcessManager::setDefaultConfigs();
+	}
+}
+
+
+/**
+* @brief Set the default scheduler and configs
+*/
+void ProcessManager::setDefaultConfigs()
+{
+	// Set the batch process frequency, min instructions, max instructions
+	ProcessManager::sharedInstance->batchProcessFreq = 1;
+	ProcessManager::sharedInstance->minIns = 1000;
+	ProcessManager::sharedInstance->maxIns = 2000;
+	ProcessManager::sharedInstance->memPerProc = 4096;
+}
+
+
+
+void ProcessManager::addProcess(std::shared_ptr<Process> process) const
 {
 	sharedInstance->processMap[process->getName()] = process;
 	sharedInstance->queuedProcesses.push_back(process);
@@ -66,7 +101,7 @@ std::shared_ptr<Process> ProcessManager::createUniqueProcess(String& name)
 		name = ProcessManager::sharedInstance->generateProcessName();
 	
 	// Create Process
-	auto process = std::make_shared<Process>(ProcessManager::sharedInstance->pidCounter, name, reqFlags);
+	auto process = std::make_shared<Process>(ProcessManager::sharedInstance->pidCounter, name, ProcessManager::sharedInstance->memPerProc, reqFlags);
 	process->test_generateRandomCommands(ProcessManager::sharedInstance->minIns, ProcessManager::sharedInstance->maxIns);
 
 	// Create and register screen for the process
@@ -196,9 +231,9 @@ String ProcessManager::makeListProcessesString()
 	std::stringstream ss;
 
 	// TODO: Check if implementation is correct
-	ss << "CPU utilization: " << (GlobalScheduler::getInstance()->getRunningCoreCount() * 100 / GlobalScheduler::getInstance()->getCoreCount()) << "%\n";
-	ss << "Cores used: " << GlobalScheduler::getInstance()->getCoreCount() << "\n";
-	ss << "Cores available: " << GlobalScheduler::getInstance()->getCoreCount() - GlobalScheduler::getInstance()->getRunningCoreCount() << "\n\n";
+	ss << "CPU utilization: " << (GlobalScheduler::getRunningCoreCount() * 100 / GlobalScheduler::getCoreCount()) << "%\n";
+	ss << "Cores used: " << GlobalScheduler::getCoreCount() << "\n";
+	ss << "Cores available: " << GlobalScheduler::getCoreCount() - GlobalScheduler::getRunningCoreCount() << "\n\n";
 
 	ss << "--------------------------------------\n";
 	ss << "Running processes :\n";

@@ -22,9 +22,11 @@ public:
 	static ProcessManager* getInstance() { return ProcessManager::sharedInstance; }
 	static void initialize();
 	static void destroy();
+	static void setConfigs(std::unordered_map<String, String> configs);
+	static void setDefaultConfigs();
 
 	// Process management
-	void addProcess(std::shared_ptr<Process> process);
+	void addProcess(std::shared_ptr<Process> process) const;
 	static std::shared_ptr<Process> findProcess(const String& processName);
 
 	// Process creation
@@ -65,6 +67,7 @@ private:
 	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of cycle between process creation
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
+	size_t memPerProc = 4096; // Range: [2eXXX, 2eXXX], determines memory per process
 
 	// Process generation
 	int pidCounter = 0; // How many processes its created

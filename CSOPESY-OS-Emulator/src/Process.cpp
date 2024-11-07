@@ -3,10 +3,11 @@
 #include "IOCommand.h"
 #include "PrintCommand.h"
 
-Process::Process(int pid, String name, RequirementFlags requirementFlags)
+Process::Process(const int pid, const String& name, const size_t memoryRequired, RequirementFlags requirementFlags)
 {
 	this->pid = pid;
 	this->name = name;
+	this->memoryRequired = memoryRequired;
 	this->requirementFlags = requirementFlags;
 	this->currentState = ProcessState::READY;
 	this->commandCounter = 0;
@@ -92,7 +93,7 @@ void Process::logCurrentCommand()
 		// Log as "(<timestamp>) Core:<coreID> "<output>"
 		if (this->commandList[this->commandCounter]->getCommandType() == ICommand::IO)
 		{
-
+			// Huh?
 		}
 		else
 		{

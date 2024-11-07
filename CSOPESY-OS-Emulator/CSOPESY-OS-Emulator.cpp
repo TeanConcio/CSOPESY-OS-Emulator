@@ -1,6 +1,9 @@
 #include "./src/ConsoleManager.h"
 #include "./src/ProcessManager.h"
 #include "./src/GlobalScheduler.h"
+#include "./src/MemoryManagementUnit.h"
+
+
 
 /// @brief  Main function
 int main() {
@@ -10,13 +13,14 @@ int main() {
 	ConsoleManager::initialize();
 	ProcessManager::initialize();
 	GlobalScheduler::initialize();
+	MemoryManagementUnit::initialize();
+
 
 	// Main loop
 	// Any currentProcess that happens in between every frame
 	// Every frame draw console
 	// Process waits for now because no marquee
 	bool running = true;
-	// GlobalScheduler::start();
 	while (running)
 	{
 		ConsoleManager::getInstance()->process();
@@ -33,6 +37,7 @@ int main() {
 	ConsoleManager::destroy();
 	ProcessManager::destroy();
 	GlobalScheduler::destroy();
+	MemoryManagementUnit::destroy();
 
 	return 0;
 }

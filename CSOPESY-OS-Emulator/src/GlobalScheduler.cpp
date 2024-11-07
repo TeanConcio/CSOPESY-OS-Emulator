@@ -1,6 +1,4 @@
 #include "GlobalScheduler.h"
-#include "FCFSScheduler.h"
-#include "RRScheduler.h"
 
 
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
@@ -19,6 +17,67 @@ void GlobalScheduler::destroy()
 	sharedInstance->running = false;
 	delete sharedInstance;
 	sharedInstance = nullptr;
+}
+
+
+/**
+* @brief Set the configs from the configs.txt file
+* @param configs - hash map of the configs from the configs.txt file
+*/
+void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
+{
+	try {
+		// Set the algo and time slice
+		String schedulingAlgorithm = configs["scheduler"];
+		int timeQuantum = 0;
+
+		if (schedulingAlgorithm == "\"fcfs\"")
+		{
+			sharedInstance->scheduler = new FCFSScheduler();
+		}
+		else if (schedulingAlgorithm == "\"rr\"")
+		{
+			sharedInstance->scheduler = new RRScheduler();
+			timeQuantum = std::stoul(configs["quantum-cycles"]);
+		}
+
+		// Set the cores and delays
+		sharedInstance->numCores = std::stoul(configs["num-cpu"]);
+		unsigned int delayPerExecution = std::stoul(configs["delay-per-exec"]);
+		for (int i = 0; i < sharedInstance->numCores; ++i)
+		{
+			sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
+		}
+
+		// Set the batch process frequency, min instructions, max instructions
+		ProcessManager::sharedInstance->batchProcessFreq = std::stoul(configs["batch-process-freq"]);
+		ProcessManager::sharedInstance->minIns = std::stoul(configs["min-ins"]);
+		ProcessManager::sharedInstance->maxIns = std::stoul(configs["max-ins"]);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << ". Will set default configs." << std::endl;
+		GlobalScheduler::setDefaultConfigs();
+	}
+}
+
+
+/**
+* @brief Set the default scheduler and configs
+*/
+void GlobalScheduler::setDefaultConfigs()
+{
+	sharedInstance->scheduler = new RRScheduler();
+	// Set the cores and delays
+	sharedInstance->numCores = 4;
+	for (int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, 100000000, 5));
+	}
+	// Set the batch process frequency, min instructions, max instructions
+	ProcessManager::sharedInstance->batchProcessFreq = 1;
+	ProcessManager::sharedInstance->minIns = 1000;
+	ProcessManager::sharedInstance->maxIns = 2000;
 }
 
 
@@ -137,61 +196,4 @@ std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getRunningCores()
 		}
 	}
 	return runningCores;
-}
-
-/**
-* @brief Set the configs from the configs.txt file
-* @param configs - hash map of the configs from the configs.txt file
-*/
-void GlobalScheduler::setScheduler(std::unordered_map<String, String> configs)
-{
-	try {
-		// Set the algo and time slice
-		String schedulingAlgorithm = configs["scheduler"];
-		int timeQuantum = 0;
-
-		if (schedulingAlgorithm == "\"fcfs\"")
-		{
-			sharedInstance->scheduler = new FCFSScheduler();
-		}
-		else if (schedulingAlgorithm == "\"rr\"")
-		{
-			sharedInstance->scheduler = new RRScheduler();
-			timeQuantum = std::stoul(configs["quantum-cycles"]);
-		}
-		// Set the cores and delays
-		sharedInstance->numCores = std::stoul(configs["num-cpu"]);
-		unsigned int delayPerExecution = std::stoul(configs["delay-per-exec"]);
-		for (int i = 0; i < sharedInstance->numCores; ++i)
-		{
-			sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
-		}
-		// Set the batch process frequency, min instructions, max instructions
-		ProcessManager::sharedInstance->batchProcessFreq = std::stoul(configs["batch-process-freq"]);
-		ProcessManager::sharedInstance->minIns = std::stoul(configs["min-ins"]);
-		ProcessManager::sharedInstance->maxIns = std::stoul(configs["max-ins"]);
-	}
-	catch (std::exception& e)
-	{
-		std::cerr << "Error: " << e.what() << ". Will set default configs." << std::endl;
-		sharedInstance->setDefaultScheduler();
-	}	
-}
-
-/**
-* @brief Set the default scheduler and configs
-*/
-void GlobalScheduler::setDefaultScheduler()
-{
-	sharedInstance->scheduler = new RRScheduler();
-	// Set the cores and delays
-	sharedInstance->numCores = 4;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
-	{
-		sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, 100000000, 5));
-	}
-	// Set the batch process frequency, min instructions, max instructions
-	ProcessManager::sharedInstance->batchProcessFreq = 1;
-	ProcessManager::sharedInstance->minIns = 1000;
-	ProcessManager::sharedInstance->maxIns = 2000;
 }
