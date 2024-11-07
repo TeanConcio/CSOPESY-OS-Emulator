@@ -2,6 +2,7 @@
 
 #include "ConsoleManager.h"
 #include "GlobalScheduler.h"
+#include "Config.h"
 
 #include <memory>
 

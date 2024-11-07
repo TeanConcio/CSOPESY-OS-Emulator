@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="CSOPESY-OS-Emulator.cpp" />
     <ClCompile Include="src\AConsole.cpp" />
     <ClCompile Include="src\AScheduler.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="src\RRScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="include\color.hpp" />
     <ClInclude Include="src\AConsole.h" />
     <ClInclude Include="src\AScheduler.h" />

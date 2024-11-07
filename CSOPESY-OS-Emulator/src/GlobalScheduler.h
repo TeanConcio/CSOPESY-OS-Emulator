@@ -21,6 +21,8 @@ public:
 	static void destroy();
 	static void startGlobalScheduler();
 	static bool isRunning() { return sharedInstance->running; }
+	static void setScheduler(std::unordered_map<String, String> configs);
+	static void setDefaultScheduler();
 	
 	// CPU core management
 	static int getCoreCount() { return sharedInstance->numCores; }
@@ -32,12 +34,6 @@ public:
 
 	// Configurations
 	bool hasInitialized() { return this != nullptr && this->scheduler != nullptr; }
-	static void setScheduler();
-	std::unordered_map<String, String> getConfigs();
-	void setConfigs(std::unordered_map<String, String> configs);
-	void validateConfigs(std::unordered_map<String, String>& configs);
- 
-
 
 private:
 	// Singleton private

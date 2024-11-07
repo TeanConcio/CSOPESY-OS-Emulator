@@ -85,3 +85,11 @@ String Common::formatTimeT(const time_t& time)
 	std::strftime(timeStr, sizeof(timeStr), "(%m/%d/%Y %I:%M:%S%p)", &timeInfo);
 	return timeStr;
 }
+
+/**
+* Check if a number is a power of 2
+*/
+bool Common::isPowerOfTwo(const unsigned int num)
+{
+	return (num & (num - 1)) == 0;
+}

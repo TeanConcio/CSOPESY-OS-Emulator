@@ -75,6 +75,9 @@
     <ClCompile Include="src\ProcessManager.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp">
@@ -132,6 +135,9 @@
       <Filter>Schedulers</Filter>
     </ClInclude>
     <ClInclude Include="src\ProcessManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Config.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
