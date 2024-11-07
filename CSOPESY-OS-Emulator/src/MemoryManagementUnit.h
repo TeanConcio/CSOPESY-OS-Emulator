@@ -8,6 +8,7 @@
 #include "FlatAllocator.h"
 
 class AMemoryAllocator;
+class FlatAllocator;
 
 
 

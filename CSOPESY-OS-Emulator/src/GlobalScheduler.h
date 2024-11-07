@@ -9,6 +9,8 @@
 #include "RRScheduler.h"
 
 class AScheduler;
+class FCFSScheduler;
+class RRScheduler;
 
 
 

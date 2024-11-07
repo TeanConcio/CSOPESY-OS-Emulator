@@ -10,6 +10,9 @@
 #include "GlobalScheduler.h"
 #include "MemoryManagementUnit.h"
 
+class GlobalScheduler;
+class MemoryManagementUnit;
+
 
 
 static const String DEBUG_SCHEDULER_NAME = "DebugScheduler";

@@ -2,12 +2,13 @@
 
 #include <algorithm>
 
-#include "AScheduler.h"
 #include "TypedefRepo.h"
 #include "CPUCoreThread.h"
+#include "AScheduler.h"
 #include "GlobalScheduler.h"
 
 class AScheduler;
+class GlobalScheduler;
 
 
 
