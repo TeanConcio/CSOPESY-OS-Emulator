@@ -5,11 +5,6 @@
 #include "Process.h"
 #include "AMemoryAllocator.h"
 
-class Process;
-class AMemoryAllocator;
-
-
-
 // Manages throughout the OS, singleton
 class MemoryManagementUnit
 {

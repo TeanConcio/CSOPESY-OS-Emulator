@@ -1,12 +1,7 @@
 #pragma once
 
 #include <algorithm>
-
 #include "AMemoryAllocator.h"
-
-class AMemoryAllocator;
-
-
 
 // First-Come-First-Serve Scheduler
 class FlatAllocator : public AMemoryAllocator

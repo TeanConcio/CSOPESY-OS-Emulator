@@ -4,10 +4,6 @@
 
 #include "Process.h"
 
-class Process;
-
-
-
 // Abstract class for all schedulers
 class AMemoryAllocator
 {
