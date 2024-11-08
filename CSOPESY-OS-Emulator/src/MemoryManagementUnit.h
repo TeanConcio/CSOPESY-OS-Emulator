@@ -17,7 +17,7 @@ public:
 	static void setDefaultConfigs();
 
 	// Memory management
-	static void* allocate(std::shared_ptr<Process> processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
+	static size_t allocate(std::shared_ptr<Process> processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
 	static void deallocate(std::shared_ptr<Process> ptr) { sharedInstance->memoryAllocator->deallocate(ptr); }
 
 	// Print
@@ -26,9 +26,7 @@ public:
 	// Getters
 	static size_t getMaxMemorySize() { return sharedInstance->memoryAllocator->maxMemorySize; }
 	static size_t getExternalFragmentation() { return sharedInstance->memoryAllocator->getExternalFragmentation(); }
-	static std::vector<size_t> getIndicesWithProcesses() { return sharedInstance->memoryAllocator->indicesWithProcesses; }
-	static std::shared_ptr<Process> getProcessAt(size_t index) { return sharedInstance->memoryAllocator->getProcessAt(index); }
-	static String getASCIIAt(size_t index, size_t size) { return sharedInstance->memoryAllocator->getASCIIAt(index, size); }
+	static std::map<size_t, std::shared_ptr<Process>> getAllocatedProcessesMap() { return sharedInstance->memoryAllocator->allocatedProcesses; }
 
 private:
 	// Singleton private

@@ -1,6 +1,8 @@
 #include "Common.h"
 
 #include <sstream>  // For std::istringstream
+#include <sys/stat.h>  // For mkdir
+#include <direct.h>    // For _mkdir on Windows
 
 // Helper functions here
 
@@ -101,7 +103,15 @@ bool Common::isPowerOfTwo(const unsigned int num)
 */
 bool Common::writeToFile(const String& filename, const String& text)
 {
-	std::ofstream file(filename, std::ios::out);
+	// Ensure the directory exists
+	const String directory = "file_outputs";
+#ifdef _WIN32
+	_mkdir(directory.c_str());
+#else
+	mkdir(directory.c_str(), 0777);
+#endif
+
+	std::ofstream file(directory + "\\" + filename, std::ios::out);
 
 	if (file.is_open())
 	{

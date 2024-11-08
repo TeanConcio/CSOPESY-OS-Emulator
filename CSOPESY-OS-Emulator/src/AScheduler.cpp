@@ -21,7 +21,7 @@ bool AScheduler::assignNextQueuedProcess(std::shared_ptr<CPUCoreThread> core) co
 		std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
 
 		// Check if the process has enough memory to run
-		if (MemoryManagementUnit::allocate(process) != nullptr)
+		if (MemoryManagementUnit::allocate(process) != -1)
 		{
 			// Remove the process from the queued processes list and assign it to the core
 			ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
@@ -47,7 +47,7 @@ void AScheduler::moveProcessToQueue(std::shared_ptr<CPUCoreThread> core) const
 	std::shared_ptr<Process> process = core->getCurrentProcess();
 
 	// Remove process from memory
-	MemoryManagementUnit::deallocate(process);
+	//MemoryManagementUnit::deallocate(process);
 
 	// Remove the process from the core and add it to the back of the queued processes list
 	process->setState(Process::ProcessState::READY);

@@ -1,6 +1,6 @@
 #include "ProcessManager.h"
 
-
+#include "MemoryManagementUnit.h"
 
 ProcessManager* ProcessManager::sharedInstance = nullptr;
 
@@ -230,7 +230,11 @@ String ProcessManager::makeListProcessesString()
 {
 	std::stringstream ss;
 
-	// TODO: Check if implementation is correct
+	//ss << MemoryManagementUnit::makeMemoryStampString();
+	//ss << "\n";
+
+	//ss << "--------------------------------------\n";
+	
 	ss << "CPU utilization: " << (GlobalScheduler::getRunningCoreCount() * 100 / GlobalScheduler::getCoreCount()) << "%\n";
 	ss << "Cores used: " << GlobalScheduler::getCoreCount() << "\n";
 	ss << "Cores available: " << GlobalScheduler::getCoreCount() - GlobalScheduler::getRunningCoreCount() << "\n\n";

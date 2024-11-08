@@ -77,6 +77,15 @@
     <ClCompile Include="src\Config.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\FlatAllocator.cpp">
+      <Filter>Memory Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AMemoryAllocator.cpp">
+      <Filter>Memory Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MemoryManagementUnit.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.hpp">
@@ -137,6 +146,15 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AMemoryAllocator.h">
+      <Filter>Memory Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FlatAllocator.h">
+      <Filter>Memory Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MemoryManagementUnit.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
