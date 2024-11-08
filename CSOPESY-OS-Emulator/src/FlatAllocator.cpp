@@ -39,13 +39,13 @@ bool FlatAllocator::canAllocateAt(size_t index, size_t size) const
 }
 
 
-void* FlatAllocator::allocateAt(Process* processAddress, size_t index)
+void* FlatAllocator::allocateAt(std::shared_ptr<Process> processAddress, size_t index)
 {
 	// Mark the memory as allocated
 	std::fill(allocationMap.begin() + index, allocationMap.begin() + index + processAddress->getMemoryRequired(), true);
 
 	// Store the process address in the memory
-	uintptr_t address = reinterpret_cast<uintptr_t>(processAddress);
+	uintptr_t address = reinterpret_cast<uintptr_t>(processAddress.get());
 	for (size_t i = 0; i < sizeof(uintptr_t); ++i)
 	{
 		memory[index + i] = (address >> (i * 8)) & 0xFF;
@@ -102,7 +102,7 @@ void FlatAllocator::deallocateAt(size_t index)
 
 
 
-void* FlatAllocator::allocate(Process* processAddress)
+void* FlatAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
 	// FIRST-FIT
 
@@ -119,7 +119,7 @@ void* FlatAllocator::allocate(Process* processAddress)
 }
 
 
-void FlatAllocator::deallocate(Process* processAddress)
+void FlatAllocator::deallocate(std::shared_ptr<Process> processAddress)
 {
 	// Ensure the process has a valid memory address
 	if (processAddress->getMemoryAddress() == nullptr)
