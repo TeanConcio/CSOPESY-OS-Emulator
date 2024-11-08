@@ -3,10 +3,8 @@
 #include <unordered_map>
 
 #include "Process.h"
-#include "Common.h"
-#include "MemoryManagementUnit.h"
 
-class MemoryManagementUnit;
+class Process;
 
 
 

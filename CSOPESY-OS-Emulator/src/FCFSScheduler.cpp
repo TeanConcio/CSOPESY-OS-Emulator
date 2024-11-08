@@ -1,5 +1,9 @@
 #include "FCFSScheduler.h"
 
+#include "AScheduler.h"
+#include "GlobalScheduler.h"
+#include "ProcessManager.h"
+
 
 
 void FCFSScheduler::run()

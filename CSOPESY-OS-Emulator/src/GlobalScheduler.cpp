@@ -1,5 +1,10 @@
 #include "GlobalScheduler.h"
 
+#include "Process.h"
+#include "ProcessManager.h"
+#include "RRScheduler.h"
+#include "FCFSScheduler.h"
+
 
 GlobalScheduler* GlobalScheduler::sharedInstance = nullptr;
 

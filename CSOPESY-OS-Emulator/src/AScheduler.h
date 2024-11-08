@@ -3,13 +3,11 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "TypedefRepo.h"
 #include "IETThread.h"
-#include "CPUCoreThread.h"
-#include "Process.h"
-#include "Common.h"
-#include "GlobalScheduler.h"
-#include "MemoryManagementUnit.h"
 
+class IEThread;
+class CPUCoreThread;
 class GlobalScheduler;
 class MemoryManagementUnit;
 

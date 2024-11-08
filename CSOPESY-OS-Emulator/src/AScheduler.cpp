@@ -1,5 +1,9 @@
 #include "AScheduler.h"
 
+#include "Process.h"
+#include "ProcessManager.h"
+#include "MemoryManagementUnit.h"
+
 
 AScheduler::AScheduler(SchedulingAlgorithm schedulingAlgo) : IETThread(GlobalScheduler::MULTI_THREAD_MODE)
 {

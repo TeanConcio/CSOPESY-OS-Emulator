@@ -1,5 +1,10 @@
 #include "RRScheduler.h"
 
+#include "AScheduler.h"
+#include "GlobalScheduler.h"
+#include "ProcessManager.h"
+#include "MemoryManagementUnit.h"
+
 
 
 void RRScheduler::run()

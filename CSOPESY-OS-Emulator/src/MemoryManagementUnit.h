@@ -3,12 +3,10 @@
 #include <fstream>
 
 #include "Process.h"
-#include "ProcessManager.h"
 #include "AMemoryAllocator.h"
-#include "FlatAllocator.h"
 
+class Process;
 class AMemoryAllocator;
-class FlatAllocator;
 
 
 

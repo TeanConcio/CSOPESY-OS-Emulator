@@ -1,5 +1,7 @@
 #include "FlatAllocator.h"
 
+#include "Process.h"
+
 
 FlatAllocator::FlatAllocator(size_t maxMemorySize) : AMemoryAllocator(maxMemorySize, AMemoryAllocator::AllocationAlgorithm::Flat)
 {

@@ -1,16 +1,14 @@
 #pragma once
 
 #include <fstream>
-#include "AScheduler.h"
-#include "Process.h"
-#include "ProcessManager.h"
-#include "AScheduler.h"
-#include "FCFSScheduler.h"
-#include "RRScheduler.h"
 
+#include "IETThread.h"
+#include "CPUCoreThread.h"
+#include "AScheduler.h"
+
+class IEThread;
+class CPUCoreThread;
 class AScheduler;
-class FCFSScheduler;
-class RRScheduler;
 
 
 

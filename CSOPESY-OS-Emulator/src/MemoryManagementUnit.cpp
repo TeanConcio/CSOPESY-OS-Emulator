@@ -1,5 +1,7 @@
 #include "MemoryManagementUnit.h"
 
+#include "FlatAllocator.h"
+
 
 MemoryManagementUnit* MemoryManagementUnit::sharedInstance = nullptr;
 
