@@ -40,14 +40,14 @@ public:
 	int getLinesOfCode() const { return this->commandList.size(); }
 	int getCommandCounter() const { return this->commandCounter; }
 	size_t getMemoryRequired() const { return this->memoryRequired; }
-	void* getMemoryAddress() const { return this->memoryAddress; }
+	void* getMemoryAddress() const { return this->memoryAddress.get(); }
 	int getCPUCoreID() const { return this->cpuCoreID; }
 	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::WAITING : this->currentState; }
 	std::time_t getArrivalTime() const { return this->arrivalTime; }
 	std::time_t getLastCommandTime() const { return this->lastCommandTime; }
 
 	// Setters
-	void setMemoryAddress(char* memoryAddress) { this->memoryAddress = memoryAddress; }
+	void setMemoryAddress(char* memoryAddress) { this->memoryAddress = std::shared_ptr<void>(memoryAddress);}
 	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
 	void setArrivalTime(std::time_t arrivalTime);
@@ -66,7 +66,7 @@ private:
 	int commandCounter; // determines index of what command you are in
 
 	size_t memoryRequired;
-	void* memoryAddress;
+	std::shared_ptr<void> memoryAddress;
 
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
 	ProcessState currentState;

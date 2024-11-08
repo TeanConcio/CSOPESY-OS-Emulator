@@ -19,8 +19,8 @@ public:
 	AMemoryAllocator(size_t maxMemorySize, AllocationAlgorithm allocationAlgo);
 	virtual ~AMemoryAllocator() = default;
 
-	virtual void* allocate(Process* processAddress) = 0;
-	virtual void deallocate(Process* processAddress) = 0;
+	virtual void* allocate(std::shared_ptr<Process> processAddress) = 0;
+	virtual void deallocate(std::shared_ptr<Process> processAddress) = 0;
 
 	// Getters
 	size_t getMaxMemorySize() { return maxMemorySize; }

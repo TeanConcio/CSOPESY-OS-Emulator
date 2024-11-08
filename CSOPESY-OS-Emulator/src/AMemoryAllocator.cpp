@@ -22,12 +22,12 @@ std::shared_ptr<Process> AMemoryAllocator::getProcessAt(size_t index) const
 	{
 		address |= (static_cast<uintptr_t>(static_cast<unsigned char>(memory[index + i])) << (i * 8));
 	}
-	Process* processAddress = reinterpret_cast<Process*>(address);
+	//Process* processAddress = reinterpret_cast<Process*>(address);
 
 	// Debug print
 	//std::cout << "Retrieved Process at index " << index << " with address " << processAddress << std::endl;
 
-	return std::shared_ptr<Process>(processAddress);
+	return std::shared_ptr<Process>(reinterpret_cast<Process*>(address));
 }
 
 

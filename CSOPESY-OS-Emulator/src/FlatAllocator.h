@@ -11,11 +11,11 @@ public:
 	~FlatAllocator();
 
 	bool canAllocateAt(size_t index, size_t size) const;
-	void* allocateAt(Process* processAddress, size_t index);
+	void* allocateAt(std::shared_ptr<Process> processAddress, size_t index);
 	void deallocateAt(size_t index);
 
-	void* allocate(Process* processAddress) override;
-	void deallocate(Process* processAddress) override;
+	void* allocate(std::shared_ptr<Process> processAddress) override;
+	void deallocate(std::shared_ptr<Process> processAddress) override;
 
 
 private:

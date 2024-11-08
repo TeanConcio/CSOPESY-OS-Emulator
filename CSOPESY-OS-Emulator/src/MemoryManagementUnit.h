@@ -17,8 +17,8 @@ public:
 	static void setDefaultConfigs();
 
 	// Memory management
-	static void* allocate(Process* processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
-	static void deallocate(Process* ptr) { sharedInstance->memoryAllocator->deallocate(ptr); }
+	static void* allocate(std::shared_ptr<Process> processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
+	static void deallocate(std::shared_ptr<Process> ptr) { sharedInstance->memoryAllocator->deallocate(ptr); }
 
 	// Print
 	static String makeMemoryStampString();
