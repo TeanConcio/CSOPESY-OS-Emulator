@@ -10,15 +10,7 @@ AMemoryAllocator::AMemoryAllocator(size_t maxMemorySize, AllocationAlgorithm all
 
 size_t AMemoryAllocator::getExternalFragmentation()
 {
-	size_t externalFragmentation = 0;
-	size_t lastAllocatedIndex = 0;
-	for (size_t i = 0; i < indicesWithProcesses.size(); ++i)
-	{
-		externalFragmentation += indicesWithProcesses[i] - lastAllocatedIndex;
-		lastAllocatedIndex = indicesWithProcesses[i] + 1;
-	}
-	externalFragmentation += maxMemorySize - lastAllocatedIndex;
-	return externalFragmentation;
+	return maxMemorySize - allocatedSize;
 }
 
 
@@ -28,9 +20,12 @@ std::shared_ptr<Process> AMemoryAllocator::getProcessAt(size_t index) const
 	uintptr_t address = 0;
 	for (size_t i = 0; i < sizeof(uintptr_t); ++i)
 	{
-		address |= (static_cast<uintptr_t>(memory[index + i]) << (i * 8));
+		address |= (static_cast<uintptr_t>(static_cast<unsigned char>(memory[index + i])) << (i * 8));
 	}
 	Process* processAddress = reinterpret_cast<Process*>(address);
+
+	// Debug print
+	//std::cout << "Retrieved Process at index " << index << " with address " << processAddress << std::endl;
 
 	return std::shared_ptr<Process>(processAddress);
 }

@@ -54,26 +54,39 @@ void MemoryManagementUnit::setDefaultConfigs()
 
 String MemoryManagementUnit::makeMemoryStampString()
 {
+	// Get values to save state
+	size_t noProcessesInMemory = MemoryManagementUnit::getIndicesWithProcesses().size();
+	size_t externalFragmentation = MemoryManagementUnit::getExternalFragmentation();
+	size_t maxMemorySize = MemoryManagementUnit::getMaxMemorySize();
+
+	// Get data from processes in memory
+	std::vector<size_t> memoryRequiredVector;
+	std::vector<String> asciiVector;
+	for (size_t i = noProcessesInMemory; i-- > 0;) {
+		size_t lastProcessIndex = MemoryManagementUnit::getIndicesWithProcesses().at(i);
+		std::shared_ptr<Process> process = sharedInstance->memoryAllocator->getProcessAt(lastProcessIndex);
+		memoryRequiredVector.push_back(i + process->getMemoryRequired() - 1);
+		asciiVector.push_back(MemoryManagementUnit::getASCIIAt(i, sizeof(void*) / sizeof(char)));
+	}
+
+	
 	std::stringstream ss;
 
 	ss << "Timestamp: " << Common::formatTimeT(std::time(nullptr)) << "\n";
-	ss << "Number of processes in memory: " << MemoryManagementUnit::getIndicesWithProcesses().size() << "\n";
-	ss << "Total external fragmentation in KB: " << MemoryManagementUnit::getExternalFragmentation() << "\n";
+	ss << "Number of processes in memory: " << noProcessesInMemory << "\n";
+	ss << "Total external fragmentation in KB: " << externalFragmentation << "\n";
 	ss << "\n";
-	ss << "----end---- = " << MemoryManagementUnit::getMaxMemorySize() << "\n";
+	ss << "----end---- = " << maxMemorySize << "\n";
 	ss << "\n";
 
 	// For each process
-	for (int i = MemoryManagementUnit::getIndicesWithProcesses().size() - 1; i >= 0; i--) {
-		// Get the process
-		std::shared_ptr<Process> process = sharedInstance->memoryAllocator->getProcessAt(MemoryManagementUnit::getIndicesWithProcesses()[i]);
-
-		ss << i + process->getMemoryRequired() << "\n";
-		ss << MemoryManagementUnit::getASCIIAt(i, sizeof(void*)/sizeof(char)) << "\n";
+	for (int i = noProcessesInMemory - 1; i >= 0; i--) {
+		ss << memoryRequiredVector[i] << "\n";
+		ss << asciiVector[i] << "\n";
 		ss << i << "\n";
 		ss << "\n";
 	}
-	
+
 	ss << "----start----- = " << "0" << "\n";
 	ss << "\n";
 

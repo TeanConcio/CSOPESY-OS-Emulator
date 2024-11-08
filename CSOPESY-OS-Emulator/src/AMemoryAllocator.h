@@ -37,6 +37,7 @@ protected:
 	AllocationAlgorithm allocationAlgo;
 
 	size_t maxMemorySize;
+	size_t allocatedSize = 0;
 	std::vector<char> memory;
 
 	std::vector<size_t> indicesWithProcesses;

@@ -5,8 +5,9 @@
 
 FlatAllocator::FlatAllocator(size_t maxMemorySize) : AMemoryAllocator(maxMemorySize, AMemoryAllocator::AllocationAlgorithm::Flat)
 {
-	std::fill(memory.begin(), memory.end(), '.');
-	std::fill(allocationMap.begin(), allocationMap.end(), false);
+	// Initialize the memory and allocation map with the maximum memory size
+	memory.resize(maxMemorySize, '.');
+	allocationMap.resize(maxMemorySize, false);
 }
 
 
@@ -20,7 +21,7 @@ FlatAllocator::~FlatAllocator()
 bool FlatAllocator::canAllocateAt(size_t index, size_t size) const
 {
 	// Check if the index is within the memory bounds
-	if (index + size > maxMemorySize)
+	if (index + size - 1 >= maxMemorySize)
 	{
 		return false;
 	}
@@ -50,6 +51,9 @@ void* FlatAllocator::allocateAt(Process* processAddress, size_t index)
 		memory[index + i] = (address >> (i * 8)) & 0xFF;
 	}
 
+	// Debug print
+	//std::cout << "Allocated Process at index " << index << " with address " << processAddress << std::endl;
+
 	// Set the process address in the process
 	processAddress->setMemoryAddress(&memory[index]);
 
@@ -58,6 +62,9 @@ void* FlatAllocator::allocateAt(Process* processAddress, size_t index)
 
 	// Sort the list of indices with processes
 	std::sort(indicesWithProcesses.begin(), indicesWithProcesses.end());
+
+	// Add allocated size
+	allocatedSize += processAddress->getMemoryRequired();
 
 	// Return the pointer to the memory
 	return &memory[index];
@@ -70,7 +77,7 @@ void FlatAllocator::deallocateAt(size_t index)
 	uintptr_t address = 0;
 	for (size_t i = 0; i < sizeof(uintptr_t); ++i)
 	{
-		address |= (static_cast<uintptr_t>(memory[index + i]) << (i * 8));
+		address |= (static_cast<uintptr_t>(static_cast<unsigned char>(memory[index + i])) << (i * 8));
 	}
 	Process* processAddress = reinterpret_cast<Process*>(address);
 
@@ -88,6 +95,9 @@ void FlatAllocator::deallocateAt(size_t index)
 
 	// Mark the memory as deallocated
 	std::fill(allocationMap.begin() + index, allocationMap.begin() + index + processAddress->getMemoryRequired(), false);
+
+	// Subtract allocated size
+	allocatedSize -= processAddress->getMemoryRequired();
 }
 
 
