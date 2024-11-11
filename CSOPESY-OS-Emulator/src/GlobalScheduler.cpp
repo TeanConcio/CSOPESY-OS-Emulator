@@ -49,7 +49,7 @@ void GlobalScheduler::setConfigs(std::unordered_map<String, String> configs)
 		// Set the cores and delays
 		sharedInstance->numCores = std::stoul(configs["num-cpu"]);
 		unsigned int delayPerExecution = std::stoul(configs["delay-per-exec"]);
-		for (int i = 0; i < sharedInstance->numCores; ++i)
+		for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 		{
 			sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, delayPerExecution, timeQuantum));
 		}
@@ -75,7 +75,7 @@ void GlobalScheduler::setDefaultConfigs()
 	sharedInstance->scheduler = new RRScheduler();
 	// Set the cores and delays
 	sharedInstance->numCores = 4;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 	{
 		sharedInstance->coreThreads.push_back(std::make_shared<CPUCoreThread>(i, 100000000, 5));
 	}
@@ -112,7 +112,7 @@ void GlobalScheduler::run()
 	}
 
 	// Run each core thread
-	for (int i = 0; i < this->numCores; ++i)
+	for (unsigned int i = 0; i < this->numCores; ++i)
 	{
 		try {
 			this->coreThreads[i]->start();
@@ -126,7 +126,7 @@ void GlobalScheduler::run()
 	// IETThread::sleep(this->delay);
 		
 	// Join each core thread
-	for (int i = 0; i < this->numCores; ++i)
+	for (unsigned int i = 0; i < this->numCores; ++i)
 	{
 		this->coreThreads[i]->join();
 	}
@@ -145,7 +145,7 @@ int GlobalScheduler::getRunningCoreCount()
 {
 	// Get the number of cores that are currently running a process
 	int runningCores = 0;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 	{
 		if (sharedInstance->coreThreads[i]->getCurrentProcess() != nullptr)
 		{
@@ -160,7 +160,7 @@ int GlobalScheduler::getRunningCoreCount()
 std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getFinishedCores()
 {
 	std::vector<std::shared_ptr<CPUCoreThread>> finishedCores;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 	{
 		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
 		if (process != nullptr &&
@@ -176,7 +176,7 @@ std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getFinishedCores()
 std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getEmptyCores()
 {
 	std::vector<std::shared_ptr<CPUCoreThread>> emptyCores;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 	{
 		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
 		if (process == nullptr)
@@ -191,7 +191,7 @@ std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getEmptyCores()
 std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getRunningCores()
 {
 	std::vector<std::shared_ptr<CPUCoreThread>> runningCores;
-	for (int i = 0; i < sharedInstance->numCores; ++i)
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
 	{
 		std::shared_ptr<Process> process = sharedInstance->coreThreads[i]->getCurrentProcess();
 		if (process != nullptr &&

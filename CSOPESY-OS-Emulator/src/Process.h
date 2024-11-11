@@ -37,7 +37,7 @@ public:
 	// Getters
 	int getPID() const { return this->pid; }
 	String getName() const { return this->name; }
-	int getLinesOfCode() const { return this->commandList.size(); }
+	int getLinesOfCode() const { return static_cast<int>(this->commandList.size()); }
 	int getCommandCounter() const { return this->commandCounter; }
 	size_t getMemoryRequired() const { return this->memoryRequired; }
 	size_t getMemoryAddressIndex() const { return this->memoryAddressIndex; }

@@ -25,7 +25,7 @@ public:
 	static void setConfigs(std::unordered_map<String, String> configs);
 	static void setDefaultConfigs();
 	static void startGlobalScheduler();
-	static bool isRunning() { return sharedInstance->running; }
+	static bool isRunning() { return sharedInstance != nullptr ? sharedInstance->running : false; }
 	
 	// CPU core management
 	static int getCoreCount() { return sharedInstance->numCores; }

@@ -50,7 +50,7 @@ String Common::makeTextCell(
 	case 'c':
 	{
 		// Calculate padding for center alignment
-		int padding = (width - text.size()) / 2;
+		int padding = (width - static_cast<int>(text.size())) / 2;
 		// Extra padding will be 1 if the difference is odd, 0 otherwise
 		int extraPadding = (width - text.size()) % 2;
 		// Generate text centered

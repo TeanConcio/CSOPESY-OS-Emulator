@@ -26,15 +26,11 @@ public:
 	// Getters
 	size_t getMaxMemorySize() { return maxMemorySize; }
 	size_t getExternalFragmentation();
-	String getASCIIAt(size_t index, size_t size) const;
-
 	
 protected:
 	AllocationAlgorithm allocationAlgo;
 
 	size_t maxMemorySize;
 	size_t allocatedSize = 0;
-	//std::vector<char> memory;
-
 	std::map<size_t, std::shared_ptr<Process>> allocatedProcesses;
 };

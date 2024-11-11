@@ -155,7 +155,7 @@ void MainConsole::printHeader() {
 	this->writeToConsoleHistory("Ong, Nicole Daphne\n");
 	this->writeToConsoleHistory("Teves, Hannah Juliet\n");
 	this->writeToConsoleHistory("Yu, Marco Jalen\n\n");
-	this->writeToConsoleHistory("Last updated: 10-25-2024\n");
+	this->writeToConsoleHistory("Last updated: 11-11-2024\n");
 	this->writeToConsoleHistory("-------------------------------------------\n\n");
 }
 

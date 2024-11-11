@@ -85,7 +85,7 @@ String MemoryManagementUnit::makeMemoryStampString()
 	ss << "\n";
 
 	// For each process in reverse order
-	for (int i = numProcessesInMemory - 1; i >= 0; i--) {
+	for (int i = static_cast<int>(numProcessesInMemory) - 1; i >= 0; i--) {
 		ss << memoryRequiredVector[i] << "\n";
 		ss << asciiVector[i] << "\n";
 		ss << indicesVector[i] << "\n";

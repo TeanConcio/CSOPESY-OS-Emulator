@@ -33,7 +33,7 @@ private:
 	int marqueeYSpd = 1;
 
 	String marqueeText = "Hello world in marquee!";
-	int marqueeTextSize = marqueeText.length();
+	int marqueeTextSize = static_cast<int>(marqueeText.length());
 	int marqueeX = 0;
 	int marqueeY = 0;
 
