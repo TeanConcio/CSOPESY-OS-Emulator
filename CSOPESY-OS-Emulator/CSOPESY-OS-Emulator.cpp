@@ -34,10 +34,10 @@ int main() {
 
 	// Destroy Singletons
 	//InputManager::destroy();
-	ConsoleManager::destroy();
-	ProcessManager::destroy();
 	GlobalScheduler::destroy();
 	MemoryManagementUnit::destroy();
+	ProcessManager::destroy();
+	ConsoleManager::destroy();
 
 	return 0;
 }
