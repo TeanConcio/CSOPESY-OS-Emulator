@@ -228,6 +228,10 @@ String ProcessManager::makeFinishedProcessesString()
 
 String ProcessManager::makeListProcessesString()
 {
+	// If there is no GlobalScheduler instance, return an empty string
+	if (GlobalScheduler::getInstance() == nullptr)
+		return "";
+	
 	std::stringstream ss;
 
 	//ss << MemoryManagementUnit::makeMemoryStampString();
