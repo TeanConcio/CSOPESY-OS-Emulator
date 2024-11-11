@@ -17,8 +17,19 @@ bool AScheduler::assignNextQueuedProcess(std::shared_ptr<CPUCoreThread> core) co
 	// For each process in the ready queue
 	for (int i = 0; i < ProcessManager::getQueuedProcesses().size(); i++)
 	{
+		// Ensure the process list is not empty
+		if (ProcessManager::getQueuedProcesses().empty())
+			return false;
+
 		// Get the process in the front of the queued processes list
 		std::shared_ptr<Process> process = ProcessManager::getQueuedProcesses().front();
+
+		// Ensure the process pointer is valid
+		if (!process)
+		{
+			ProcessManager::getQueuedProcesses().erase(ProcessManager::getQueuedProcesses().begin());
+			continue;
+		}
 
 		// Check if the process has enough memory to run
 		if (MemoryManagementUnit::allocate(process) != -1)

@@ -18,7 +18,7 @@ void RRScheduler::run()
 			// Move the process in the core to the finished processes list
 			this->moveProcessToFinish(core);
 
-			core->resetQuantumCycle();
+			//core->resetQuantumCycle();
 		}
 
 		// Variable for checking if there are runnable processes
