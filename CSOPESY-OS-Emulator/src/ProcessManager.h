@@ -31,6 +31,7 @@ public:
 
 	// Process creation
 	String generateProcessName() const;
+	size_t generateMemorySize() const;
 	static std::shared_ptr<Process> createUniqueProcess(String& name);
 	static void generateTestProcessesLoop();
 	static void startGeneratingProcessesLoop() { sharedInstance->isGeneratingProcesses = true; }
@@ -67,7 +68,8 @@ private:
 	unsigned int batchProcessFreq = 1; // Range: [1, 2e32], determines # of cycle between process creation
 	unsigned int minIns = 1; // Range: [1, 2e32], determines min # of instructions per test process
 	unsigned int maxIns = 1; // Range: [1, 2e32], determines max # of instructions per test process
-	size_t memPerProc = 4096; // Range: [2eXXX, 2eXXX], determines memory per process
+	size_t minMemPerProcExp = 12; // Range: [0, 32], determines min memory per process (exponent)
+	size_t maxMemPerProcExp = 32; // Range: [0, 32], determines max memory per process (exponent)
 
 	// Process generation
 	int pidCounter = 0; // How many processes its created

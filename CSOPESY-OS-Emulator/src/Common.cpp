@@ -97,7 +97,6 @@ bool Common::isPowerOfTwo(const unsigned int num)
 	return (num & (num - 1)) == 0;
 }
 
-
 /**
 * Write a string to a file
 */

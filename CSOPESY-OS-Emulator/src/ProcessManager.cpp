@@ -31,7 +31,14 @@ void ProcessManager::setConfigs(std::unordered_map<String, String> configs)
 		ProcessManager::sharedInstance->batchProcessFreq = std::stoul(configs["batch-process-freq"]);
 		ProcessManager::sharedInstance->minIns = std::stoul(configs["min-ins"]);
 		ProcessManager::sharedInstance->maxIns = std::stoul(configs["max-ins"]);
-		ProcessManager::sharedInstance->memPerProc = std::stoul(configs["mem-per-proc"]);
+
+		// Get the memory per process
+		size_t minMemPerProc = std::stoul(configs["min-mem-per-proc"]);
+		size_t maxMemPerProc = std::stoul(configs["max-mem-per-proc"]);
+
+		// Get their 2^x values
+		ProcessManager::sharedInstance->minMemPerProcExp = static_cast<size_t>(std::log2(minMemPerProc));
+		ProcessManager::sharedInstance->maxMemPerProcExp = static_cast<size_t>(std::log2(maxMemPerProc));
 	}
 	catch (std::exception& e)
 	{
@@ -50,7 +57,8 @@ void ProcessManager::setDefaultConfigs()
 	ProcessManager::sharedInstance->batchProcessFreq = 1;
 	ProcessManager::sharedInstance->minIns = 1000;
 	ProcessManager::sharedInstance->maxIns = 2000;
-	ProcessManager::sharedInstance->memPerProc = 4096;
+	ProcessManager::sharedInstance->minMemPerProcExp = 12;
+	ProcessManager::sharedInstance->maxMemPerProcExp = 32;
 }
 
 
@@ -81,6 +89,13 @@ String ProcessManager::generateProcessName() const
 	return ss.str();
 }
 
+size_t ProcessManager::generateMemorySize() const
+{
+	// Generate a random memory size between min and max memory per process
+	size_t memSize = static_cast<size_t>(std::pow(2, minMemPerProcExp + (rand() % (maxMemPerProcExp - minMemPerProcExp + 1))));
+	return memSize;
+}
+
 
 std::shared_ptr<Process> ProcessManager::createUniqueProcess(String& name)
 {
@@ -101,7 +116,7 @@ std::shared_ptr<Process> ProcessManager::createUniqueProcess(String& name)
 		name = ProcessManager::sharedInstance->generateProcessName();
 	
 	// Create Process
-	auto process = std::make_shared<Process>(ProcessManager::sharedInstance->pidCounter, name, ProcessManager::sharedInstance->memPerProc, reqFlags);
+	auto process = std::make_shared<Process>(ProcessManager::sharedInstance->pidCounter, name, ProcessManager::sharedInstance->generateMemorySize(), reqFlags);
 	process->test_generateRandomCommands(ProcessManager::sharedInstance->minIns, ProcessManager::sharedInstance->maxIns);
 
 	// Create and register screen for the process
