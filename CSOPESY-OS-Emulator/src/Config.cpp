@@ -67,7 +67,8 @@ void Config::read()
 * delay-per-exec: [0, 2e32] (default: 0)
 * max-overall-mem: [2, 2e32] (default: 16384)
 * mem-per-frame: [2, 2e32] (default: 16)
-* mem-per-proc: [2, 2e32] (default: 4096)
+* min-mem-per-proc: [2, 2e32] (default: 4096)
+* max-mem-per-proc: [2, 2e32] (default: 4096)
 */
 void Config::validate()
 {
@@ -195,20 +196,50 @@ void Config::validate()
 		sharedInstance->configs["mem-per-frame"] = "16";
 	}
 
-	// Note: In the final implementation, it should be min-mem-per-proc and max-mem-per-proc
-
-	// Check if mem-per-proc is not in range [2, 2e32] or does not exist
+	// Check if min-mem-per-proc is not in range [2, 2e32] or does not exist
 	// It must also be a power of 2
 	// Default: 4096
 	try {
-		if (sharedInstance->configs.find("mem-per-proc") == sharedInstance->configs.end() ||
-			std::stoul(sharedInstance->configs["mem-per-proc"]) < 2 ||
-			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["mem-per-proc"])))
+		if (sharedInstance->configs.find("min-mem-per-proc") == sharedInstance->configs.end() ||
+			std::stoul(sharedInstance->configs["min-mem-per-proc"]) < 2 ||
+			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["min-mem-per-proc"])) ||
+			std::stoul(sharedInstance->configs["min-mem-per-proc"]) > std::stoul(sharedInstance->configs["max-overall-mem"]))
 		{
-			sharedInstance->configs["mem-per-proc"] = "4096";
+			sharedInstance->configs["min-mem-per-proc"] = "4096";
 		}
 	}
 	catch (const std::exception&) {
-		sharedInstance->configs["mem-per-proc"] = "4096";
+		sharedInstance->configs["min-mem-per-proc"] = "4096";
 	}
+
+	// Check if max-mem-per-proc is not in range [2, 2e32] or does not exist
+	// It must also be a power of 2
+	// Default: 4096
+	try {
+		if (sharedInstance->configs.find("max-mem-per-proc") == sharedInstance->configs.end() ||
+			std::stoul(sharedInstance->configs["max-mem-per-proc"]) < 2 ||
+			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["max-mem-per-proc"])) ||
+			std::stoul(sharedInstance->configs["max-mem-per-proc"]) > std::stoul(sharedInstance->configs["max-overall-mem"]))
+		{
+			sharedInstance->configs["max-mem-per-proc"] = "4096";
+		}
+	}
+	catch (const std::exception&) {
+		sharedInstance->configs["max-mem-per-proc"] = "4096";
+	}
+
+	//// Check if mem-per-proc is not in range [2, 2e32] or does not exist
+	//// It must also be a power of 2
+	//// Default: 4096
+	//try {
+	//	if (sharedInstance->configs.find("mem-per-proc") == sharedInstance->configs.end() ||
+	//		std::stoul(sharedInstance->configs["mem-per-proc"]) < 2 ||
+	//		!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["mem-per-proc"])))
+	//	{
+	//		sharedInstance->configs["mem-per-proc"] = "4096";
+	//	}
+	//}
+	//catch (const std::exception&) {
+	//	sharedInstance->configs["mem-per-proc"] = "4096";
+	//}
 }

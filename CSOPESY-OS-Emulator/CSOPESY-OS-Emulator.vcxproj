@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PagingAllocator.cpp" />
     <ClCompile Include="src\AMemoryAllocator.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="CSOPESY-OS-Emulator.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="src\RRScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PagingAllocator.h" />
     <ClInclude Include="src\AMemoryAllocator.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="include\color.hpp" />

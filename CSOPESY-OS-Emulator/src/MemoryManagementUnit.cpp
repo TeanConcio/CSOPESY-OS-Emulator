@@ -1,6 +1,7 @@
 #include "MemoryManagementUnit.h"
 
 #include "FlatAllocator.h"
+#include "PagingAllocator.h"
 
 
 MemoryManagementUnit* MemoryManagementUnit::sharedInstance = nullptr;
@@ -32,7 +33,15 @@ void MemoryManagementUnit::setConfigs(std::unordered_map<String, String> configs
 		size_t maxOverallMem = std::stoul(configs["max-overall-mem"]);
 		size_t memPerFrame = std::stoul(configs["mem-per-frame"]);
 
-		sharedInstance->memoryAllocator = new FlatAllocator(maxOverallMem);
+		// If max-overall-mem = mem-per-frame, use FlatAllocator
+		if (maxOverallMem == memPerFrame) {
+			sharedInstance->memoryAllocator = new FlatAllocator(maxOverallMem);
+		}
+		// Else, use PagingAllocator
+		else
+		{
+			sharedInstance->memoryAllocator = new PagingAllocator(maxOverallMem, memPerFrame);
+		}
 	}
 	catch (std::exception& e)
 	{
