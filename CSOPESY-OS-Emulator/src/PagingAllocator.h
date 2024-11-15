@@ -12,8 +12,12 @@ public:
 	void deallocate(std::shared_ptr<Process> processAddress) override;
 
 private:
+	size_t numFrames;
 	size_t pageSize;
-	std::vector<bool> allocationMap;
-	std::map<size_t, size_t> processPageMap;
+	std::unordered_map<size_t, size_t> frameMap;
+	std::vector<size_t> freeFrameList;
+
+	size_t allocateFrames(size_t numFrames, size_t pid);
+	void deallocateFrames(size_t numFrames, size_t pid);
 };
 
