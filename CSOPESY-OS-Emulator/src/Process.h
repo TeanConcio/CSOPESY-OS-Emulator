@@ -41,6 +41,7 @@ public:
 	int getCommandCounter() const { return this->commandCounter; }
 	size_t getMemoryRequired() const { return this->memoryRequired; }
 	size_t getMemoryAddressIndex() const { return this->memoryAddressIndex; }
+	std::vector<size_t> getFrameIndices() const { return this->frameIndices; }
 	int getCPUCoreID() const { return this->cpuCoreID; }
 	ProcessState getState() const { return this == nullptr || !this->currentState ? ProcessState::WAITING : this->currentState; }
 	std::time_t getArrivalTime() const { return this->arrivalTime; }
@@ -48,6 +49,7 @@ public:
 
 	// Setters
 	void setMemoryAddressIndex(size_t memoryAddressIndex) { this->memoryAddressIndex = memoryAddressIndex;}
+	void setFrameIndices(std::vector<size_t> frameIndices) { this->frameIndices = frameIndices; }
 	void setCPUCoreID(int coreID) { this->cpuCoreID = coreID; }
 	void setState(ProcessState state) { currentState = state; }
 	void setArrivalTime(std::time_t arrivalTime);
@@ -66,7 +68,8 @@ private:
 	int commandCounter; // determines index of what command you are in
 
 	size_t memoryRequired;
-	size_t memoryAddressIndex = -1; // -1 means not assigned to any memory, identifies which memory block its attached to
+	size_t memoryAddressIndex = -1; // -1 means not assigned to any memory, identifies which memory block its attached to (for flat allocation)
+	std::vector<size_t> frameIndices; // empty means not assigned to any memory, identifies which memory block its attached to (for paging allocation)
 
 	int cpuCoreID = -1; // -1 means not assigned to any core, identifies which core its attached to
 	ProcessState currentState;
