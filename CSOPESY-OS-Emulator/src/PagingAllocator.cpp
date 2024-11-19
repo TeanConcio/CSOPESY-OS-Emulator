@@ -45,12 +45,11 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 	}
 
 	// Allocate frames to the process
-	while (numFramesRequired > 0)
+	for (size_t i = 0; i < numFramesRequired; ++i)
 	{
 		// Allocate the frame to the process
 		size_t frameIndex = freeFrameList.back();
 		frameIndices.push_back(frameIndex);
-		--numFramesRequired;
 
 		// Update the memory allocation map 
 		freeFrameList.pop_back();
@@ -60,6 +59,9 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 
 	// Update the process frame indices
 	processAddress->setFrameIndices(frameIndices);
+
+	// Include the process in the process list
+	processList.insert(processAddress->getPID());
 
 	// Return the starting memory address of the process
 	return frameIndices[0] * memPerFrame;
@@ -82,12 +84,11 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 	}
 
 	// Deallocate frames from the process
-	while (numFramesRequired > 0)
+	for (size_t i = 0; i < numFramesRequired; ++i)
 	{
 		// Deallocate the frame from the process
 		size_t frameIndex = frameIndices.back();
 		frameIndices.pop_back();
-		--numFramesRequired;
 
 		// Update the memory allocation map
 		freeFrameList.push_back(frameIndex);
@@ -97,6 +98,9 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 
 	// Update the process frame indices
 	processAddress->setFrameIndices(frameIndices);
+
+	// Remove the process from the process list
+	processList.erase(processAddress->getPID());
 
 	// Reset the memory address index of the process
 	processAddress->setMemoryAddressIndex(-1);

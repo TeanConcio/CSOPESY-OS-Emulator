@@ -68,10 +68,17 @@ String MemoryManagementUnit::makeMemoryStampString()
 	size_t externalFragmentation = MemoryManagementUnit::getExternalFragmentation();
 	size_t maxMemorySize = MemoryManagementUnit::getMaxMemorySize();
 
+	// If PagingAllocator, numProcessesInMemory = processList.size()
+	if (sharedInstance->memoryAllocator->allocationAlgo == AMemoryAllocator::AllocationAlgorithm::Paging)
+	{
+		numProcessesInMemory = static_cast<PagingAllocator*>(sharedInstance->memoryAllocator)->getProcessList().size();
+	}
+
 	// Get data from processes in memory
 	std::vector<size_t> indicesVector;
 	std::vector<size_t> memoryRequiredVector;
 	std::vector<String> asciiVector;
+	std::vector<std::vector<size_t>> framesVector;
 
 	// Loop through the processes in memory in allocatedProcesses
 	for (const auto& pair : MemoryManagementUnit::getAllocatedProcessesMap()) {
@@ -81,6 +88,7 @@ String MemoryManagementUnit::makeMemoryStampString()
 		indicesVector.push_back(lastProcessIndex);
 		memoryRequiredVector.push_back(lastProcessIndex + process->getMemoryRequired());
 		asciiVector.push_back(process->getName());
+		framesVector.push_back(process->getFrameIndices());
 	}
 
 	
@@ -98,6 +106,10 @@ String MemoryManagementUnit::makeMemoryStampString()
 		ss << memoryRequiredVector[i] << "\n";
 		ss << asciiVector[i] << "\n";
 		ss << indicesVector[i] << "\n";
+		for (size_t frame : framesVector[i]) {
+			ss << frame << " ";
+		}
+		ss << "\n";
 		ss << "\n";
 	}
 
