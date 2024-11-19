@@ -27,6 +27,7 @@ public:
 	static size_t getMaxMemorySize() { return sharedInstance->memoryAllocator->maxMemorySize; }
 	static size_t getExternalFragmentation() { return sharedInstance->memoryAllocator->getExternalFragmentation(); }
 	static std::map<size_t, std::shared_ptr<Process>> getAllocatedProcessesMap() { return sharedInstance->memoryAllocator->allocatedProcesses; }
+	static size_t getNumUniqueAllocatedProcesses() { return sharedInstance->memoryAllocator->getNumUniqueAllocatedProcesses(); }
 
 private:
 	// Singleton private

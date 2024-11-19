@@ -64,15 +64,9 @@ void MemoryManagementUnit::setDefaultConfigs()
 String MemoryManagementUnit::makeMemoryStampString()
 {
 	// Get values to save state
-	size_t numProcessesInMemory = MemoryManagementUnit::getAllocatedProcessesMap().size();
+	size_t numProcessesInMemory = MemoryManagementUnit::getNumUniqueAllocatedProcesses();
 	size_t externalFragmentation = MemoryManagementUnit::getExternalFragmentation();
 	size_t maxMemorySize = MemoryManagementUnit::getMaxMemorySize();
-
-	// If PagingAllocator, numProcessesInMemory = processList.size()
-	if (sharedInstance->memoryAllocator->allocationAlgo == AMemoryAllocator::AllocationAlgorithm::Paging)
-	{
-		numProcessesInMemory = static_cast<PagingAllocator*>(sharedInstance->memoryAllocator)->getProcessList().size();
-	}
 
 	// Get data from processes in memory
 	std::vector<size_t> indicesVector;

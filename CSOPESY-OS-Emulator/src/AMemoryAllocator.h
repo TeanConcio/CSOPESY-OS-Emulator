@@ -26,6 +26,7 @@ public:
 	// Getters
 	size_t getMaxMemorySize() { return maxMemorySize; }
 	size_t getExternalFragmentation();
+	size_t getNumUniqueAllocatedProcesses();
 	
 protected:
 	AllocationAlgorithm allocationAlgo;
