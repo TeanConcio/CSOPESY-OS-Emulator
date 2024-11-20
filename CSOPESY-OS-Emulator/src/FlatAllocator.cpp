@@ -1,6 +1,7 @@
 #include "FlatAllocator.h"
 
 #include "Process.h"
+#include "GlobalScheduler.h"
 
 
 FlatAllocator::FlatAllocator(size_t maxMemorySize) : AMemoryAllocator(maxMemorySize, AMemoryAllocator::AllocationAlgorithm::Flat)
@@ -80,9 +81,36 @@ size_t FlatAllocator::allocate(std::shared_ptr<Process> processAddress)
 	{
 		if (canAllocateAt(i, processAddress->getMemoryRequired()))
 		{
+			// Remove if process is in backing store
+			this->getFromBackingStore(processAddress);
+
+			// Allocate the memory
 			processAddress->setMemoryAddressIndex(i);
 			this->allocatedProcesses[i] = processAddress;
+			this->allocatedProcessesAge.push_back(processAddress);
 			return allocateAt(processAddress, i);
+		}
+	}
+
+	// If no memory is available
+
+	// For each oldest process
+	for (size_t i = 0; i < allocatedProcessesAge.size(); ++i)
+	{
+		// Get the oldest process
+		std::shared_ptr<Process> oldestProcess = allocatedProcessesAge[i];
+
+		// Check if the oldest process is not being used
+		if (GlobalScheduler::isCoreUsingProcess(oldestProcess) == false)
+		{
+			// Put oldest process into backing store
+			this->moveToBackingStore(oldestProcess);
+
+			// Deallocate the oldest process
+			deallocate(oldestProcess);
+
+			// Allocate the memory
+			return allocate(processAddress);
 		}
 	}
 
@@ -112,4 +140,5 @@ void FlatAllocator::deallocate(std::shared_ptr<Process> processAddress)
 	deallocateAt(index, processAddress->getMemoryRequired());
 	processAddress->setMemoryAddressIndex(-1);
 	this->allocatedProcesses.erase(index);
+	this->allocatedProcessesAge.erase(std::remove(allocatedProcessesAge.begin(), allocatedProcessesAge.end(), processAddress), allocatedProcessesAge.end());
 }

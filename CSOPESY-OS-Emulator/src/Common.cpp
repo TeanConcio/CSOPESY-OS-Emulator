@@ -4,6 +4,10 @@
 #include <sys/stat.h>  // For mkdir
 #include <direct.h>    // For _mkdir on Windows
 
+
+const String Common::OUTPUT_DIRECTORY = "file_outputs";
+
+
 // Helper functions here
 
 //  From the string, each part is separated into a vector (special list), removes all whitespaces
@@ -97,20 +101,53 @@ bool Common::isPowerOfTwo(const unsigned int num)
 	return (num & (num - 1)) == 0;
 }
 
+
+/**
+* Ensure a directory exists
+*/
+bool Common::ensureDirectoryExists(const String& path)
+{
+#ifdef _WIN32
+	return _mkdir(path.c_str()) == 0;
+#else
+	return mkdir(path.c_str(), 0777) == 0;
+#endif
+}
+
+
+/**
+* Read a file into a string
+*/
+bool Common::readFromFile(const String& filename, String& text)
+{
+	// Ensure the directory exists
+	Common::ensureDirectoryExists(Common::OUTPUT_DIRECTORY);
+
+	std::ifstream file(Common::OUTPUT_DIRECTORY + "\\" + filename, std::ios::in);
+
+	if (file.is_open())
+	{
+		std::stringstream buffer;
+		buffer << file.rdbuf();
+		text = buffer.str();
+		file.close();
+
+		return true;
+	}
+	else
+		return false;
+}
+
+
 /**
 * Write a string to a file
 */
 bool Common::writeToFile(const String& filename, const String& text)
 {
 	// Ensure the directory exists
-	const String directory = "file_outputs";
-#ifdef _WIN32
-	_mkdir(directory.c_str());
-#else
-	mkdir(directory.c_str(), 0777);
-#endif
+	Common::ensureDirectoryExists(Common::OUTPUT_DIRECTORY);
 
-	std::ofstream file(directory + "\\" + filename, std::ios::out);
+	std::ofstream file(Common::OUTPUT_DIRECTORY + "\\" + filename, std::ios::out);
 
 	if (file.is_open())
 	{

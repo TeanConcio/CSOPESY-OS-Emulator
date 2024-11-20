@@ -1,21 +1,24 @@
 #include "PagingAllocator.h"
 
 #include "Process.h"
+#include "GlobalScheduler.h"
+
 
 /**
 * Constructor for PagingAllocator class
 * @param maxMemorySize Maximum memory size
-* @param memPerFrame Memory size per frame
+* @param frameSize Memory size per frame
 */
 PagingAllocator::PagingAllocator(size_t maxMemorySize, size_t memPerFrame)
 	: AMemoryAllocator(maxMemorySize, AllocationAlgorithm::Paging)
 {
 	this->numFrames = maxMemorySize / memPerFrame;
-	this->memPerFrame = memPerFrame;
+	this->frameSize = memPerFrame;
 	// Initialize the free frame list (each value = frame index)
 	this->freeFrameList.resize(numFrames);
 	std::iota(freeFrameList.begin(), freeFrameList.end(), 0);
 }
+
 
 /**
 * Destructor for PagingAllocator class
@@ -25,44 +28,70 @@ PagingAllocator::~PagingAllocator()
 	freeFrameList.clear();
 }
 
+
 size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
 	// Get the frame indices currently allocated to the process
 	std::vector<size_t> frameIndices = processAddress->getFrameIndices();
-	size_t numFramesRequired = processAddress->getMemoryRequired() / memPerFrame;
+	size_t numFramesRequired = processAddress->getMemoryRequired() / frameSize;
 
 	// Check if the process is already allocated the required frames
 	if (!frameIndices.empty() &&
 		frameIndices.size() == numFramesRequired)
 	{
-		return frameIndices[0] * memPerFrame;
+		return frameIndices[0] * frameSize;
 	}
 
-	// Check if there are enough free frames to allocate to the process
+	// Check if there are not enough free frames to allocate to the process
 	if (freeFrameList.size() < numFramesRequired)
 	{
-		return -1;
+		// For each oldest process
+		for (size_t i = 0; i < allocatedProcessesAge.size(); ++i)
+		{
+			// Get the oldest process
+			std::shared_ptr<Process> oldestProcess = allocatedProcessesAge[i];
+
+			// Check if the oldest process is not being used
+			if (GlobalScheduler::isCoreUsingProcess(oldestProcess) == false)
+			{
+				// Put oldest process into backing store
+				this->moveToBackingStore(oldestProcess);
+
+				// Deallocate the oldest process
+				deallocate(oldestProcess);
+
+				// Allocate the memory
+				return allocate(processAddress);
+			}
+		}
 	}
 
 	// Allocate frames to the process
 	for (size_t i = 0; i < numFramesRequired; ++i)
 	{
 		// Allocate the frame to the process
-		size_t frameIndex = freeFrameList.back();
+		size_t frameIndex = freeFrameList.front();
 		frameIndices.push_back(frameIndex);
 
 		// Update the memory allocation map 
-		freeFrameList.pop_back();
+		freeFrameList.erase(freeFrameList.begin());
 		allocatedProcesses[frameIndex] = processAddress;
-		allocatedSize += memPerFrame;
+		allocatedSize += frameSize;
 	}
 
 	// Update the process frame indices
 	processAddress->setFrameIndices(frameIndices);
+	
+	// Add process to process age vector
+	allocatedProcessesAge.push_back(processAddress);
+
+	// Remove if process is in backing store
+	this->getFromBackingStore(processAddress);
 
 	// Return the starting memory address of the process
-	return frameIndices[0] * memPerFrame;
+	return frameIndices[0] * frameSize;
 }
+
 
 /**
 * Deallocate memory from the process
@@ -72,7 +101,7 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 {
 	// Get the frame indices currently allocated to the process
 	std::vector<size_t> frameIndices = processAddress->getFrameIndices();
-	size_t numFramesRequired = processAddress->getMemoryRequired() / memPerFrame;
+	size_t numFramesRequired = processAddress->getMemoryRequired() / frameSize;
 
 	// Check if the process is already deallocated
 	if (frameIndices.empty())
@@ -84,17 +113,20 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 	for (size_t i = 0; i < numFramesRequired; ++i)
 	{
 		// Deallocate the frame from the process
-		size_t frameIndex = frameIndices.back();
-		frameIndices.pop_back();
+		size_t frameIndex = frameIndices.front();
+		frameIndices.erase(frameIndices.begin());
 
 		// Update the memory allocation map
 		freeFrameList.push_back(frameIndex);
 		allocatedProcesses.erase(frameIndex);
-		allocatedSize -= memPerFrame;
+		allocatedSize -= frameSize;
 	}
 
 	// Update the process frame indices
 	processAddress->setFrameIndices(frameIndices);
+
+	// Remove process to process age vector
+	allocatedProcessesAge.erase(std::remove(allocatedProcessesAge.begin(), allocatedProcessesAge.end(), processAddress), allocatedProcessesAge.end());
 
 	// Reset the memory address index of the process
 	processAddress->setMemoryAddressIndex(-1);

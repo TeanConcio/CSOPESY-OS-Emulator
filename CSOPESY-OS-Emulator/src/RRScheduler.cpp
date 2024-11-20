@@ -60,12 +60,12 @@ void RRScheduler::run()
 					hasRunnableProcesses = this->assignNextQueuedProcess(core);
 				}
 
-				// Temp???
-				if (core->getCoreNo() == 0) {
+				// Temp: For memory stamping
+				/*if (core->getCoreNo() == 0) {
 					currentQuantumCycle++;
 					String memoryStampFilename = "memory_stamp_" + std::to_string(currentQuantumCycle) + ".txt";
 					Common::writeToFile(memoryStampFilename, MemoryManagementUnit::makeMemoryStampString());
-				}
+				}*/
 
 				// Reset the quantum cycle
 				core->resetQuantumCycle();

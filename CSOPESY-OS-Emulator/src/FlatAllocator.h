@@ -17,6 +17,8 @@ public:
 	size_t allocate(std::shared_ptr<Process> processAddress) override;
 	void deallocate(std::shared_ptr<Process> processAddress) override;
 
+	size_t getFrameSize() const override { return maxMemorySize; }
+
 
 private:
 	std::vector<bool> allocationMap;

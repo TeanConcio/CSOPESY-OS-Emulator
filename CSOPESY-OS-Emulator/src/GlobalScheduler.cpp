@@ -202,3 +202,16 @@ std::vector<std::shared_ptr<CPUCoreThread>> GlobalScheduler::getRunningCores()
 	}
 	return runningCores;
 }
+
+
+bool GlobalScheduler::isCoreUsingProcess(std::shared_ptr<Process> process)
+{
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		if (sharedInstance->coreThreads[i]->getCurrentProcess() == process)
+		{
+			return true;
+		}
+	}
+	return false;
+}

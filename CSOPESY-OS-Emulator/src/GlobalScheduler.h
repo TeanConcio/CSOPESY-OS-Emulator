@@ -34,6 +34,7 @@ public:
 	static std::vector<std::shared_ptr<CPUCoreThread>> getFinishedCores();
 	static std::vector<std::shared_ptr<CPUCoreThread>> getEmptyCores();
 	static std::vector<std::shared_ptr<CPUCoreThread>> getRunningCores();
+	static bool isCoreUsingProcess(std::shared_ptr<Process> process);
 
 	// Configurations
 	bool hasInitialized() const { return this != nullptr && this->scheduler != nullptr; }

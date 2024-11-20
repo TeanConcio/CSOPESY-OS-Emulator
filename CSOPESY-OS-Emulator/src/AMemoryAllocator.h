@@ -23,15 +23,23 @@ public:
 	virtual size_t allocate(std::shared_ptr<Process> processAddress) = 0;
 	virtual void deallocate(std::shared_ptr<Process> processAddress) = 0;
 
+	// Backing store
+	virtual int checkExistsInBackingStore(std::shared_ptr<Process> processAddress, bool deleteStore) const;
+	virtual void moveToBackingStore(std::shared_ptr<Process> processAddress) const;
+	virtual std::shared_ptr<Process> getFromBackingStore(std::shared_ptr<Process> processAddress) const;
+
 	// Getters
-	size_t getMaxMemorySize() { return maxMemorySize; }
-	size_t getExternalFragmentation();
-	size_t getNumUniqueAllocatedProcesses();
+	size_t getMaxMemorySize() const { return maxMemorySize; }
+	virtual size_t getFrameSize() const = 0;
+	size_t getExternalFragmentation() const { return maxMemorySize - allocatedSize; }
+	size_t getNumUniqueAllocatedProcesses() const;
 	
 protected:
 	AllocationAlgorithm allocationAlgo;
 
 	size_t maxMemorySize;
 	size_t allocatedSize = 0;
+
 	std::map<size_t, std::shared_ptr<Process>> allocatedProcesses;
+	std::vector<std::shared_ptr<Process>> allocatedProcessesAge;
 };
