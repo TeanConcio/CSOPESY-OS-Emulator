@@ -33,6 +33,7 @@ public:
 	virtual size_t getFrameSize() const = 0;
 	size_t getExternalFragmentation() const { return maxMemorySize - allocatedSize; }
 	size_t getNumUniqueAllocatedProcesses() const;
+	size_t getUsedMemorySize() const { return allocatedSize; }
 	
 protected:
 	AllocationAlgorithm allocationAlgo;
