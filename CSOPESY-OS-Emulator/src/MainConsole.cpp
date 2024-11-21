@@ -120,6 +120,25 @@ void MainConsole::decideCommand(const String& command) {
 			this->writeToConsoleHistory("Switching to MARQUEE_CONSOLE\n");
 			ConsoleManager::getInstance()->switchScreen("MARQUEE_CONSOLE");
 		}
+		else if (commandParts[0] == "vmstat") {
+			// Placeholder values for demonstration purposes
+			int idleCpuTicks = 100000;
+			int activeCpuTicks = 50000;
+			int totalCpuTicks = 150000;
+			int pagesPagedIn = 200;
+			int pagesPagedOut = 150;
+
+			int maxWidth = 10; // Adjust this value based on your needs
+
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getMaxMemorySize()), 'r', false) + " K total memory\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getUsedMemorySize()), 'r', false) + " K used memory\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string((MemoryManagementUnit::getInstance()->getMaxMemorySize()) - (MemoryManagementUnit::getInstance()->getUsedMemorySize())), 'r', false) + " K free memory\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(idleCpuTicks), 'r', false) + " idle cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(activeCpuTicks), 'r', false) + " active cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(totalCpuTicks), 'r', false) + " total cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedIn), 'r', false) + " pages paged in\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedOut), 'r', false) + " pages paged out\n");
+		}
 		else
 		{
 			this->commandNotFound(command);
