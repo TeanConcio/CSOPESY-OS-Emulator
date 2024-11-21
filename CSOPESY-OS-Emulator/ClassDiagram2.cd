@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="dye::colorful&lt;T&gt;" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAABAAAAAAAEAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\color.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dye::item&lt;T&gt;" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAIQAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>include\color.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AScheduler" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBgAAAAAAAACBAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>src\AScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FCFSScheduler" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\FCFSScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RRScheduler" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\RRScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAhAAAABAACUAAEAAAAAAQAQAAAAgAAAAAAA=</HashCode>
+      <FileName>src\Config.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAABCAAAAAQBAIAAAAAAAAAAAAQAAAAABAAAAAA=</HashCode>
+      <FileName>src\Common.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleManager" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABCCEQBAAMEAAEIRBEhAAAQEAAAgCBQCACA=</HashCode>
+      <FileName>src\ConsoleManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlobalScheduler" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACgAAABAAAABIgAEQgEgIEAgAAA1AAACoAAABBAA=</HashCode>
+      <FileName>src\GlobalScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemoryManagementUnit" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAABAEBAAAwAAAQEwAEAIEAAAAERAAgAgAAEAACA=</HashCode>
+      <FileName>src\MemoryManagementUnit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessManager" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAABABRAAAEAgGIEwAEJAckYCAAVDAAAgAAAoAQA=</HashCode>
+      <FileName>src\ProcessManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ICommand" Collapsed="true">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAIAAAAIAAAAEBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\ICommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IOCommand" Collapsed="true">
+    <Position X="5.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\IOCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrintCommand" Collapsed="true">
+    <Position X="7.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAEAAAEAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\PrintCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Process" Collapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgAAAgAOAIAAQqAJkAEBEoAABAGCAAAxgAEAAAAAAw=</HashCode>
+      <FileName>src\Process.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AConsole" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAgCAACAAAAAAIgAAAIMAAGEAAAAAAAIACCQAgA=</HashCode>
+      <FileName>src\AConsole.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseScreen" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAgAAAIAAAECIAAAAAAIAAAQAAA=</HashCode>
+      <FileName>src\BaseScreen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainConsole" Collapsed="true">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAgAAAAAAAAAAAkACAIAAAEAAAQAAAAAAiASAAA=</HashCode>
+      <FileName>src\MainConsole.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MarqueeConsole" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEQAHAAgGBgQAAGoAQBIAAEmEYAACAAAIAAAwAAA=</HashCode>
+      <FileName>src\MarqueeConsole.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPUCoreThread" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACgACAAAAKgAACAAAAAAIAAAAAQCAAAgEAAAAAAA=</HashCode>
+      <FileName>src\CPUCoreThread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IETThread" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAIAAEgAAAIAAAAQAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\IETThread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PagingAllocator" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAQAAEAAQAQAABAAEAAAAAgAIAAAAAgAAAAABAAA=</HashCode>
+      <FileName>src\PagingAllocator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AMemoryAllocator" Collapsed="true">
+    <Position X="1.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BASAAAEQEAAAEQAAAQAAAAAAAAACAEAABwIAAgEAASA=</HashCode>
+      <FileName>src\AMemoryAllocator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlatAllocator" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAEAAABAAAAAAAAABAAAIAAAAChgAAAAAAAAA=</HashCode>
+      <FileName>src\FlatAllocator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

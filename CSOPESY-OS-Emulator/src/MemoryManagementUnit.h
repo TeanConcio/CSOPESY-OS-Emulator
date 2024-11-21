@@ -30,6 +30,9 @@ public:
 	static std::map<size_t, std::shared_ptr<Process>> getAllocatedProcessesMap() { return sharedInstance->memoryAllocator->allocatedProcesses; }
 	static size_t getNumUniqueAllocatedProcesses() { return sharedInstance->memoryAllocator->getNumUniqueAllocatedProcesses(); }
 	static size_t getUsedMemorySize() { return sharedInstance->memoryAllocator->getUsedMemorySize(); }
+	int getPagesPagedIn() const { return memoryAllocator->getPagesPagedIn(); }
+	int getPagesPagedOut() const { return memoryAllocator->getPagesPagedOut(); }
+
 private:
 	// Singleton private
 	// Private constructor so that no objects can be created.

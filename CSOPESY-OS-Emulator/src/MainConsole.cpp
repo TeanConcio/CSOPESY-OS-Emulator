@@ -125,8 +125,6 @@ void MainConsole::decideCommand(const String& command) {
 			int idleCpuTicks = 100000;
 			int activeCpuTicks = 50000;
 			int totalCpuTicks = 150000;
-			int pagesPagedIn = 200;
-			int pagesPagedOut = 150;
 
 			int maxWidth = 10; // Adjust this value based on your needs
 
@@ -136,8 +134,8 @@ void MainConsole::decideCommand(const String& command) {
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(idleCpuTicks), 'r', false) + " idle cpu ticks\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(activeCpuTicks), 'r', false) + " active cpu ticks\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(totalCpuTicks), 'r', false) + " total cpu ticks\n");
-			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedIn), 'r', false) + " pages paged in\n");
-			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedOut), 'r', false) + " pages paged out\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedIn()), 'r', false) + " pages paged in\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedOut()), 'r', false) + " pages paged out\n");
 		}
 		else
 		{

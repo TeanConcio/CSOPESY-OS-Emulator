@@ -15,10 +15,15 @@ public:
 
 	size_t getFrameSize() const override { return frameSize; }
 
+	int getPagesPagedIn() const;
+	int getPagesPagedOut() const;
 
 private:
 	size_t numFrames; // Number of frames in the memory
 	size_t frameSize; // Size of each frame
 
 	std::vector<size_t> freeFrameList; // Indices of free frames in the memory
+
+	int pagesPagedIn;
+	int pagesPagedOut;
 };

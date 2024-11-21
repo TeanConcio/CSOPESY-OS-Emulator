@@ -10,7 +10,9 @@
 * @param frameSize Memory size per frame
 */
 PagingAllocator::PagingAllocator(size_t maxMemorySize, size_t memPerFrame)
-	: AMemoryAllocator(maxMemorySize, AllocationAlgorithm::Paging)
+	: AMemoryAllocator(maxMemorySize, AllocationAlgorithm::Paging),
+	pagesPagedIn(0), // Initialize pagesPagedIn
+	pagesPagedOut(0) // Initialize pagesPagedOut
 {
 	this->numFrames = maxMemorySize / memPerFrame;
 	this->frameSize = memPerFrame;
@@ -56,6 +58,7 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 			{
 				// Put oldest process into backing store
 				this->moveToBackingStore(oldestProcess);
+				pagesPagedOut += static_cast<int>(frameIndices.size());
 
 				// Deallocate the oldest process
 				deallocate(oldestProcess);
@@ -87,6 +90,7 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 
 	// Remove if process is in backing store
 	this->getFromBackingStore(processAddress);
+	pagesPagedIn += static_cast<int>(numFramesRequired);
 
 	// Return the starting memory address of the process
 	return frameIndices[0] * frameSize;
@@ -130,4 +134,12 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 
 	// Reset the memory address index of the process
 	processAddress->setMemoryAddressIndex(-1);
+}
+
+int PagingAllocator::getPagesPagedIn() const {
+	return pagesPagedIn;
+}
+
+int PagingAllocator::getPagesPagedOut() const {
+	return pagesPagedOut;
 }
