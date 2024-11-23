@@ -17,7 +17,6 @@ public:
 
 	int getPagesPagedIn() const;
 	int getPagesPagedOut() const;
-	int getTotalCpuTicks() const;
 
 private:
 	size_t numFrames; // Number of frames in the memory
@@ -27,5 +26,4 @@ private:
 
 	int pagesPagedIn;
 	int pagesPagedOut;
-	int totalCpuTicks;
 };

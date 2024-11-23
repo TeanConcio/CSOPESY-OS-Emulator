@@ -11,9 +11,8 @@
 */
 PagingAllocator::PagingAllocator(size_t maxMemorySize, size_t memPerFrame)
 	: AMemoryAllocator(maxMemorySize, AllocationAlgorithm::Paging),
-	pagesPagedIn(0),
-	pagesPagedOut(0),
-	totalCpuTicks(0)
+	pagesPagedIn(0), // Initialize pagesPagedIn
+	pagesPagedOut(0) // Initialize pagesPagedOut
 {
 	this->numFrames = maxMemorySize / memPerFrame;
 	this->frameSize = memPerFrame;
@@ -34,9 +33,6 @@ PagingAllocator::~PagingAllocator()
 
 size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
-	// Increment the CPU ticks counter
-	totalCpuTicks++;
-
 	// Get the frame indices currently allocated to the process
 	std::vector<size_t> frameIndices = processAddress->getFrameIndices();
 	size_t numFramesRequired = processAddress->getMemoryRequired() / frameSize;
@@ -146,8 +142,4 @@ int PagingAllocator::getPagesPagedIn() const {
 
 int PagingAllocator::getPagesPagedOut() const {
 	return pagesPagedOut;
-}
-
-int PagingAllocator::getTotalCpuTicks() const {
-	return totalCpuTicks;
 }

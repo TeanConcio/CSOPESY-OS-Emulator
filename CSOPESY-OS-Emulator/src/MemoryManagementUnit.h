@@ -32,7 +32,6 @@ public:
 	static size_t getUsedMemorySize() { return sharedInstance->memoryAllocator->getUsedMemorySize(); }
 	int getPagesPagedIn() const { return memoryAllocator->getPagesPagedIn(); }
 	int getPagesPagedOut() const { return memoryAllocator->getPagesPagedOut(); }
-	int getTotalCpuTicks() const { return memoryAllocator->getTotalCpuTicks(); }
 
 private:
 	// Singleton private
