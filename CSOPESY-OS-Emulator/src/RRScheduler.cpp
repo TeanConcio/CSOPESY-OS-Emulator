@@ -10,6 +10,9 @@
 void RRScheduler::run()
 {
 	do {
+		// Increment the total CPU ticks counter
+		GlobalScheduler::incrementCpuTicks();
+
 		// Get the cores that have finished processes
 		std::vector<std::shared_ptr<CPUCoreThread>> finishedCores = GlobalScheduler::getFinishedCores();
 		// For each core that has finished a process
@@ -26,6 +29,7 @@ void RRScheduler::run()
 
 		// Get the cores that are not running a process
 		std::vector<std::shared_ptr<CPUCoreThread>> emptyCores = GlobalScheduler::getEmptyCores();
+		bool anyProcessAssigned = false;
 		// For each core that is not running a process
 		for (std::shared_ptr<CPUCoreThread> core : emptyCores)
 		{
@@ -40,6 +44,9 @@ void RRScheduler::run()
 
 				core->resetQuantumCycle();
 			}
+		}
+		if (!anyProcessAssigned) {
+			GlobalScheduler::incrementIdleCpuTicks();
 		}
 
 		// Get the cores that are running a process
@@ -70,6 +77,7 @@ void RRScheduler::run()
 				// Reset the quantum cycle
 				core->resetQuantumCycle();
 			}
+			else { GlobalScheduler::incrementActiveCpuTicks(); }
 		}
 
 		// Create a new process

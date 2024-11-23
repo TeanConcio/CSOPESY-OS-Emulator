@@ -131,9 +131,9 @@ void MainConsole::decideCommand(const String& command) {
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getMaxMemorySize()), 'r', false) + " K total memory\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getUsedMemorySize()), 'r', false) + " K used memory\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string((MemoryManagementUnit::getInstance()->getMaxMemorySize()) - (MemoryManagementUnit::getInstance()->getUsedMemorySize())), 'r', false) + " K free memory\n");
-			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(idleCpuTicks), 'r', false) + " idle cpu ticks\n");
-			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(activeCpuTicks), 'r', false) + " active cpu ticks\n");
-			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(totalCpuTicks), 'r', false) + " total cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getIdleCpuTicks()), 'r', false) + " idle cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getActiveCpuTicks()), 'r', false) + " active cpu ticks\n");
+			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getTotalCpuTicks()), 'r', false) + " total cpu ticks\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedIn()), 'r', false) + " pages paged in\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedOut()), 'r', false) + " pages paged out\n");
 		}
