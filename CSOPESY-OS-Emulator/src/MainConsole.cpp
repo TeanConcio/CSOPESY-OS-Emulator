@@ -137,6 +137,9 @@ void MainConsole::decideCommand(const String& command) {
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedIn()), 'r', false) + " pages paged in\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedOut()), 'r', false) + " pages paged out\n");
 		}
+		else if (commandParts[0] == "process-smi") {
+			this->printProcessInfo();
+		}
 		else
 		{
 			this->commandNotFound(command);
@@ -262,4 +265,29 @@ void MainConsole::reportUtil() {
 	else
 		this->writeToConsoleHistory("Unable to create log file.\n");
 
+}
+
+void MainConsole::printProcessInfo() {
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	this->writeToConsoleHistory("| PROCESS-SMI V01.00 Driver Version: 01.00 |\n"); // TBC: Where to get the version?
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	this->writeToConsoleHistory("CPU-Util: " + std::to_string(GlobalScheduler::getRunningCoreCount() * 100 / GlobalScheduler::getCoreCount()) + "%\n");
+
+	// Calculate memory usage by summing up the memory required by running processes
+	ProcessManager::getMemoryUsagePerProcess();
+	size_t totalMemoryUsed = ProcessManager::getInstance()->getTotalMemoryUsed();
+
+	// Set precision for memory usage
+	std::stringstream memoryUsageStream;
+	memoryUsageStream << std::fixed << std::setprecision(0)
+		<< static_cast<double>(totalMemoryUsed) / (1024) << " MiB / "
+		<< static_cast<double>(MemoryManagementUnit::getInstance()->getMaxMemorySize()) / (1024) << " MiB\n";
+	this->writeToConsoleHistory("Memory Usage: " + memoryUsageStream.str());
+
+	this->writeToConsoleHistory("Memory Util: " + std::to_string(totalMemoryUsed * 100 / MemoryManagementUnit::getInstance()->getMaxMemorySize()) + "%\n\n");
+
+	this->writeToConsoleHistory("===========================================\n");
+	this->writeToConsoleHistory("Running Processes and memory usage:\n");
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	this->writeToConsoleHistory(ProcessManager::getMemoryUsagePerProcess() + "\n");
 }

@@ -28,4 +28,5 @@ private:
 	void schedulerStop();
 	void listProcesses();
 	void reportUtil();
+	void printProcessInfo();
 };
