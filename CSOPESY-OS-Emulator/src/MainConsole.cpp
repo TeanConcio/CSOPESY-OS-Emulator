@@ -121,10 +121,6 @@ void MainConsole::decideCommand(const String& command) {
 			ConsoleManager::getInstance()->switchScreen("MARQUEE_CONSOLE");
 		}
 		else if (commandParts[0] == "vmstat") {
-			// Placeholder values for demonstration purposes
-			int idleCpuTicks = 100000;
-			int activeCpuTicks = 50000;
-			int totalCpuTicks = 150000;
 
 			int maxWidth = 10; // Adjust this value based on your needs
 
