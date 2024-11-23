@@ -209,6 +209,8 @@ void MainConsole::help() {
 	this->writeToConsoleHistory("\tscheduler-stop : Stops the scheduler\n");
 	this->writeToConsoleHistory("\treport-util : Generates a report\n");
 	this->writeToConsoleHistory("\tmarquee : Open a threaded marquee console\n");
+	this->writeToConsoleHistory("\tvmstat : Displays processes, memory details, and page info.\n");
+	this->writeToConsoleHistory("\tprocess-smi : Displays memory usage summary.\n");
 	this->writeToConsoleHistory("\texit : Terminates the console.\n");
 
 }
