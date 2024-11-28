@@ -191,3 +191,7 @@ std::shared_ptr<Process> AMemoryAllocator::getFromBackingStore(std::shared_ptr<P
 		return processAddress;
 	}
 }
+
+const std::map<size_t, std::shared_ptr<Process>>& AMemoryAllocator::getAllocatedProcessesMap() const {
+	return allocatedProcesses;
+}

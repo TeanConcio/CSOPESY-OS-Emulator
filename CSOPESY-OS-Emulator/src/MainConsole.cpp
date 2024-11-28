@@ -133,6 +133,9 @@ void MainConsole::decideCommand(const String& command) {
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedIn()), 'r', false) + " pages paged in\n");
 			this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedOut()), 'r', false) + " pages paged out\n");
 		}
+		else if (commandParts[0] == "process-smi") {
+			this->printProcessInfo();
+		}
 		else
 		{
 			this->commandNotFound(command);
@@ -202,6 +205,8 @@ void MainConsole::help() {
 	this->writeToConsoleHistory("\tscheduler-stop : Stops the scheduler\n");
 	this->writeToConsoleHistory("\treport-util : Generates a report\n");
 	this->writeToConsoleHistory("\tmarquee : Open a threaded marquee console\n");
+	this->writeToConsoleHistory("\tvmstat : Displays processes, memory details, and page info.\n");
+	this->writeToConsoleHistory("\tprocess-smi : Displays memory usage summary.\n");
 	this->writeToConsoleHistory("\texit : Terminates the console.\n");
 
 }
@@ -258,4 +263,52 @@ void MainConsole::reportUtil() {
 	else
 		this->writeToConsoleHistory("Unable to create log file.\n");
 
+}
+
+void MainConsole::printProcessInfo() {
+
+	std::vector<String> processNameVector;
+	std::vector<size_t> processMemoryUsageVector;
+	size_t totalMemoryUsed = 0;
+	size_t runningCoreCount = 0;
+
+	// Loop through running cores and get the name and memory usage of the process
+	for (std::shared_ptr<CPUCoreThread> coreThread : GlobalScheduler::getRunningCores())
+	{
+		std::shared_ptr<Process> process = coreThread->getCurrentProcess();
+		if (process != nullptr && process->getState() != Process::ProcessState::FINISHED)
+		{
+			processNameVector.push_back(process->getName());
+
+			// If memory allocator is flat, get the memory required by the process
+			// Else, get the memory required by the process in frames
+			size_t memoryUsed;
+			if (MemoryManagementUnit::getMemoryAllocatorType() == AMemoryAllocator::AllocationAlgorithm::Flat)
+				memoryUsed = process->getMemoryRequired();
+			else
+				memoryUsed = process->getFrameIndices().size() * MemoryManagementUnit::getFrameSize();
+
+			processMemoryUsageVector.push_back(memoryUsed);
+			totalMemoryUsed += memoryUsed;
+			runningCoreCount++;
+		}
+	}
+
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	this->writeToConsoleHistory("| PROCESS-SMI V01.00 Driver Version: 01.00 |\n"); // TBC: Where to get the version?
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	this->writeToConsoleHistory("CPU-Util: " + std::to_string(runningCoreCount * 100 / GlobalScheduler::getCoreCount()) + "%\n");
+	this->writeToConsoleHistory("Memory Usage: " + std::to_string(totalMemoryUsed) + "MiB / " + std::to_string(MemoryManagementUnit::getMaxMemorySize()) + "MiB\n");
+	this->writeToConsoleHistory("Memory Util: " + std::to_string(totalMemoryUsed * 100 / MemoryManagementUnit::getMaxMemorySize()) + "%\n\n");
+
+	this->writeToConsoleHistory("===========================================\n");
+	this->writeToConsoleHistory("Running Processes and memory usage:\n");
+	this->writeToConsoleHistory("-------------------------------------------\n");
+	
+	for (size_t i = 0; i < processNameVector.size(); i++)
+	{
+		this->writeToConsoleHistory(processNameVector[i] + " " + std::to_string(processMemoryUsageVector[i]) + "MiB\n");
+	}
+
+	this->writeToConsoleHistory("-------------------------------------------\n");
 }

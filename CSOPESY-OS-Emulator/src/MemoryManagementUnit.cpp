@@ -112,3 +112,18 @@ String MemoryManagementUnit::makeMemoryStampString()
 
 	return ss.str();
 }
+
+size_t MemoryManagementUnit::getProcessMemoryUsage(const std::string& processName) {
+	size_t totalMemory = 0;
+
+	// Iterate through the allocated processes in normal order
+	for (const auto& pair : sharedInstance->memoryAllocator->getAllocatedProcessesMap()) {
+		std::shared_ptr<Process> process = pair.second;
+		if (process->getName() == processName) {
+			totalMemory = process->getMemoryRequired();
+			return totalMemory;
+		}
+	}
+
+	return totalMemory;
+}

@@ -273,3 +273,32 @@ String ProcessManager::makeListProcessesString()
 
 	return ss.str();
 }
+
+//String ProcessManager::getMemoryUsagePerProcess() {
+//	std::stringstream ss;
+//	sharedInstance->totalMemoryUsed = 0; // Reset total memory used
+//
+//	for (int coreNo = 0; coreNo < GlobalScheduler::getCoreCount(); ++coreNo) {
+//		std::shared_ptr<CPUCoreThread> coreThread = GlobalScheduler::getCoreThread(coreNo);
+//		if (coreThread == nullptr)
+//			continue;
+//
+//		std::shared_ptr<Process> process = coreThread->getCurrentProcess();
+//		if (process != nullptr && process->getState() != Process::ProcessState::FINISHED) {
+//			// Get memory usage in bytes for the current process using its name
+//			size_t memoryUsageBytes = MemoryManagementUnit::getProcessMemoryUsage(process->getName());
+//			double memoryUsageMiB = static_cast<double>(memoryUsageBytes) / 1024.0;
+//
+//			// Add to total memory used
+//			sharedInstance->totalMemoryUsed += memoryUsageBytes;
+//
+//			// Format and append the process name and memory usage
+//			ss << process->getName() << " " << std::fixed << std::setprecision(0) << memoryUsageMiB << " MiB\n";
+//		}
+//	}
+//
+//	if (ss.str().empty())
+//		return "No Running Processes\n";
+//
+//	return ss.str();
+//}

@@ -32,6 +32,8 @@ public:
 	static size_t getUsedMemorySize() { return sharedInstance->memoryAllocator->getUsedMemorySize(); }
 	int getPagesPagedIn() const { return memoryAllocator->getPagesPagedIn(); }
 	int getPagesPagedOut() const { return memoryAllocator->getPagesPagedOut(); }
+	static size_t getProcessMemoryUsage(const std::string& processName);
+	static AMemoryAllocator::AllocationAlgorithm getMemoryAllocatorType() { return sharedInstance->memoryAllocator->allocationAlgo; }
 
 private:
 	// Singleton private

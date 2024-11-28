@@ -36,8 +36,10 @@ public:
 	size_t getUsedMemorySize() const { return allocatedSize; }
 	virtual int getPagesPagedIn() const { return 0; }
 	virtual int getPagesPagedOut() const { return 0; }
+	const std::map<size_t, std::shared_ptr<Process>>& getAllocatedProcessesMap() const;
 	
 protected:
+	AMemoryAllocator* memoryAllocator;
 	AllocationAlgorithm allocationAlgo;
 
 	size_t maxMemorySize;
