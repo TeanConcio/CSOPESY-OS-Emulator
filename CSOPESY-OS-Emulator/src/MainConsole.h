@@ -28,5 +28,6 @@ private:
 	void schedulerStop();
 	void listProcesses();
 	void reportUtil();
+	void printvmstat();
 	void printProcessInfo();
 };
