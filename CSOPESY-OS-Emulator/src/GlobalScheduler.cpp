@@ -215,3 +215,36 @@ bool GlobalScheduler::isCoreUsingProcess(std::shared_ptr<Process> process)
 	}
 	return false;
 }
+
+
+size_t GlobalScheduler::getTotalCpuTicks()
+{
+	size_t totalCpuTicks = 0;
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		totalCpuTicks += sharedInstance->coreThreads[i]->getTotalCpuTicks();
+	}
+	return totalCpuTicks;
+}
+
+
+size_t GlobalScheduler::getActiveCpuTicks()
+{
+	size_t activeCpuTicks = 0;
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		activeCpuTicks += sharedInstance->coreThreads[i]->getActiveCpuTicks();
+	}
+	return activeCpuTicks;
+}
+
+
+size_t GlobalScheduler::getIdleCpuTicks()
+{
+	size_t idleCpuTicks = 0;
+	for (unsigned int i = 0; i < sharedInstance->numCores; ++i)
+	{
+		idleCpuTicks += sharedInstance->coreThreads[i]->getIdleCpuTicks();
+	}
+	return idleCpuTicks;
+}

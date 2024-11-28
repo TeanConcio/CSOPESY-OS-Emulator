@@ -263,14 +263,23 @@ void MainConsole::reportUtil() {
 void MainConsole::printvmstat() {
 	int maxWidth = 10; // Adjust this value based on your needs
 
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getMaxMemorySize()), 'r', false) + " K total memory\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getUsedMemorySize()), 'r', false) + " K used memory\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string((MemoryManagementUnit::getInstance()->getMaxMemorySize()) - (MemoryManagementUnit::getInstance()->getUsedMemorySize())), 'r', false) + " K free memory\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getIdleCpuTicks()), 'r', false) + " idle cpu ticks\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getActiveCpuTicks()), 'r', false) + " active cpu ticks\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(GlobalScheduler::getTotalCpuTicks()), 'r', false) + " total cpu ticks\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedIn()), 'r', false) + " pages paged in\n");
-	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(MemoryManagementUnit::getInstance()->getPagesPagedOut()), 'r', false) + " pages paged out\n");
+	size_t totalMemorySize = MemoryManagementUnit::getInstance()->getMaxMemorySize();
+	size_t usedMemorySize = MemoryManagementUnit::getInstance()->getUsedMemorySize();
+	size_t freeMemorySize = totalMemorySize - usedMemorySize;
+	size_t idleCpuTicks = GlobalScheduler::getIdleCpuTicks();
+	size_t activeCpuTicks = GlobalScheduler::getActiveCpuTicks();
+	size_t totalCpuTicks = GlobalScheduler::getTotalCpuTicks();
+	size_t pagesPagedIn = MemoryManagementUnit::getPagesPagedIn();
+	size_t pagesPagedOut = MemoryManagementUnit::getPagesPagedOut();
+
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(totalMemorySize), 'r', false) + " K total memory\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(usedMemorySize), 'r', false) + " K used memory\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(freeMemorySize), 'r', false) + " K free memory\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(idleCpuTicks), 'r', false) + " idle cpu ticks\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(activeCpuTicks), 'r', false) + " active cpu ticks\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(totalCpuTicks), 'r', false) + " total cpu ticks\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedIn), 'r', false) + " pages paged in\n");
+	this->writeToConsoleHistory(Common::makeTextCell(maxWidth, std::to_string(pagesPagedOut), 'r', false) + " pages paged out\n");
 }
 
 /**
@@ -282,7 +291,7 @@ void MainConsole::printProcessInfo() {
 
 	std::vector<String> processNameVector;
 	std::vector<size_t> processMemoryUsageVector;
-	size_t totalMemoryUsed = 0;
+	size_t totalMemoryUsed = MemoryManagementUnit::getUsedMemorySize();
 	size_t runningCoreCount = 0;
 
 	// Loop through running cores and get the name and memory usage of the process
@@ -302,7 +311,6 @@ void MainConsole::printProcessInfo() {
 				memoryUsed = process->getFrameIndices().size() * MemoryManagementUnit::getFrameSize();
 
 			processMemoryUsageVector.push_back(memoryUsed);
-			totalMemoryUsed += memoryUsed;
 			runningCoreCount++;
 		}
 	}

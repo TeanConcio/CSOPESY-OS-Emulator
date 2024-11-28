@@ -6,7 +6,6 @@ CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delay
 {
 	this->coreNo = coreNo;
 
-	this->currCycle = 0;
 	this->delayPerExecution = delayPerExecution;
 
 	this->currQuantumCycle = 0;
@@ -19,7 +18,7 @@ CPUCoreThread::CPUCoreThread(const unsigned int coreNo, const unsigned int delay
 void CPUCoreThread::run()
 {
 	do {
-		if (this->delayPerExecution == 0 || this->currCycle % this->delayPerExecution == 0) {
+		if (this->delayPerExecution == 0 || this->getTotalCpuTicks() % this->delayPerExecution == 0) {
 			// if (this->currCycle % this->delayPerExecution == 0) {
 			if (this->currentProcess != nullptr &&
 				(this->quantumCycle == 0 || this->hasQuantumCyclesLeft()) &&
@@ -31,9 +30,11 @@ void CPUCoreThread::run()
 					this->currQuantumCycle++;
 				}
 			}
+
+			this->activeCpuTicks++;
 		}
 
-		this->currCycle++;
+		this->idleCpuTicks++;
 
 		std::this_thread::sleep_for(std::chrono::microseconds(10));
 

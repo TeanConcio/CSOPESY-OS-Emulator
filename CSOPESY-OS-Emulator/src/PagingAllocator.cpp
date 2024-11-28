@@ -58,7 +58,6 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 			{
 				// Put oldest process into backing store
 				this->moveToBackingStore(oldestProcess);
-				pagesPagedOut += static_cast<int>(frameIndices.size());
 
 				// Deallocate the oldest process
 				deallocate(oldestProcess);
@@ -80,6 +79,7 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 		freeFrameList.erase(freeFrameList.begin());
 		allocatedProcesses[frameIndex] = processAddress;
 		allocatedSize += frameSize;
+		pagesPagedIn++;
 	}
 
 	// Update the process frame indices
@@ -90,7 +90,6 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 
 	// Remove if process is in backing store
 	this->getFromBackingStore(processAddress);
-	pagesPagedIn += static_cast<int>(numFramesRequired);
 
 	// Return the starting memory address of the process
 	return frameIndices[0] * frameSize;
@@ -124,6 +123,7 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 		freeFrameList.push_back(frameIndex);
 		allocatedProcesses.erase(frameIndex);
 		allocatedSize -= frameSize;
+		pagesPagedOut++;
 	}
 
 	// Update the process frame indices
@@ -134,12 +134,4 @@ void PagingAllocator::deallocate(std::shared_ptr<Process> processAddress)
 
 	// Reset the memory address index of the process
 	processAddress->setMemoryAddressIndex(-1);
-}
-
-int PagingAllocator::getPagesPagedIn() const {
-	return pagesPagedIn;
-}
-
-int PagingAllocator::getPagesPagedOut() const {
-	return pagesPagedOut;
 }

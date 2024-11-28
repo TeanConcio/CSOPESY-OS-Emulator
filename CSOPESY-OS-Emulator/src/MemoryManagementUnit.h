@@ -30,8 +30,8 @@ public:
 	static std::map<size_t, std::shared_ptr<Process>> getAllocatedProcessesMap() { return sharedInstance->memoryAllocator->allocatedProcesses; }
 	static size_t getNumUniqueAllocatedProcesses() { return sharedInstance->memoryAllocator->getNumUniqueAllocatedProcesses(); }
 	static size_t getUsedMemorySize() { return sharedInstance->memoryAllocator->getUsedMemorySize(); }
-	int getPagesPagedIn() const { return memoryAllocator->getPagesPagedIn(); }
-	int getPagesPagedOut() const { return memoryAllocator->getPagesPagedOut(); }
+	static int getPagesPagedIn() { return sharedInstance->memoryAllocator->getPagesPagedIn(); }
+	static int getPagesPagedOut() { return sharedInstance->memoryAllocator->getPagesPagedOut(); }
 	static size_t getProcessMemoryUsage(const std::string& processName);
 	static AMemoryAllocator::AllocationAlgorithm getMemoryAllocatorType() { return sharedInstance->memoryAllocator->allocationAlgo; }
 

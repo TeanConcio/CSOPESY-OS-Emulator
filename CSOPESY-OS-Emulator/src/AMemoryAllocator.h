@@ -34,8 +34,8 @@ public:
 	size_t getExternalFragmentation() const { return maxMemorySize - allocatedSize; }
 	size_t getNumUniqueAllocatedProcesses() const;
 	size_t getUsedMemorySize() const { return allocatedSize; }
-	virtual int getPagesPagedIn() const { return 0; }
-	virtual int getPagesPagedOut() const { return 0; }
+	virtual size_t getPagesPagedIn() const { return 0; }
+	virtual size_t getPagesPagedOut() const { return 0; }
 	const std::map<size_t, std::shared_ptr<Process>>& getAllocatedProcessesMap() const;
 	
 protected:

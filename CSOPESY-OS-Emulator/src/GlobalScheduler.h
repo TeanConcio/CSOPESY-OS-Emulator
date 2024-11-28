@@ -37,12 +37,9 @@ public:
 	static bool isCoreUsingProcess(std::shared_ptr<Process> process);
 
 	// CPU Ticks
-	static unsigned long getTotalCpuTicks() { return sharedInstance->totalCpuTicks; }
-	static unsigned long getIdleCpuTicks() { return sharedInstance->idleCpuTicks; }
-	static unsigned long getActiveCpuTicks() { return sharedInstance->activeCpuTicks; }
-	static void incrementCpuTicks() { sharedInstance->totalCpuTicks++; }
-	static void incrementIdleCpuTicks() { sharedInstance->idleCpuTicks++; }
-	static void incrementActiveCpuTicks() { sharedInstance->activeCpuTicks++; }
+	static size_t getTotalCpuTicks();
+	static size_t getActiveCpuTicks();
+	static size_t getIdleCpuTicks();
 
 	// Configurations
 	bool hasInitialized() const { return this != nullptr && this->scheduler != nullptr; }
@@ -65,9 +62,4 @@ private:
 
 	// Override IETThread
 	void run() override;
-
-	// CPU Ticks
-	unsigned long totalCpuTicks = 0;
-	unsigned long idleCpuTicks = 0;
-	unsigned long activeCpuTicks = 0;
 };
