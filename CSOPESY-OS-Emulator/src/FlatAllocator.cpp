@@ -63,7 +63,7 @@ void FlatAllocator::deallocateAt(size_t index, size_t size)
 
 
 
-size_t FlatAllocator::allocate(std::shared_ptr<Process> processAddress)
+int FlatAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
 	// Get the index of the memory
 	size_t index = processAddress->getMemoryAddressIndex();
@@ -72,7 +72,7 @@ size_t FlatAllocator::allocate(std::shared_ptr<Process> processAddress)
 	if (index != -1 &&
 		allocationMap[index] &&
 		allocatedProcesses[index] == processAddress)
-		return index;
+		return static_cast<int>(index);
 
 	// FIRST-FIT
 

@@ -17,7 +17,7 @@ public:
 	static void setDefaultConfigs();
 
 	// Memory management
-	static size_t allocate(std::shared_ptr<Process> processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
+	static int allocate(std::shared_ptr<Process> processAddress) { return sharedInstance->memoryAllocator->allocate(processAddress); }
 	static void deallocate(std::shared_ptr<Process> ptr) { sharedInstance->memoryAllocator->deallocate(ptr); }
 
 	// Print
@@ -30,8 +30,8 @@ public:
 	static std::map<size_t, std::shared_ptr<Process>> getAllocatedProcessesMap() { return sharedInstance->memoryAllocator->allocatedProcesses; }
 	static size_t getNumUniqueAllocatedProcesses() { return sharedInstance->memoryAllocator->getNumUniqueAllocatedProcesses(); }
 	static size_t getUsedMemorySize() { return sharedInstance->memoryAllocator->getUsedMemorySize(); }
-	static int getPagesPagedIn() { return sharedInstance->memoryAllocator->getPagesPagedIn(); }
-	static int getPagesPagedOut() { return sharedInstance->memoryAllocator->getPagesPagedOut(); }
+	static size_t getPagesPagedIn() { return sharedInstance->memoryAllocator->getPagesPagedIn(); }
+	static size_t getPagesPagedOut() { return sharedInstance->memoryAllocator->getPagesPagedOut(); }
 	static size_t getProcessMemoryUsage(const std::string& processName);
 	static AMemoryAllocator::AllocationAlgorithm getMemoryAllocatorType() { return sharedInstance->memoryAllocator->allocationAlgo; }
 

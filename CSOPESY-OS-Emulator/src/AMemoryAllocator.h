@@ -20,7 +20,7 @@ public:
 	AMemoryAllocator(size_t maxMemorySize, AllocationAlgorithm allocationAlgo);
 	virtual ~AMemoryAllocator() = default;
 
-	virtual size_t allocate(std::shared_ptr<Process> processAddress) = 0;
+	virtual int allocate(std::shared_ptr<Process> processAddress) = 0;
 	virtual void deallocate(std::shared_ptr<Process> processAddress) = 0;
 
 	// Backing store

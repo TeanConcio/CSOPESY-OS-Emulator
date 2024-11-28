@@ -31,7 +31,7 @@ PagingAllocator::~PagingAllocator()
 }
 
 
-size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
+int PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
 	// Get the frame indices currently allocated to the process
 	std::vector<size_t> frameIndices = processAddress->getFrameIndices();
@@ -41,7 +41,7 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 	if (!frameIndices.empty() &&
 		frameIndices.size() == numFramesRequired)
 	{
-		return frameIndices[0] * frameSize;
+		return static_cast<int>(frameIndices[0] * frameSize);
 	}
 
 	// Check if there are not enough free frames to allocate to the process
@@ -66,6 +66,9 @@ size_t PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 				return allocate(processAddress);
 			}
 		}
+
+		// If there are no processes to deallocate, return -1
+		return -1;
 	}
 
 	// Allocate frames to the process

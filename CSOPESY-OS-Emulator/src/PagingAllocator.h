@@ -10,7 +10,7 @@ public:
 	explicit PagingAllocator(size_t maxMemorySize, size_t memPerFrame);
 	~PagingAllocator();
 
-	size_t allocate(std::shared_ptr<Process> processAddress) override;
+	int allocate(std::shared_ptr<Process> processAddress) override;
 	void deallocate(std::shared_ptr<Process> processAddress) override;
 
 	size_t getFrameSize() const override { return frameSize; }

@@ -13,7 +13,7 @@ MainConsole::MainConsole(const String& name) : AConsole(name) {}
  * Waits for user input and processes the command.
  */
 void MainConsole::process() {
-	this->writeToConsoleHistory("root:\\>:");
+	this->writeToConsoleHistory("root:\\> ");
 
 	String command;
 	command = this->getConsoleInputToHistory();
