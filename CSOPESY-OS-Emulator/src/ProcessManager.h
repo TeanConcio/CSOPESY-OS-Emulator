@@ -42,8 +42,8 @@ public:
 	static String makeQueuedProcessesString();
 	static String makeFinishedProcessesString();
 	static String makeListProcessesString();
-	static String getMemoryUsagePerProcess();
-	size_t getTotalMemoryUsed() const { return totalMemoryUsed; }
+	//static String getMemoryUsagePerProcess();
+	//size_t getTotalMemoryUsed() const { return totalMemoryUsed; }
 
 	// Getters and setters
 	static std::vector<std::shared_ptr<Process>>& getQueuedProcesses() { return sharedInstance->queuedProcesses; }
@@ -77,5 +77,5 @@ private:
 	int pidCounter = 0; // How many processes its created
 	int currBatchProcessCycle = 0;
 	bool isGeneratingProcesses = false;
-	size_t totalMemoryUsed = 0;
+	//size_t totalMemoryUsed = 0;
 };

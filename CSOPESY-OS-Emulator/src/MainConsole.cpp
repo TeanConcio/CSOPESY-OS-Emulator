@@ -270,26 +270,49 @@ void MainConsole::reportUtil() {
 }
 
 void MainConsole::printProcessInfo() {
+
+	std::vector<String> processNameVector;
+	std::vector<size_t> processMemoryUsageVector;
+	size_t totalMemoryUsed = 0;
+	size_t runningCoreCount = 0;
+
+	// Loop through running cores and get the name and memory usage of the process
+	for (std::shared_ptr<CPUCoreThread> coreThread : GlobalScheduler::getRunningCores())
+	{
+		std::shared_ptr<Process> process = coreThread->getCurrentProcess();
+		if (process != nullptr && process->getState() != Process::ProcessState::FINISHED)
+		{
+			processNameVector.push_back(process->getName());
+
+			// If memory allocator is flat, get the memory required by the process
+			// Else, get the memory required by the process in frames
+			size_t memoryUsed;
+			if (MemoryManagementUnit::getMemoryAllocatorType() == AMemoryAllocator::AllocationAlgorithm::Flat)
+				memoryUsed = process->getMemoryRequired();
+			else
+				memoryUsed = process->getFrameIndices().size() * MemoryManagementUnit::getFrameSize();
+
+			processMemoryUsageVector.push_back(memoryUsed);
+			totalMemoryUsed += memoryUsed;
+			runningCoreCount++;
+		}
+	}
+
 	this->writeToConsoleHistory("-------------------------------------------\n");
 	this->writeToConsoleHistory("| PROCESS-SMI V01.00 Driver Version: 01.00 |\n"); // TBC: Where to get the version?
 	this->writeToConsoleHistory("-------------------------------------------\n");
-	this->writeToConsoleHistory("CPU-Util: " + std::to_string(GlobalScheduler::getRunningCoreCount() * 100 / GlobalScheduler::getCoreCount()) + "%\n");
-
-	// Calculate memory usage by summing up the memory required by running processes
-	ProcessManager::getMemoryUsagePerProcess();
-	size_t totalMemoryUsed = ProcessManager::getInstance()->getTotalMemoryUsed();
-
-	// Set precision for memory usage
-	std::stringstream memoryUsageStream;
-	memoryUsageStream << std::fixed << std::setprecision(0)
-		<< static_cast<double>(totalMemoryUsed) / (1024) << " MiB / "
-		<< static_cast<double>(MemoryManagementUnit::getInstance()->getMaxMemorySize()) / (1024) << " MiB\n";
-	this->writeToConsoleHistory("Memory Usage: " + memoryUsageStream.str());
-
-	this->writeToConsoleHistory("Memory Util: " + std::to_string(totalMemoryUsed * 100 / MemoryManagementUnit::getInstance()->getMaxMemorySize()) + "%\n\n");
+	this->writeToConsoleHistory("CPU-Util: " + std::to_string(runningCoreCount * 100 / GlobalScheduler::getCoreCount()) + "%\n");
+	this->writeToConsoleHistory("Memory Usage: " + std::to_string(totalMemoryUsed) + "MiB / " + std::to_string(MemoryManagementUnit::getMaxMemorySize()) + "MiB\n");
+	this->writeToConsoleHistory("Memory Util: " + std::to_string(totalMemoryUsed * 100 / MemoryManagementUnit::getMaxMemorySize()) + "%\n\n");
 
 	this->writeToConsoleHistory("===========================================\n");
 	this->writeToConsoleHistory("Running Processes and memory usage:\n");
 	this->writeToConsoleHistory("-------------------------------------------\n");
-	this->writeToConsoleHistory(ProcessManager::getMemoryUsagePerProcess() + "\n");
+	
+	for (size_t i = 0; i < processNameVector.size(); i++)
+	{
+		this->writeToConsoleHistory(processNameVector[i] + " " + std::to_string(processMemoryUsageVector[i]) + "MiB\n");
+	}
+
+	this->writeToConsoleHistory("-------------------------------------------\n");
 }
