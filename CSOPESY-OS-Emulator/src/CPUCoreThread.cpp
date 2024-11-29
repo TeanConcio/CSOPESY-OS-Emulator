@@ -33,8 +33,8 @@ void CPUCoreThread::run()
 
 			this->activeCpuTicks++;
 		}
-
-		this->idleCpuTicks++;
+		else
+			this->idleCpuTicks++;
 
 		std::this_thread::sleep_for(std::chrono::microseconds(10));
 

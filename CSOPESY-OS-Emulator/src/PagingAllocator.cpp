@@ -35,7 +35,14 @@ int PagingAllocator::allocate(std::shared_ptr<Process> processAddress)
 {
 	// Get the frame indices currently allocated to the process
 	std::vector<size_t> frameIndices = processAddress->getFrameIndices();
-	size_t numFramesRequired = processAddress->getMemoryRequired() / frameSize;
+
+	// If memory required is less than frame size, allocate one frame
+	size_t numFramesRequired;
+	if (processAddress->getMemoryRequired() < frameSize)
+		numFramesRequired = 1;
+	else
+		numFramesRequired = processAddress->getMemoryRequired() / frameSize;
+
 
 	// Check if the process is already allocated the required frames
 	if (!frameIndices.empty() &&
