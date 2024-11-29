@@ -14,7 +14,7 @@ public:
 	std::shared_ptr<Process> getCurrentProcess() const;
 	void setCurrentProcess(std::shared_ptr<Process> process);
 	
-	bool hasQuantumCyclesLeft() const { return this->quantumCycle > this->currQuantumCycle; }
+	bool hasQuantumCyclesLeft() const { return this->quantumCycle >= this->currQuantumCycle; }
 	void resetQuantumCycle() { this->currQuantumCycle = 0; }
 
 	// CPU Ticks

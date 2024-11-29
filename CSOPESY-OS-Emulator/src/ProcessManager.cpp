@@ -144,7 +144,7 @@ void ProcessManager::generateTestProcessesLoop()
 			String processName = "process" + (ProcessManager::sharedInstance->pidCounter < 9 ? std::string("0") : "") + std::to_string(ProcessManager::sharedInstance->pidCounter + 1);
 			ProcessManager::createUniqueProcess(processName);
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			//std::this_thread::sleep_for(std::chrono::microseconds(10));
 		}
 
 		// Increment the current batch process cycle

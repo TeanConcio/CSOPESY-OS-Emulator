@@ -24,6 +24,6 @@ private:
 
 	std::vector<size_t> freeFrameList; // Indices of free frames in the memory
 
-	size_t pagesPagedIn;
-	size_t pagesPagedOut;
+	size_t pagesPagedIn = 0;
+	size_t pagesPagedOut = 0;
 };

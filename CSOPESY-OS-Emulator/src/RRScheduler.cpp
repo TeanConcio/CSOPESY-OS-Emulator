@@ -51,7 +51,7 @@ void RRScheduler::run()
 			if (!core->hasQuantumCyclesLeft())
 			{
 				// If there are queued processes, assign the core a new process
-				if (!ProcessManager::getQueuedProcesses().empty() && hasRunnableProcesses)
+				if (!ProcessManager::getQueuedProcesses().empty())
 				{
 					// Remove the process from the core and add it to the back of the queued processes list
 					this->moveProcessToQueue(core);
