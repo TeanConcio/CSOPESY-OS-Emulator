@@ -202,8 +202,7 @@ void Config::validate()
 	try {
 		if (sharedInstance->configs.find("min-mem-per-proc") == sharedInstance->configs.end() ||
 			std::stoul(sharedInstance->configs["min-mem-per-proc"]) < 2 ||
-			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["min-mem-per-proc"])) ||
-			std::stoul(sharedInstance->configs["min-mem-per-proc"]) > std::stoul(sharedInstance->configs["max-overall-mem"]))
+			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["min-mem-per-proc"])))
 		{
 			sharedInstance->configs["min-mem-per-proc"] = "4096";
 		}
@@ -218,8 +217,7 @@ void Config::validate()
 	try {
 		if (sharedInstance->configs.find("max-mem-per-proc") == sharedInstance->configs.end() ||
 			std::stoul(sharedInstance->configs["max-mem-per-proc"]) < 2 ||
-			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["max-mem-per-proc"])) ||
-			std::stoul(sharedInstance->configs["max-mem-per-proc"]) > std::stoul(sharedInstance->configs["max-overall-mem"]))
+			!Common::isPowerOfTwo(std::stoul(sharedInstance->configs["max-mem-per-proc"])))
 		{
 			sharedInstance->configs["max-mem-per-proc"] = "4096";
 		}

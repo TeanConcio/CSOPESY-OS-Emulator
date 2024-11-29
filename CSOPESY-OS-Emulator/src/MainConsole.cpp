@@ -319,7 +319,7 @@ void MainConsole::printProcessInfo() {
 	this->writeToConsoleHistory("| PROCESS-SMI V01.00 Driver Version: 01.00 |\n"); // TBC: Where to get the version?
 	this->writeToConsoleHistory("-------------------------------------------\n");
 	this->writeToConsoleHistory("CPU-Util: " + std::to_string(runningCoreCount * 100 / GlobalScheduler::getCoreCount()) + "%\n");
-	this->writeToConsoleHistory("Memory Usage: " + std::to_string(totalMemoryUsed) + "KiB / " + std::to_string(MemoryManagementUnit::getMaxMemorySize()) + "KiB\n");
+	this->writeToConsoleHistory("Memory Usage: " + std::to_string(totalMemoryUsed) + "KB / " + std::to_string(MemoryManagementUnit::getMaxMemorySize()) + "KB\n");
 	this->writeToConsoleHistory("Memory Util: " + std::to_string(totalMemoryUsed * 100 / MemoryManagementUnit::getMaxMemorySize()) + "%\n\n");
 
 	this->writeToConsoleHistory("===========================================\n");
@@ -328,7 +328,7 @@ void MainConsole::printProcessInfo() {
 	
 	for (size_t i = 0; i < processNameVector.size(); i++)
 	{
-		this->writeToConsoleHistory(processNameVector[i] + " " + std::to_string(processMemoryUsageVector[i]) + "KiB\n");
+		this->writeToConsoleHistory(processNameVector[i] + " " + std::to_string(processMemoryUsageVector[i]) + "KB\n");
 	}
 
 	this->writeToConsoleHistory("-------------------------------------------\n");
